@@ -1,0 +1,39 @@
+<section class="carrito">
+    <div class="carrito__lista">
+        <h2 class="carrito__lista-titulo">Recuento de elementos</h2>
+        @for (item of items(); track item.idProducto) {
+        <app-producto-carrito
+            [idProducto]="item.idProducto"
+            [nombre]="item.nombre"
+            [descripcion]="item.descripcion"
+            [cantidad]="item.cantidad"
+            [precio]="item.precio"
+            [imagenUrl]="item.imagenUrl"
+            (eliminar)="eliminarItem($event)">
+        </app-producto-carrito>
+        } @empty {
+        <p class="carrito__vacio">Tu carrito está vacío.</p>
+        }
+    </div>
+
+    <div class="carrito__resumen">
+        <h2 class="carrito__resumen-titulo">Resumen del pedido</h2>
+
+        <div class="carrito__resumen-fila">
+        <span>Subtotal:</span>
+        <span>$ {{ subtotal().toFixed(2) }}</span>
+        </div>
+        <div class="carrito__resumen-fila">
+        <span>IVA (16%):</span>
+        <span>$ {{ iva().toFixed(2) }}</span>
+        </div>
+        <div class="carrito__resumen-fila carrito__resumen-fila--total">
+        <span>Total:</span>
+        <span>$ {{ total().toFixed(2) }}</span>
+        </div>
+        <label class="carrito__etiqueta-rfc">RFC (Opcional):</label>
+        <input class="carrito__campo-rfc" type="text" placeholder="Escribe RFC..." (input)="actualizarRfc($event)">
+
+        <button class="carrito__boton-pagar" type="button" (click)="pagar()">Pagar con PayPal</button>
+    </div>
+</section>

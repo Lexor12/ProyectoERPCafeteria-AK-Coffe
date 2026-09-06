@@ -1,1 +1,98 @@
-/* You can add global styles to this file, and also import other style files */
+/*
+NAVBAR COLORS
+*/
+:root {
+  --navbar--bg: #FFFFFF; /* fondo blanco de toda la barra de arriba */
+  --navbar--logo: #4A2E1F; /* color del texto "AK Coffee" junto al logo */
+  --navbar--route: #4A2E1F; /* color de los links normales: Inventario, Proveedores, Finanzas, RH, Pedidos */
+  --navbar--route-active: #8B5E3C; /* el link de la pantalla en la que estás parado, un tono más claro para que resalte */
+  --navbar--button-bg: #4A2E1F; /* fondo del botón "Entrar" que va del lado derecho */
+  --navbar--button-text: #FFFFFF; /* letras blancas de ese botón "Entrar" */
+}
+
+/*
+MAIN / FONDO GENERAL
+*/
+:root {
+  --main--bg: #F5EFE6; /* el crema de fondo de toda la página, fuera de las tarjetas blancas */
+  --main--heading: #3E2A1D; /* el titulo grande tipo "¿Café?" en la landing */
+  --main--text: #6B5C4C; /* párrafos normales, texto de apoyo debajo de los títulos */
+  --main--accent: #8B5E3C; /* detalles chiquitos, iconitos, el pin del mapa */
+}
+
+/*
+CARDS COLORS
+*/
+:root {
+  --cards--bg: #FFFFFF; /* fondo blanco de cada tarjeta de producto */
+  --cards--border: #EAE2D6; /* línea delgada que rodea la tarjeta */
+  --cards--title: #2B2118; /* el "Nombre:" y el valor de nombre, en negrita */
+  --cards--label: #8A7C6C; /* las etiquetas chiquitas como "Descripción" o "Stock" */
+  --cards--text: #6B5C4C; /* el texto normal dentro de la tarjeta, como la descripción */
+  --cards--price: #4A2E1F; /* el precio, para que se note más que el resto */
+  --cards--button-primary-bg: #4A2E1F; /* fondo del botón fuerte de la tarjeta, tipo "Editar" o "Surtir" */
+  --cards--button-primary-text: #FFFFFF; /* letras del botón fuerte */
+  --cards--button-secondary-bg: #FFFFFF; /* fondo del botón flojito, tipo "Desactivar" */
+  --cards--button-secondary-border: #4A2E1F; /* el borde café de ese botón flojito */
+  --cards--button-secondary-text: #4A2E1F; /* letras del botón flojito */
+}
+
+/*
+MODALS COLORS
+*/
+:root {
+  --modal--overlay: rgba(0, 0, 0, 0.5); /* la sombra oscura que tapa el fondo cuando se abre un modal */
+  --modal--bg: #FFFFFF; /* fondo blanco de la ventanita del modal */
+  --modal--title: #2B2118; /* el título de arriba, tipo "Añadir Producto" o "Surtir de Producto" */
+  --modal--label: #4A2E1F; /* las etiquetas de cada campo, tipo "Nombre:" "Teléfono:" */
+  --modal--close-bg: #4A2E1F; /* el cuadrito café con la X para cerrar el modal */
+  --modal--close-icon: #FFFFFF; /* la X blanca de adentro de ese cuadrito */
+  --modal--button-primary-bg: #4A2E1F; /* fondo del botón "Aceptar" */
+  --modal--button-primary-text: #FFFFFF; /* letras del botón "Aceptar" */
+  --modal--button-secondary-bg: #FFFFFF; /* fondo del botón "Cancelar" */
+  --modal--button-secondary-border: #4A2E1F; /* borde café del botón "Cancelar" */
+  --modal--button-secondary-text: #4A2E1F; /* letras del botón "Cancelar" */
+}
+
+/*
+INPUTS / CAMPOS DE TEXTO (los usan tanto cards de filtro como modales)
+*/
+:root {
+  --input--bg: #FFFFFF; /* fondo blanco de cualquier campo de texto */
+  --input--border: #D8CFC0; /* el borde gris-tan del campo cuando no está enfocado */
+  --input--text: #2B2118; /* lo que escribe el usuario dentro del campo */
+  --input--placeholder: #A99C8B; /* el texto gris tipo "Escribe el nombre..." antes de llenarlo */
+}
+
+/*
+ESTADOS
+*/
+:root {
+  --status--success: #3F9142; /* verde para "Activo" / "Entregado" */
+  --status--success-bg: #E8F4E3; /* fondo suave detrás de ese texto o pill verde */
+  --status--danger: #C65B4E; /* rojo para "Inactivo" / "Cancelado" */
+  --status--danger-bg: #FBE9E4; /* fondo suave detrás de ese texto o pill rojo */
+}
+
+*,*::after,*::after{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+main,body{
+    min-height: 100vh;
+    background-color: var(--main--bg);
+    font-family: sans-serif;
+    color: var(--text-primary);
+}
+
+a{
+    color: inherit;/*Eliminar color por defecto resaltado*/
+    text-decoration: none;/*Eliminar el subrayados*/
+    font-style: inherit;
+}
+img{
+    width: 100%;
+    display: block;
+    object-fit: cover;
+}

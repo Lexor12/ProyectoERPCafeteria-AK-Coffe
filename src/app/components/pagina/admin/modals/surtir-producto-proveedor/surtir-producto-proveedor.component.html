@@ -1,0 +1,41 @@
+<article class="modal-surtir-producto">
+    <div class="modal-surtir-producto__encabezado">
+        <h2 class="modal-surtir-producto__titulo">Surtir de Producto</h2>
+        <button class="modal-surtir-producto__cerrar" type="button" (click)="clickCerrar()">X</button>
+    </div>
+
+    <div class="modal-surtir-producto__producto">
+        <div class="modal-surtir-producto__imagen">
+            <img [src]="imagenUrl()">
+        </div>
+        <div class="modal-surtir-producto__datos">
+            <div class="modal-surtir-producto__campo">
+                <label class="modal-surtir-producto__etiqueta">Nombre:</label>
+                <input class="modal-surtir-producto__input" type="text" [value]="nombre()" readonly>
+            </div>
+            <div class="modal-surtir-producto__campo">
+                <label class="modal-surtir-producto__etiqueta">Descripción:</label>
+                <input class="modal-surtir-producto__input" type="text" [value]="descripcion()" readonly>
+            </div>
+            <div class="modal-surtir-producto__campo">
+                <label class="modal-surtir-producto__etiqueta">Precio Unitario:</label>
+                <input class="modal-surtir-producto__input" type="text" [value]="'$ ' + precioUnitario().toFixed(2)" readonly>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-surtir-producto__campo modal-surtir-producto__campo--total">
+        <label class="modal-surtir-producto__etiqueta">Cantidad a Surtir:</label>
+        <input class="modal-surtir-producto__input" type="number" [value]="cantidad()" (input)="actualizarCantidad($event)" min="1">
+    </div>
+
+    <div class="modal-surtir-producto__campo modal-surtir-producto__campo--total">
+        <span class="modal-surtir-producto__etiqueta">Precio Total:</span>
+        <span class="modal-surtir-producto__precio-total">$ {{ precioTotal().toFixed(2) }}</span>
+    </div>
+    <div class="modal-surtir-producto__separador"></div>
+    <div class="modal-surtir-producto__acciones">
+        <button class="modal-surtir-producto__boton-cancelar" type="button" (click)="clickCancelar()">Cancelar</button>
+        <button class="modal-surtir-producto__boton-aceptar" type="button" (click)="clickAceptar()">Aceptar</button>
+    </div>
+</article>

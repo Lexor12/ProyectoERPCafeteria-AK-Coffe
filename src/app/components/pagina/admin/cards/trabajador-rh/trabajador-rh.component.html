@@ -1,0 +1,46 @@
+<div class="trabajador-rh">
+    <div class="trabajador-rh__contenido">
+        <div class="trabajador-rh__imagen">
+            <img src="images/trabajador.png">
+        </div>
+        <div class="trabajador-rh__detalles">
+            <div class="trabajador-rh__contenedor">
+                <span class="trabajador-rh__etiqueta">Nombre:</span>
+                <span class="trabajador-rh__valor">{{ nombre() }}</span>
+            </div>
+            <div class="trabajador-rh__contenedor">
+                <span class="trabajador-rh__etiqueta">Apellido:</span>
+                <span class="trabajador-rh__valor">{{ apellido() }}</span>
+            </div>
+            <div class="trabajador-rh__contenedor">
+                <span class="trabajador-rh__etiqueta">Área:</span>
+                <span class="trabajador-rh__valor">{{ area() }}</span>
+            </div>
+            <div class="trabajador-rh__contenedor">
+                <span class="trabajador-rh__etiqueta">Fecha Ingreso:</span>
+                <span class="trabajador-rh__valor">{{ fechaIngreso() }}</span>
+            </div>
+            <div class="trabajador-rh__contenedor">
+                <span class="trabajador-rh__etiqueta">Salario:</span>
+                <span class="trabajador-rh__valor">$ {{ salario() }}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="trabajador-rh__horario">
+        <div class="trabajador-rh__horario-campo">
+            <span class="trabajador-rh__etiqueta">Hora Entrada:</span>
+            <span class="trabajador-rh__horario-caja">{{ horaEntrada() || '--:--' }}</span>
+        </div>
+        <div class="trabajador-rh__horario-campo">
+            <span class="trabajador-rh__etiqueta">Hora Salida:</span>
+            <span class="trabajador-rh__horario-caja">{{ horaSalida() || '--:--' }}</span>
+        </div>
+    </div>
+
+    <div class="trabajador-rh__acciones">
+        <button class="trabajador-rh__boton trabajador-rh__boton--desactivar" type="button" (click)="clickDesactivar()">Desactivar</button>
+        <button class="trabajador-rh__boton trabajador-rh__boton--editar" type="button" (click)="clickEditar()">Editar</button>
+        <button class="trabajador-rh__boton trabajador-rh__boton--asistencias" type="button" (click)="clickAsistencias()">Asistencias</button>
+    </div>
+</div>

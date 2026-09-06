@@ -1,0 +1,75 @@
+<section class="rh">
+    <div class="rh__toolbar">
+        <div class="rh__titulo">
+            <label class="rh__titulo-texto">Área Trabajador:</label>
+        </div>
+        <div class="rh__campo">
+            <select class="rh__select" (change)="actualizarArea($event)">
+                <option value="">Selector</option>
+                @for (area of areas(); track area) {
+                    <option [value]="area">{{ area }}</option>
+                }
+            </select>
+        </div>
+        <input class="rh__buscador" type="text" placeholder="Buscador..." (input)="actualizarBuscador($event)">
+        <button class="rh__boton-agregar" type="button" (click)="clickAgregarTrabajador()">+</button>
+    </div>
+
+    <div class="rh__grid">
+        @for (trabajador of trabajadoresFiltrados(); track trabajador.idTrabajador) {
+            <app-trabajador-rh
+                [idTrabajador]="trabajador.idTrabajador"
+                [nombre]="trabajador.nombre"
+                [apellido]="trabajador.apellido"
+                [area]="trabajador.area"
+                [fechaIngreso]="trabajador.fechaIngreso"
+                [salario]="trabajador.salario"
+                [horaEntrada]="horaLegible(trabajador.horaEntrada)"
+                [horaSalida]="horaLegible(trabajador.horaSalida)"
+                (desactivar)="desactivarTrabajador($event)"
+                (editar)="editarTrabajador($event)"
+                (asistencias)="verAsistencias($event)">
+            </app-trabajador-rh>
+        } @empty {
+            <p class="rh__vacio">No hay trabajadores que coincidan con tu búsqueda.</p>
+        }
+    </div>
+</section>
+
+@if (trabajadorEnEdicion(); as trabajador) {
+    <app-agregar-editar-trabajador-rh
+        [idTrabajador]="trabajador.idTrabajador"
+        [nombreInicial]="trabajador.nombre"
+        [apellidoInicial]="trabajador.apellido"
+        [areaInicial]="trabajador.area"
+        [fechaIngresoInicial]="trabajador.fechaIngreso"
+        [salarioInicial]="trabajador.salario"
+        [rfcInicial]="trabajador.rfc"
+        [horaEntradaInicial]="trabajador.horaEntrada"
+        [horaSalidaInicial]="trabajador.horaSalida"
+        (cerrar)="cerrarModalTrabajador()"
+        (cancelar)="cerrarModalTrabajador()"
+        (aceptar)="guardarTrabajador($event)">
+    </app-agregar-editar-trabajador-rh>
+}
+
+@if (mostrarModalAgregar()) {
+    <app-agregar-editar-trabajador-rh
+        (cerrar)="cerrarModalTrabajador()"
+        (cancelar)="cerrarModalTrabajador()"
+        (aceptar)="guardarTrabajador($event)">
+    </app-agregar-editar-trabajador-rh>
+}
+
+@if (trabajadorEnAsistencias(); as trabajador) {
+    <app-asistencias-trabajador-rh
+        [idTrabajador]="trabajador.idTrabajador"
+        [nombre]="trabajador.nombre"
+        [apellido]="trabajador.apellido"
+        [horaEntrada]="trabajador.horaEntrada"
+        [horaSalida]="trabajador.horaSalida"
+        (cerrar)="cerrarModalAsistencias()"
+        (registrarAsistencia)="registrarAsistencia($event)"
+        (descargarNomina)="descargarNomina($event)">
+    </app-asistencias-trabajador-rh>
+}

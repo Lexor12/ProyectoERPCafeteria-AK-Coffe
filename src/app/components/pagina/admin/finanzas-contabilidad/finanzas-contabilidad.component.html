@@ -1,0 +1,46 @@
+<section class="finanzas">
+    <div class="finanzas__toolbar">
+        <div class="finanzas__filtros">
+            <p class="finanzas__filtros-titulo">Filtros:</p>
+            <div class="finanzas__campo">
+                <label class="finanzas__etiqueta">Fecha Inicio:</label>
+                <input class="finanzas__input" type="date" (change)="actualizarFechaInicio($event)">
+            </div>
+            <div class="finanzas__campo">
+                <label class="finanzas__etiqueta">Fecha Fin:</label>
+                <input class="finanzas__input" type="date" (change)="actualizarFechaFin($event)">
+            </div>
+            <button class="finanzas__boton-aplicar" type="button" (click)="clickAplicar()">Aplicar</button>
+            <button class="finanzas__boton-borrar" type="button" (click)="clickBorrar()">Borrar</button>
+        </div>
+
+        <div class="finanzas__periodo">
+            <button class="finanzas__periodo-boton" [class.finanzas__periodo-boton--activo]="periodo() === 'dia'" type="button" (click)="cambiarPeriodo('dia')">Día</button>
+            <button class="finanzas__periodo-boton" [class.finanzas__periodo-boton--activo]="periodo() === 'mes'" type="button" (click)="cambiarPeriodo('mes')">Mes</button>
+            <button class="finanzas__periodo-boton" [class.finanzas__periodo-boton--activo]="periodo() === 'anio'" type="button" (click)="cambiarPeriodo('anio')">Año</button>
+        </div>
+    </div>
+
+    <div class="finanzas__resumen">
+        <div class="finanzas__resumen-card">
+            <p class="finanzas__resumen-titulo">Ingresos por Ventas</p>
+            <p class="finanzas__resumen-valor">$ {{ ingresos() | number }}</p>
+        </div>
+        <div class="finanzas__resumen-card">
+            <p class="finanzas__resumen-titulo">Egresos por Compras</p>
+            <p class="finanzas__resumen-valor">$ {{ egresos() | number }}</p>
+        </div>
+        <div class="finanzas__resumen-card">
+            <p class="finanzas__resumen-titulo">Balance</p>
+            <p class="finanzas__resumen-valor">$ {{ balance() | number }}</p>
+        </div>
+    </div>
+
+    <div class="finanzas__grafica-contenedor">
+        <div class="finanzas__grafica-placeholder">GRAFICA/s</div>
+    </div>
+
+    <div class="finanzas__acciones">
+        <button class="finanzas__boton-exportar" type="button" (click)="clickExportarPDF()">Exportar PDF</button>
+    </div>
+</section>

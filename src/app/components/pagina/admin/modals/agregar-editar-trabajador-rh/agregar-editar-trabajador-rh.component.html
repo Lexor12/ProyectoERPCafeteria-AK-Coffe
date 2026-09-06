@@ -1,0 +1,54 @@
+<article class="modal-trabajador">
+    <div class="modal-trabajador__encabezado">
+        <h2 class="modal-trabajador__titulo">Agregar / Editar Trabajador</h2>
+        <button class="modal-trabajador__cerrar" type="button" (click)="clickCerrar()">X</button>
+    </div>
+
+    <div class="modal-trabajador__separador"></div>
+
+    <div class="modal-trabajador__producto">
+        <div class="modal-trabajador__imagen">
+            <img src="images/trabajador.png">
+        </div>
+        <div class="modal-trabajador__datos">
+            <div class="modal-trabajador__campo">
+                <label class="modal-trabajador__etiqueta">Nombre:</label>
+                <input class="modal-trabajador__input" type="text" [value]="nombre()" placeholder="Escriba el nombre..." (input)="actualizarNombre($event)">
+            </div>
+            <div class="modal-trabajador__campo">
+                <label class="modal-trabajador__etiqueta">Apellido:</label>
+                <input class="modal-trabajador__input" type="text" [value]="apellido()" placeholder="Escriba el apellido..." (input)="actualizarApellido($event)">
+            </div>
+            <div class="modal-trabajador__campo">
+                <label class="modal-trabajador__etiqueta">Área:</label>
+                <input class="modal-trabajador__input" type="text" [value]="area()" placeholder="Escriba el área..." (input)="actualizarArea($event)">
+            </div>
+            <div class="modal-trabajador__campo">
+                <label class="modal-trabajador__etiqueta">Fecha Ingreso:</label>
+                <input class="modal-trabajador__input" type="date" [value]="fechaIngreso()" (input)="actualizarFechaIngreso($event)">
+            </div>
+            <div class="modal-trabajador__campo">
+                <label class="modal-trabajador__etiqueta">Salario:</label>
+                <input class="modal-trabajador__input" type="number" [value]="salario()" placeholder="$0" (input)="actualizarSalario($event)">
+            </div>
+            <div class="modal-trabajador__campo">
+                <label class="modal-trabajador__etiqueta">RFC:</label>
+                <input class="modal-trabajador__input" type="text" [value]="rfc()" placeholder="Escriba el RFC..." (input)="actualizarRfc($event)">
+            </div>
+        </div>
+    </div>
+    <div class="modal-trabajador__separador"></div>
+    <div class="modal-trabajador__campo modal-trabajador__campo--horario">
+        <label class="modal-trabajador__etiqueta">Hora de Entrada:</label>
+        <input class="modal-trabajador__input" type="time" [value]="horaEntrada()" (input)="actualizarHoraEntrada($event)">
+    </div>
+    <div class="modal-trabajador__campo modal-trabajador__campo--horario">
+        <label class="modal-trabajador__etiqueta">Hora de Salida:</label>
+        <input class="modal-trabajador__input" type="time" [value]="horaSalida()" (input)="actualizarHoraSalida($event)">
+    </div>
+    <div class="modal-trabajador__separador"></div>
+    <div class="modal-trabajador__acciones">
+        <button class="modal-trabajador__boton-cancelar" type="button" (click)="clickCancelar()">Cancelar</button>
+        <button class="modal-trabajador__boton-aceptar" type="button" (click)="clickAceptar()">Aceptar</button>
+    </div>
+</article>

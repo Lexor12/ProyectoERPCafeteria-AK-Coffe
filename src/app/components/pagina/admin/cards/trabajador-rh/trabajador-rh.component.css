@@ -1,0 +1,111 @@
+.trabajador-rh {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    background-color: var(--cards--bg);
+    border: 1px solid var(--cards--border);
+    border-radius: 12px;
+    padding: 20px;
+    max-width: 100%;
+    height: 100%;
+}
+
+.trabajador-rh__contenido {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    flex:1;
+}
+
+.trabajador-rh__imagen {
+    background-color: rgba(250, 235, 215, 0.527);
+    width: 30%;
+    height: 100%;
+    border-radius: 8px;
+}
+
+.trabajador-rh__imagen img {
+    height: 100%;
+    border-radius: 8px;
+}
+
+.trabajador-rh__detalles {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.trabajador-rh__contenedor {
+    flex: 1 1;
+}
+
+.trabajador-rh__etiqueta {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--cards--title);
+    margin-right: 4px;
+}
+
+.trabajador-rh__valor {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--cards--text);
+}
+
+.trabajador-rh__horario {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.trabajador-rh__horario-campo {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.trabajador-rh__horario-caja {
+    background-color: var(--input--bg);
+    border: 1px solid var(--input--border);
+    border-radius: 6px;
+    padding: 7px 10px;
+    font-size: 12px;
+    color: var(--input--placeholder);
+    text-align: center;
+}
+
+.trabajador-rh__acciones {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+}
+
+.trabajador-rh__boton {
+    flex: 1;
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-size: 12.5px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.trabajador-rh__boton--desactivar {
+    background-color: var(--cards--button-secondary-bg);
+    color: var(--cards--button-secondary-text);
+    border: 1px solid var(--cards--button-secondary-border);
+}
+
+.trabajador-rh__boton--editar,
+.trabajador-rh__boton--asistencias {
+    background-color: var(--cards--button-primary-bg);
+    color: var(--cards--button-primary-text);
+    border: none;
+}
+
+.trabajador-rh__boton:hover {
+    transform: scale(1.05);
+    opacity: 0.92;
+}

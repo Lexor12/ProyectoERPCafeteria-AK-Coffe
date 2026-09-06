@@ -1,0 +1,46 @@
+<!-- pedidos.component.html -->
+<section class="pedidos">
+    <div class="pedidos__toolbar">
+        <div class="pedidos__filtros-titulo">
+            <label>Filtros: </label>
+        </div>
+        <div class="pedidos__opciones">
+            <label class="pedidos__radio pedidos__border"></label>
+            <label class="pedidos__radio">
+                <input id="estadoActivo" type="radio" name="filtroCancelado" (change)="cambiarFiltroActivo(true)" checked="true">
+                Activo
+            </label>
+            <label class="pedidos__radio">
+                <input id="estadoInactivo" type="radio" name="filtroCancelado" (change)="cambiarFiltroActivo(false)">
+                Inactivo
+            </label>
+            <label class="pedidos__radio pedidos__border"></label>
+            <label class="pedidos__radio">
+                <input id="estadoEntregado" type="radio" name="filtroEntrega" (change)="cambiarFiltroEntregado(true)">
+                Entregados
+            </label>
+            <label class="pedidos__radio">
+                <input id="estadoPendiente" type="radio" name="filtroEntrega" (change)="cambiarFiltroEntregado(false)" checked="true">
+                Pendiente
+            </label>
+            <label class="pedidos__radio pedidos__border"></label>
+        </div>
+        <input class="pedidos__buscador" type="text" placeholder="Buscador por Nombre de Cliente..." (input)="actualizarBuscador($event)">
+    </div>
+    <div class="pedidos__grid">
+        @for (pedido of pedidosFiltrados(); track pedido.idVenta) {
+        <app-producto-pedido
+            [idVenta]="pedido.idVenta"
+            [nombre]="pedido.nombre"
+            [precio]="pedido.precio"
+            [cantidad]="pedido.cantidad"
+            [fechaCompra]="pedido.fechaCompra"
+            [imagenUrl]="pedido.imagenUrl"
+            (marcarCancelado)="cancelarPedido($event)"
+            (marcarEntregado)="marcarEntregado($event)">
+        </app-producto-pedido>
+        } @empty {
+        <p class="pedidos__vacio">No hay pedidos que coincidan.</p>
+        }
+    </div>
+</section>

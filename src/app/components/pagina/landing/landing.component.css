@@ -1,0 +1,153 @@
+.hero {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 60px 25px;
+}
+
+.hero__contenido {
+    flex: 1 1 320px;
+}
+
+.hero__titulo {
+    font-size: 3.5rem;
+    color: var(--main--heading);
+    margin-bottom: 25px;
+}
+
+.hero__descripcion {
+    font-size: 1rem;
+    color: var(--main--text);
+    margin-bottom: 25px;
+    max-width: 400px;
+}
+
+.hero__boton {
+    background-color: var(--navbar--button-bg);
+    color: var(--navbar--button-text);
+    font-size: 0.95rem;
+    font-weight: 700;
+    border-radius: 8px;
+    padding: 15px 30px;
+    cursor: pointer;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.hero__boton:hover {
+    transform: scale(1.05);
+    opacity: 0.92;
+}
+
+.hero__imagen {
+    flex: 1 1 320px;
+    max-width: 500px;
+}
+
+.hero__imagen img {
+    border-radius: 16px;
+}
+
+.ubicacion {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 50px;
+    background-color: var(--cards--bg);
+    padding: 50px 25px;
+}
+
+.ubicacion__mapa,
+.ubicacion__info {
+    flex: 1 1 350px;
+}
+
+.ubicacion__mapa-titulo,
+.ubicacion__domicilio-titulo,
+.ubicacion__horario-titulo {
+    font-size: 20px;
+    color: var(--main--heading);
+    margin-bottom: 20px;
+}
+
+.ubicacion__mapa-frame {
+    width: 100%;
+    height: 300px;
+    border: 0;
+    border-radius: 12px;
+}
+
+.ubicacion__info {
+    display: flex;
+    flex-direction: column;
+    gap: 35px;
+}
+
+.ubicacion__domicilio-direccion {
+    font-size: 15px;
+    color: var(--main--text);
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--cards--border);
+}
+
+.ubicacion__estado {
+    padding-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.ubicacion__estado-texto {
+    font-size: 15px;
+    font-weight: 700;
+    padding-top: 10px;
+}
+
+.ubicacion__estado-hora {
+    font-size: 14px;
+    color: var(--main--text);
+}
+
+.ubicacion__horario-fila {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--cards--border);
+}
+
+.ubicacion__horario-fila:last-child {
+    border-bottom: none;
+}
+
+.ubicacion__horario-dia {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--cards--title);
+}
+
+.ubicacion__horario-hora {
+    font-size: 14px;
+    color: var(--main--text);
+}
+
+
+@media (max-width: 768px) {
+    .hero {
+        text-align: center;
+        justify-content: center;
+        padding: 40px 20px;
+    }
+
+    .hero__descripcion {
+        max-width: none;
+    }
+
+    .ubicacion {
+        padding: 40px 20px;
+    }
+}

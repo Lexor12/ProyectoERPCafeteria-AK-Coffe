@@ -1,0 +1,71 @@
+<article class="modal-agregar-producto">
+    <div class="modal-agregar-producto__encabezado">
+        <h2 class="modal-agregar-producto__titulo">Agregar Producto</h2>
+        <button class="modal-agregar-producto__cerrar" type="button" (click)="clickCerrar()">X</button>
+    </div>
+    <div class="modal-agregar-producto__separador"></div>
+    <div class="modal-agregar-producto__campo">
+        <label class="modal-agregar-producto__etiqueta">Proveedor:</label>
+        <select class="modal-agregar-producto__input" (change)="actualizarProveedor($event)">
+            <option value="">Selector</option>
+            @for (proveedor of proveedores(); track proveedor.idProveedor) {
+                <option [value]="proveedor.idProveedor">{{ proveedor.nombre }}</option>
+            }
+        </select>
+    </div>
+
+    <div class="modal-agregar-producto__campo">
+        <span class="modal-agregar-producto__etiqueta">¿Producto Existente?:</span>
+        <div class="modal-agregar-producto__radio-group">
+            <label class="modal-agregar-producto__radio">
+                <input type="radio" name="productoExistente" [checked]="productoExistente()" (change)="cambiarProductoExistente(true)">
+                Si
+            </label>
+            <label class="modal-agregar-producto__radio">
+                <input type="radio" name="productoExistente" [checked]="!productoExistente()" (change)="cambiarProductoExistente(false)">
+                No
+            </label>
+        </div>
+    </div>
+
+    @if (productoExistente()) {
+        <div class="modal-agregar-producto__campo">
+            <label class="modal-agregar-producto__etiqueta">Producto:</label>
+            <select class="modal-agregar-producto__input" (change)="actualizarProductoSeleccionado($event)">
+                <option value="">Selector</option>
+                @for (producto of productosExistentes(); track producto.idProducto) {
+                    <option [value]="producto.idProducto">{{ producto.nombre }}</option>
+                }
+            </select>
+        </div>
+    } @else {
+        <div class="modal-agregar-producto__producto">
+            <div class="modal-agregar-producto__imagen-contenedor">
+                <div class="modal-agregar-producto__imagen">
+                    <img [src]="imagenPreview()">
+                </div>
+                <label class="modal-agregar-producto__badge" for="inputImagenAgregar">Nueva</label>
+                <input id="inputImagenAgregar" type="file" accept="image/*" (change)="actualizarImagen($event)" hidden>
+            </div>
+            <div class="modal-agregar-producto__datos">
+                <div class="modal-agregar-producto__campo">
+                    <label class="modal-agregar-producto__etiqueta">Nombre:</label>
+                    <input class="modal-agregar-producto__input" type="text" placeholder="Escriba el nombre..." (input)="actualizarNombre($event)">
+                </div>
+                <div class="modal-agregar-producto__campo">
+                    <label class="modal-agregar-producto__etiqueta">Descripción:</label>
+                    <input class="modal-agregar-producto__input" type="text" placeholder="Descripción..." (input)="actualizarDescripcion($event)">
+                </div>
+                <div class="modal-agregar-producto__campo">
+                    <label class="modal-agregar-producto__etiqueta">Precio Unitario:</label>
+                    <input class="modal-agregar-producto__input" type="number" placeholder="$100" (input)="actualizarPrecioUnitario($event)">
+                </div>
+            </div>
+        </div>
+    }
+    <div class="modal-agregar-producto__separador"></div>
+    <div class="modal-agregar-producto__acciones">
+        <button class="modal-agregar-producto__boton-cancelar" type="button" (click)="clickCancelar()">Cancelar</button>
+        <button class="modal-agregar-producto__boton-aceptar" type="button" (click)="clickAceptar()">Aceptar</button>
+    </div>
+</article>

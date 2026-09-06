@@ -1,0 +1,45 @@
+<section class="inventario">
+    <div class="inventario__toolbar">
+        <div class="inventario__titulo">
+            <p class="inventario__titulo-texto">Filtro: </p>
+        </div>
+        <div class="inventario__campo">
+            <label class="inventario__etiqueta">Precio Min.</label>
+            <input class="inventario__input" type="number" (input)="actualizarPrecioMin($event)">
+        </div>
+        <div class="inventario__campo">
+            <label class="inventario__etiqueta">Precio Máx.</label>
+            <input class="inventario__input" type="number" (input)="actualizarPrecioMax($event)">
+        </div>
+        <input class="inventario__buscador" type="text" placeholder="Buscador..." (input)="actualizarBuscador($event)">
+    </div>
+
+    <div class="inventario__grid">
+        @for (producto of productosFiltrados(); track producto.idProducto) {
+            <app-producto-inventario
+                [idProducto]="producto.idProducto"
+                [nombre]="producto.nombre"
+                [descripcion]="producto.descripcion"
+                [precio]="producto.precio"
+                [stock]="producto.stock"
+                [imagenUrl]="producto.imagenUrl"
+                (desactivar)="desactivarProducto($event)"
+                (editar)="editarProducto($event)">
+            </app-producto-inventario>
+        } @empty {
+            <p class="inventario__vacio">No hay productos que coincidan con tu búsqueda.</p>
+        }
+    </div>
+</section>
+@if (productoSeleccionado(); as producto) {
+    <app-editar-producto-inventario
+        [idProducto]="producto.idProducto"
+        [nombreInicial]="producto.nombre"
+        [descripcionInicial]="producto.descripcion"
+        [precioInicial]="producto.precio"
+        [imagenUrlInicial]="producto.imagenUrl"
+        (cerrar)="cerrarModal()"
+        (cancelar)="cerrarModal()"
+        (aceptar)="guardarEdicion($event)">
+    </app-editar-producto-inventario>
+}

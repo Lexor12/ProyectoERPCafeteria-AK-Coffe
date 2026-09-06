@@ -1,0 +1,125 @@
+.carrito {
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    padding: 30px 25px;
+}
+
+.carrito__lista {
+    flex: 1.3;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.carrito__lista-titulo {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--main--heading);
+    margin-bottom: 5px;
+}
+
+.carrito__vacio {
+    font-size: 14px;
+    color: var(--main--text);
+}
+
+.carrito__resumen {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--cards--bg);
+    border: 1px solid var(--cards--border);
+    border-radius: 12px;
+    padding: 35px;
+    min-height: 80vh;
+}
+
+.carrito__resumen-titulo {
+    font-size: 28px;
+    color: var(--main--heading);
+    margin-bottom: 25px;
+}
+
+.carrito__resumen-fila {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px 0;
+    font-size: 15px;
+    color: var(--main--text);
+    border-bottom: 1px solid var(--cards--border);
+}
+
+.carrito__resumen-fila--total {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--main--heading);
+    border-bottom: none;
+    padding-top: 15px;
+}
+
+.carrito__resumen-fila--total span:last-child {
+    color: var(--status--success);
+    font-size: 20px;
+}
+
+.carrito__etiqueta-rfc {
+    display: block;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--modal--label);
+    margin-top: 20px;
+    margin-bottom: 8px;
+}
+
+.carrito__campo-rfc {
+    padding: 10px 12px;
+    background-color: var(--input--bg);
+    border: 1px solid var(--input--border);
+    border-radius: 6px;
+    font-size: 14px;
+    color: var(--input--text);
+    font-family: inherit;
+}
+
+.carrito__campo-rfc::placeholder {
+    color: var(--input--placeholder);
+}
+
+.carrito__campo-rfc:focus {
+    outline: none;
+    border-color: var(--main--accent);
+}
+
+.carrito__boton-pagar {
+    margin-top: auto;
+    background-color: #2ECC71;
+    color: #1B4332;
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 8px;
+    padding: 16px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.carrito__boton-pagar:hover {
+    transform: scale(1.03);
+    opacity: 0.92;
+}
+
+
+@media (max-width: 800px) {
+    .carrito {
+        flex-direction: column;
+    }
+
+    .carrito__resumen {
+        min-height: auto;
+    }
+}

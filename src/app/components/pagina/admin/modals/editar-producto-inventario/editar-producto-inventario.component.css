@@ -1,0 +1,186 @@
+:host {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--modal--overlay);
+    z-index: 999;
+}
+
+.modal-editar-producto {
+    background-color: var(--modal--bg);
+    border-radius: 16px;
+    padding: 30px 35px;
+    max-width: 420px;
+    margin: 0 auto;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.modal-editar-producto__encabezado {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-editar-producto__titulo {
+    font-size: 22px;
+    color: var(--modal--title);
+}
+
+.modal-editar-producto__cerrar {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--modal--close-bg);
+    color: var(--modal--close-icon);
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.modal-editar-producto__cerrar:hover {
+    transform: scale(1.1);
+    opacity: 0.92;
+}
+
+.modal-editar-producto__separador {
+    border-bottom: 1px solid var(--cards--border);
+}
+
+.modal-editar-producto__producto {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 15px;
+}
+
+.modal-editar-producto__imagen-contenedor {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.modal-editar-producto__imagen {
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.modal-editar-producto__imagen img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.modal-editar-producto__badge {
+    width: fit-content;
+    background-color: var(--main--bg);
+    border: 1px solid var(--input--border);
+    border-radius: 20px;
+    padding: 3px 12px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--cards--label);
+    cursor: pointer;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.modal-editar-producto__badge:hover {
+    transform: scale(1.05);
+    opacity: 0.85;
+}
+.modal-editar-producto__datos {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.modal-editar-producto__campo {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+
+.modal-editar-producto__etiqueta {
+    min-width: 110px;
+    flex-shrink: 0;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--modal--label);
+}
+
+.modal-editar-producto__input {
+    flex: 1;
+    width: 100%;
+    background-color: var(--input--bg);
+    border: 1px solid var(--input--border);
+    border-radius: 6px;
+    padding: 7px 10px;
+    font-size: 12.5px;
+    color: var(--input--text);
+    font-family: inherit;
+}
+
+.modal-editar-producto__input::placeholder {
+    color: var(--input--placeholder);
+}
+
+.modal-editar-producto__input:focus {
+    outline: none;
+    border-color: var(--main--accent);
+}
+
+.modal-editar-producto__acciones {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+}
+
+.modal-editar-producto__boton-cancelar,
+.modal-editar-producto__boton-aceptar {
+    flex: 1;
+    border-radius: 6px;
+    padding: 10px 20px;
+    font-size: 13px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.modal-editar-producto__boton-cancelar {
+    background-color: var(--modal--button-secondary-bg);
+    color: var(--modal--button-secondary-text);
+    border: 1px solid var(--modal--button-secondary-border);
+}
+
+.modal-editar-producto__boton-aceptar {
+    background-color: var(--modal--button-primary-bg);
+    color: var(--modal--button-primary-text);
+    border: none;
+}
+
+.modal-editar-producto__boton-cancelar:hover,
+.modal-editar-producto__boton-aceptar:hover {
+    transform: scale(1.05);
+    opacity: 0.92;
+}

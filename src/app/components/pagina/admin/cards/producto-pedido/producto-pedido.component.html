@@ -1,0 +1,29 @@
+<div class="producto">
+    <div class="producto__contenido">
+        <div class="producto__imagen">
+            <img  [src]="imagenUrl()">
+        </div>
+        <div class="producto__info">
+            <div class="producto__contenedor">
+                <span class="producto__etiqueta">Nombre:</span>
+                <span class="producto__valor">{{nombre()}}</span>
+            </div>
+            <div class="producto__contenedor">
+                <span class="producto__etiqueta">Precio:</span>
+                <span class="producto__valor">{{precio()}}</span>
+            </div>
+            <div class="producto__contenedor">
+                <span class="producto__etiqueta">Cantidad:</span>
+                <span class="producto__valor">{{cantidad()}}</span>
+            </div>
+            <div class="producto__contenedor">
+                <span class="producto__etiqueta">Fecha de Compra:</span>
+                <span class="producto__valor">{{fechaCompra()}}</span>
+            </div>
+        </div>
+    </div>
+    <div class="producto__acciones">
+        <button class="producto__boton producto__boton--cancelar" type="button" (click)="cancelar()">Cancelar</button>
+        <button class="producto__boton producto__boton--entregado" type="button" (click)="entregar()">Marcar como Entregado</button>
+    </div>
+</div>

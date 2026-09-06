@@ -1,0 +1,39 @@
+<article class="modal-editar-producto">
+    <div class="modal-editar-producto__encabezado">
+        <h2 class="modal-editar-producto__titulo">Editar Producto</h2>
+        <button class="modal-editar-producto__cerrar" type="button" (click)="clickCerrar()">X</button>
+    </div>
+
+    <div class="modal-editar-producto__separador"></div>
+
+    <div class="modal-editar-producto__producto">
+        <div class="modal-editar-producto__imagen-contenedor">
+            <div class="modal-editar-producto__imagen">
+                <img [src]="imagenPreview()">
+            </div>
+            <label class="modal-editar-producto__badge" for="inputImagenEditar">Nueva</label>
+            <input id="inputImagenEditar" type="file" accept="image/*" (change)="actualizarImagen($event)" hidden>
+        </div>
+        <div class="modal-editar-producto__datos">
+            <div class="modal-editar-producto__campo">
+                <label class="modal-editar-producto__etiqueta">Nombre:</label>
+                <input class="modal-editar-producto__input" type="text" [value]="nombre()" placeholder="Escriba el nombre..." (input)="actualizarNombre($event)">
+            </div>
+            <div class="modal-editar-producto__campo">
+                <label class="modal-editar-producto__etiqueta">Descripción:</label>
+                <input class="modal-editar-producto__input" type="text" [value]="descripcion()" placeholder="Descripción..." (input)="actualizarDescripcion($event)">
+            </div>
+            <div class="modal-editar-producto__campo">
+                <label class="modal-editar-producto__etiqueta">Precio Unitario:</label>
+                <input class="modal-editar-producto__input" type="number" [value]="precioUnitario()" placeholder="$100" (input)="actualizarPrecioUnitario($event)">
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-editar-producto__separador"></div>
+
+    <div class="modal-editar-producto__acciones">
+        <button class="modal-editar-producto__boton-cancelar" type="button" (click)="clickCancelar()">Cancelar</button>
+        <button class="modal-editar-producto__boton-aceptar" type="button" (click)="clickAceptar()">Aceptar</button>
+    </div>
+</article>

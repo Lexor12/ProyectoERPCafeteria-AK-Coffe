@@ -1,0 +1,24 @@
+<div class="card-login">
+    <div class="card-login__formulario">
+        <h2 class="card-login__titulo">Iniciar Sesión</h2>
+        <form [formGroup]="formularioLogin" (ngSubmit)="iniciarSesion()">
+            <div class="card-login__campo">
+                <label class="card-login__etiqueta" for="correo">Correo Electrónico:</label>
+                <input class="card-login__input" type="email" id="correo" formControlName="correo" placeholder="correo@ejemplo.com">
+            </div>
+            <div class="card-login__campo">
+                <label class="card-login__etiqueta" for="contrasena">Contraseña:</label>
+                <input class="card-login__input" type="password" id="contrasena" formControlName="contrasena" placeholder="contraseña">
+            </div>
+            <button class="card-login__boton-entrar" type="submit">Entrar</button>
+        </form>
+    </div>
+
+    <div class="card-login__divisor"></div>
+
+    <div class="card-login__promocion">
+        <h2 class="card-login__promocion-titulo">¿No tienes una cuenta?</h2>
+        <button class="card-login__boton-crear" type="button" (click)="cambiarVista.emit()">Crear</button>
+        <p class="card-login__promocion-texto">Crea de forma gratuita para empezar a comprar tus bebidas favoritas.</p>
+    </div>
+</div>

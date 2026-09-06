@@ -1,0 +1,92 @@
+.navbar {
+    background-color: var(--navbar--bg);
+    border-bottom: 1px solid var(--cards--border);
+}
+    
+.navbar__contenedor {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+    padding: 20px 25px;
+}
+    
+.navbar__marca {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+    
+.navbar__logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    background-color: var(--navbar--logo);
+    border-radius: 10px;
+}
+    
+.navbar__logo img {
+    height: 30px;
+}
+    
+.navbar__titulo {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--navbar--logo);
+    white-space: nowrap;
+}
+    
+.navbar__rutas {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    list-style: none;
+}
+    
+.navbar__enlace {
+    display: inline-block;
+    font-size: 0.9rem;
+    color: var(--navbar--route);
+}
+.navbar__enlace:hover{
+    color: var(--navbar--route-active);
+    font-weight:800px;
+}
+    
+.navbar__boton {
+    flex-shrink: 0;
+    font-size: 0.9rem;
+    font-weight: 700;
+    font-family: inherit;
+    color: var(--navbar--button-text);
+    background-color: var(--navbar--button-bg);
+    border: none;
+    border-radius: 6px;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+}
+    
+.navbar__boton:hover {
+    transform: scale(1.05);
+    opacity: 0.92;
+}
+@media (max-width: 48rem) {
+    .navbar__contenedor {
+        justify-content: center;
+    }
+    .navbar__rutas {
+        order: 3;
+        width: 100%;
+        justify-content: center;
+    }   
+    .navbar__boton {
+        order: 2;
+    }
+}

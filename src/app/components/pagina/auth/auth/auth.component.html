@@ -1,0 +1,7 @@
+<section class="auth">
+    @if (login) {
+        <app-login (cambiarVista)="login = false"></app-login>
+    } @else {
+        <app-register (cambiarVista)="login = true"></app-register>
+    }
+</section>

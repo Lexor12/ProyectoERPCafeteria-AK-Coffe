@@ -1,0 +1,51 @@
+<section class="hero">
+    <div class="hero__contenido">
+        <div class="hero__titulo-contenedor">
+            <h2 class="hero__titulo">¿Café?</h2>
+        </div>
+        <div class="hero__descripcion-contenedor">
+            <p class="hero__descripcion">Encuentra tu rincón de paz con el mejor aroma.</p>
+        </div>
+        <div class="hero__boton-contenedor">
+            <a class="hero__boton" [routerLink]="['/auth']" routerLinkActive="hero__boton--activo">Entrar Gratis</a>
+        </div>
+    </div>
+    <div class="hero__imagen">
+        <img src="images/cafe-taza.png" alt="Taza de café caliente humeante sobre una mesa de madera">
+    </div>
+</section>
+<section class="ubicacion">
+    <div class="ubicacion__mapa">
+        <h3 class="ubicacion__mapa-titulo">Nuestra Ubicación</h3>
+        <iframe class="ubicacion__mapa-frame" src="https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d238899.81191599692!2d-103.50168558163105!3d20.67732538948899!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1sAv.%20Patria%201234%2C%20Col.%20Altamira%2C%20C.P.%2045116%2C%20Zapopan%2C%20Jalisco!5e0!3m2!1ses!2smx!4v1788636000850!5m2!1ses!2smx" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+    </div>
+    <div class="ubicacion__info">
+        <div class="ubicacion__domicilio">
+            <h3 class="ubicacion__domicilio-titulo">Domicilio</h3>
+            <div class="ubicacion__domicilio-direccion-contenedor">
+                <p class="ubicacion__domicilio-direccion">Av. Patria 1234, Col. Altamira, C.P. 45116, Zapopan, Jalisco</p>
+            </div>
+            <div class="ubicacion__estado">
+                @if (abierto) {
+                    <span class="ubicacion__estado-texto">Abierto</span>
+                    <span class="ubicacion__estado-hora">8:00 AM - 20:00 PM</span>
+                } @else {
+                    <span class="ubicacion__estado-texto">Cerrado</span>
+                    <span class="ubicacion__estado-hora">Hasta Mañana</span>
+                }
+            </div>
+        </div>
+
+        <div class="ubicacion__horario">
+            <h3 class="ubicacion__horario-titulo">Horario de Atención</h3>
+            <div class="ubicacion__horario-fila">
+                <span class="ubicacion__horario-dia">Lunes a Sábado</span>
+                <span class="ubicacion__horario-hora">8:00 AM - 20:00 PM</span>
+            </div>
+            <div class="ubicacion__horario-fila">
+                <span class="ubicacion__horario-dia">Domingo</span>
+                <span class="ubicacion__horario-hora">No abrimos</span>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,84 @@
+<article class="modal-asistencias">
+    <div class="modal-asistencias__encabezado">
+        <h2 class="modal-asistencias__titulo">Asistencias de Trabajador</h2>
+        <button class="modal-asistencias__cerrar" type="button" (click)="clickCerrar()">X</button>
+    </div>
+
+    <div class="modal-asistencias__trabajador">
+        <div class="modal-asistencias__imagen">
+            <img src="images/trabajador.png">
+        </div>
+        <div class="modal-asistencias__datos">
+            <p class="modal-asistencias__etiqueta">Nombre: <span class="modal-asistencias__dato">{{ nombre() }}</span></p>
+            <p class="modal-asistencias__etiqueta">Apellido: <span class="modal-asistencias__dato">{{ apellido() }}</span></p>
+            <p class="modal-asistencias__etiqueta">Hora Entrada: <span class="modal-asistencias__dato">{{ horaEntrada() }}</span></p>
+            <p class="modal-asistencias__etiqueta">Hora Salida: <span class="modal-asistencias__dato">{{ horaSalida() }}</span></p>
+        </div>
+    </div>
+
+    <div class="modal-asistencias__seccion-encabezado">
+        <h3 class="modal-asistencias__seccion-titulo">Registro de Asistencias</h3>
+        <span class="modal-asistencias__seccion-nota">Mostrando últimas {{ asistencias().length }}</span>
+    </div>
+
+    <div class="modal-asistencias__lista">
+        @for (asistencia of asistencias(); track asistencia.dia) {
+            <div class="modal-asistencias__fila">
+                <span class="modal-asistencias__fila-dato"><strong>Día:</strong> {{ asistencia.dia }}</span>
+                <span class="modal-asistencias__fila-dato"><strong>Hora Entrada:</strong> {{ asistencia.horaEntrada }}</span>
+                <span class="modal-asistencias__fila-dato"><strong>Hora Salida:</strong> {{ asistencia.horaSalida }}</span>
+            </div>
+        }
+    </div>
+    <div class="modal-trabajador__separador"></div>
+    <div class="modal-asistencias__nueva">
+        <div class="modal-asistencias__inputs">
+            <div class="modal-asistencias__campo">
+                <label class="modal-asistencias__etiqueta-campo">Nueva Asistencia:</label>
+                <input class="modal-asistencias__input-fecha" type="date" [value]="fechaAsistencia()" (change)="actualizarAsistencia($event)">
+                
+            </div>
+            <div class="modal-asistencias__campo">
+                <label class="modal-asistencias__etiqueta-campo">Hora de Entrada:</label>
+                <input class="modal-asistencias__input" type="text" [value]="nuevaHoraEntrada()" placeholder="--:--" readonly>
+                
+            </div>
+            <div class="modal-asistencias__campo">
+                <label class="modal-asistencias__etiqueta-campo">Hora de Salida:</label>
+                <input class="modal-asistencias__input" type="text" [value]="nuevaHoraSalida()" placeholder="--:--" readonly>
+            </div>
+        </div>
+        <div class="modal-asistencias__">
+            <button class="modal-asistencias__boton-aceptar" type="button" (click)="clickAceptarAsistencia()">Aceptar</button>
+            <button class="modal-asistencias__boton-cancelar" type="button" (click)="clickCancelarAsistencia()">Cancelar</button>
+        </div>
+    </div>
+    <div class="modal-trabajador__separador"></div>
+    <div class="modal-asistencias__fechas">
+        <div class="modal-asistencias__campo-fecha">
+            <label class="modal-asistencias__etiqueta-campo">Fecha Inicio:</label>
+            <input class="modal-asistencias__input-fecha" type="date" [value]="fechaInicio()" (change)="actualizarFechaInicio($event)">
+        </div>
+        <div class="modal-asistencias__campo-fecha">
+            <label class="modal-asistencias__etiqueta-campo">Fecha Fin:</label>
+            <input class="modal-asistencias__input-fecha" type="date" [value]="fechaFin()" (change)="actualizarFechaFin($event)">
+        </div>
+    </div>
+
+    <div class="modal-asistencias__resumen">
+        <div class="modal-asistencias__resumen-item">
+            <span class="modal-asistencias__resumen-etiqueta">Días Trabajados</span>
+            <span class="modal-asistencias__resumen-valor">{{ diasTrabajados() }}</span>
+        </div>
+        <div class="modal-asistencias__resumen-item">
+            <span class="modal-asistencias__resumen-etiqueta">Salario Diario</span>
+            <span class="modal-asistencias__resumen-valor">${{ salarioDiario() }}</span>
+        </div>
+        <div class="modal-asistencias__resumen-item">
+            <span class="modal-asistencias__resumen-etiqueta">Total a Pagar</span>
+            <span class="modal-asistencias__resumen-valor">${{ totalAPagar() }}</span>
+        </div>
+    </div>
+
+    <button class="modal-asistencias__boton-descargar" type="button" (click)="clickDescargarNomina()">Descargar Nómina</button>
+</article>

@@ -1,0 +1,65 @@
+<section class="pedidos">
+    <div class="pedidos__toolbar">
+        <div class="pedidos__filtros-titulo">
+            <label>Filtros: </label>
+        </div>
+        <div class="pedidos__opciones">
+            <label class="pedidos__radio pedidos__border"></label>
+            <label class="pedidos__radio">
+                <input id="esadoActivo" type="radio" name="filtroCancelado" (change)="cambiarFiltroActivo(true)" checked="true">
+                Activo
+            </label>
+            <label class="pedidos__radio">
+                <input id="esadoActivo" type="radio" name="filtroCancelado" (change)="cambiarFiltroActivo(false)">
+                Inactivo
+            </label>
+            <label class="pedidos__radio pedidos__border"></label>
+            <label class="pedidos__radio">
+                <input id="estadoPendiente" type="radio" name="filtroEntrega" (change)="cambiarFiltroEntregado(true)" checked="true">
+                Entregados
+            </label>
+                <label class="pedidos__radio">
+                <input id="estadoPendiente" type="radio" name="filtroEntrega" (change)="cambiarFiltroEntregado(false)">
+                Pendiente
+            </label>
+            <label class="pedidos__radio pedidos__border"></label>
+        </div>
+        <input class="catalogo__buscador" type="text" placeholder="Buscador..." (input)="actualizarBuscador($event)">
+    </div>
+    <div class="pedidos__grid">
+        @for (pedido of pedidosFiltrados(); track pedido.idVenta) {
+        <app-producto-pedido
+            [idVenta]="pedido.idVenta"
+            [nombre]="pedido.nombre"
+            [precio]="pedido.precio"
+            [cantidad]="pedido.cantidad"
+            [fechaCompra]="pedido.fechaCompra"
+            [imagenUrl]="pedido.imagenUrl"
+            (verDetalle)="verDetalle($event)"
+            (descargarFactura)="descargarFactura($event)">
+        </app-producto-pedido>
+        } @empty {
+        <p class="pedidos__vacio">No hay pedidos para mostrar según los filtros ingresados.</p>
+        }
+    </div>
+</section>
+@if (pedidoSeleccionado(); as pedido) {
+    <app-detalles-pedido
+        [nombreProducto]="pedido.nombre"
+        [descripcion]="pedido.descripcion"
+        [cantidad]="pedido.cantidad"
+        [precioUnitario]="pedido.precio"
+        [entregado]="pedido.entregado"
+        [cancelado]="pedido.cancelado"
+        [imagenUrl]="pedido.imagenUrl"
+        [nombreCliente]="pedido.nombreCliente"
+        [apellidoCliente]="pedido.apellidoCliente"
+        [rfcCliente]="pedido.rfcCliente"
+        [nombreTienda]="pedido.nombreTienda"
+        [rfcTienda]="pedido.rfcTienda"
+        [telefonoTienda]="pedido.telefonoTienda"
+        [domicilioFiscalTienda]="pedido.domicilioFiscalTienda"
+        [regimenFiscalTienda]="pedido.regimenFiscalTienda"
+        (cerrar)="cerrarModal()">
+    </app-detalles-pedido>
+}

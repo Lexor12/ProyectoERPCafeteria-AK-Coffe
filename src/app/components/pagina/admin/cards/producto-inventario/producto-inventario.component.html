@@ -1,0 +1,29 @@
+<div class="producto">
+    <div class="producto__contenido">
+        <div class="producto__imagen">
+            <img [src]="imagenUrl()">
+        </div>
+        <div class="producto__detalles">
+            <div class="producto__contenedor">
+                <span class="producto__etiqueta">Nombre:</span>
+                <span class="producto__valor">{{ nombre() }}</span>
+            </div>
+            <div class="producto__contenedor">
+                <span class="producto__etiqueta">Descripción</span>
+                <span class="producto__valor">{{ descripcion() }}</span>
+            </div>
+            <div class="producto__contenedor">
+                <span class="producto__etiqueta">Precio:</span>
+                <span class="producto__valor">$ {{ precio().toFixed(2) }}</span>
+            </div>
+            <div class="producto__contenedor">
+                <span class="producto__etiqueta">Stock</span>
+                <span class="producto__valor">{{ stock() }}</span>
+            </div>
+        </div>
+    </div>
+    <div class="producto__acciones">
+        <button class="producto__boton producto__boton--desactivar" type="button" (click)="clickDesactivar()">Desactivar</button>
+        <button class="producto__boton producto__boton--editar" type="button" (click)="clickEditar()">Editar</button>
+    </div>
+</div>

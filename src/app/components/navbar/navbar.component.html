@@ -1,0 +1,32 @@
+<section class="navbar">
+    <nav class="navbar__contenedor">
+        <div class="navbar__marca"> 
+            <div class="navbar__logo"> 
+                <img src="ak-logo.ico" class="navbar__logo-imagen">
+            </div>
+            <div class="navbar__titulo"> 
+                <h1 class="navbar__titulo-texto">AK Coffee</h1>
+            </div>
+        </div>
+        <div class="navbar__rutas"> 
+            @if (!sesionActiva){
+                <a class="navbar__boton navbar__enlace--cta" [routerLink]="['/auth']" routerLinkActive="router-link-active">Entrar</a>
+            }
+            @else if (rol=='cliente'){
+                @for (r of rutasCliente; track r.path){
+                    <a class="navbar__enlace navbar__enlace--cta" [routerLink]="[r.path]" routerLinkActive="router-link-active">{{r.label}}</a>
+                }
+            }
+            @else if (rol=='administrador'){
+                @for (r of rutasAdmin; track r.path){
+                    <a class="navbar__enlace navbar__enlace--cta" [routerLink]="[r.path]" routerLinkActive="router-link-active">{{r.label}}</a>
+                }
+            }
+            @if (sesionActiva){
+                <div>
+                    <button class="navbar__boton " (click)="cerrarSesion()">Cerrar sesión</button>
+                </div>
+            }
+        </div>
+    </nav>
+</section>

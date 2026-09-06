@@ -1,0 +1,62 @@
+<section class="proveedores">
+    <div class="proveedores__toolbar">
+        <div class="proveedores__campo">
+            <label class="proveedores__titulo-texto">Proveedor:</label>
+            <select class="proveedores__select" (change)="actualizarProveedor($event)">
+                <option value="">Todos</option>
+                @for (proveedor of proveedores(); track proveedor.idProveedor) {
+                    <option [value]="proveedor.idProveedor">{{ proveedor.nombre }}</option>
+                }
+            </select>
+            <button class="proveedores__boton-nuevo-proveedor" type="button" (click)="clickAgregarProveedor()">Nuevo proveedor</button>
+        </div>
+        <input class="proveedores__buscador" type="text" placeholder="Buscador..." (input)="actualizarBuscador($event)">
+        <button class="proveedores__boton-agregar" type="button" (click)="clickAgregarProducto()">+</button>
+    </div>
+
+    <div class="proveedores__grid">
+        @for (producto of productosFiltrados(); track producto.idProducto) {
+            <app-producto-proveedor
+                [idProducto]="producto.idProducto"
+                [nombre]="producto.nombre"
+                [descripcion]="producto.descripcion"
+                [precio]="producto.precio"
+                [imagenUrl]="producto.imagenUrl"
+                (surtir)="surtirProducto($event)">
+            </app-producto-proveedor>
+        } @empty {
+            <p class="proveedores__vacio">No hay productos que coincidan con tu búsqueda.</p>
+        }
+    </div>
+</section>
+
+@if (productoASurtir(); as producto) {
+    <app-surtir-producto-proveedor
+        [idProducto]="producto.idProducto"
+        [nombre]="producto.nombre"
+        [descripcion]="producto.descripcion"
+        [precioUnitario]="producto.precio"
+        [imagenUrl]="producto.imagenUrl"
+        (cerrar)="cerrarModalSurtir()"
+        (cancelar)="cerrarModalSurtir()"
+        (aceptar)="confirmarSurtido($event)">
+    </app-surtir-producto-proveedor>
+}
+
+@if (mostrarModalAgregarProducto()) {
+    <app-agregar-producto-proveedor
+        [proveedores]="proveedores()"
+        [productosExistentes]="productos()"
+        (cerrar)="cerrarModalProducto()"
+        (cancelar)="cerrarModalProducto()"
+        (aceptar)="guardarProducto($event)">
+    </app-agregar-producto-proveedor>
+}
+
+@if (mostrarModalAgregarProveedor()) {
+    <app-agregar-proveedor
+        (cerrar)="cerrarModalProveedor()"
+        (cancelar)="cerrarModalProveedor()"
+        (aceptar)="guardarProveedor($event)">
+    </app-agregar-proveedor>
+}

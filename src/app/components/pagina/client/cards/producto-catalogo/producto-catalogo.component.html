@@ -1,0 +1,34 @@
+<article class="producto">
+    <div class="producto__contenido">
+        <div class="producto__imagen">
+            <img [src]="imagenUrl()"><!--NOTA: No lleva clase, ya que en el styles.css ya configure todos los img, que se adapten segun su contenedor padre, ents por esto-->
+        </div>
+        <div class="producto__detalles">
+            <div class="producto__contenedor">
+                <span class="producto__etiqueta">Nombre:</span>
+                <span class="producto__valor">{{nombre()}}</span>
+            </div>
+            <div class="producto__contenedor">
+                <span class="producto__etiqueta">Descripción:</span>
+                <span class="producto__valor">{{descripcion()}}</span>
+            </div>
+            <div class="producto__contenedor">
+                <span class="producto__etiqueta">Precio:</span>
+                <span class="producto__valor">{{precio()}}</span>
+            </div>
+            <div class="producto__contenedor">
+                <span class="producto__etiqueta">Stock:</span>
+                <span class="producto__valor">{{stockDisponible()}}</span>
+            </div>
+        </div>
+    </div>
+    <div class="producto__acciones">
+        <div class="producto__contenedor-agregar">
+            <button class="producto__boton" type="button" (click)="clickAgregar()">Agregar</button>
+            <div class="producto__grupo-cantidad">
+                <label class="producto__label" for="cantidad-input">Cantidad: </label>
+                <input class="producto__cantidad" id="cantidad-input" type="number" [value]="cantidad()" (input)="actualizarCantidadSeleccionada($event)" min="1" [max]="stockDisponible()">
+            </div >            
+        </div>
+    </div>
+</article>

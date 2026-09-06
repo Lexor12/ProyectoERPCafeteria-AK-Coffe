@@ -1,0 +1,32 @@
+<section class="catalogo">
+    <div class="catalogo__toolbar">
+        <div class="catalogo__titulo">
+            <p class="catalogo__titulo-texto">Filtros: </p>
+        </div>
+        <div class="catalogo__campo">
+            <label class="catalogo__etiqueta">Precio Min.</label>
+            <input class="catalogo__input" type="number" (input)="actualizarPrecioMin($event)">
+        </div>
+        <div class="catalogo__campo">
+            <label class="catalogo__etiqueta">Precio Máx.</label>
+            <input class="catalogo__input" type="number" (input)="actualizarPrecioMax($event)">
+        </div>
+        <input class="catalogo__buscador" type="text" placeholder="Buscador..." (input)="actualizarBuscador($event)">
+    </div>
+
+    <div class="catalogo__grid">
+        @for (producto of productosFiltrados(); track producto.idProducto) {
+            <app-producto-catalogo
+                [idProducto]="producto.idProducto"
+                [nombre]="producto.nombre"
+                [descripcion]="producto.descripcion"
+                [precio]="producto.precio"
+                [stockDisponible]="producto.stockDisponible"
+                [imagenUrl]="producto.imagenUrl"
+                (agregar)="agregarAlCarrito($event)"><!--! ACLARACION PARA FUTURO: () es para manejar los eventos que recibe del hijo-->
+            </app-producto-catalogo>
+        } @empty {
+        <p class="catalogo__vacio">No hay productos que coincidan con tu búsqueda.</p>
+        }
+    </div>
+</section>

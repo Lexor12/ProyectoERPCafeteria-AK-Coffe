@@ -1,0 +1,39 @@
+<article class="detalle-pedido">
+    <div class="detalle-pedido__encabezado">
+        <h2 class="detalle-pedido__titulo">Detalles de Pedido</h2>
+        <button class="detalle-pedido__cerrar" type="button" (click)="clickCerrar()">X</button>
+    </div>
+
+    <div class="detalle-pedido__producto">
+        <div class="detalle-pedido__imagen">
+            <img [src]="imagenUrl()">
+        </div>
+        <div class="detalle-pedido__datos">
+            <p class="detalle-pedido__etiqueta">Nombre: <span class="detalle-pedido__dato">{{ nombreProducto() }}</span> </p>
+            <p class="detalle-pedido__etiqueta">Descripción: <span class="detalle-pedido__dato">{{ descripcion() }}</span> </p>
+            <p class="detalle-pedido__etiqueta">Cantidad: <span class="detalle-pedido__dato">{{ cantidad() }}</span></p>
+            <p class="detalle-pedido__etiqueta">Precio Unitario: <span class="detalle-pedido__dato">{{ precioUnitario().toFixed(2) }}</span> </p>
+            <p class="detalle-pedido__etiqueta">IVA (16%): <span class="detalle-pedido__dato">$ {{ iva().toFixed(2) }}</span></p>
+            <p class="detalle-pedido__etiqueta">Precio Total: <span class="detalle-pedido__dato">$ {{ precioTotal().toFixed(2) }}</span></p>
+            <p class="detalle-pedido__etiqueta">Proceso: <span class="detalle-pedido__dato">{{ proceso() }}</span></p>
+            <p class="detalle-pedido__etiqueta">Estado: <span class="detalle-pedido__dato">{{ estado() }}</span></p>
+        </div>
+    </div>
+    <h3 class="detalle-pedido__seccion-titulo">Detalles Cliente:</h3>
+    <div class="detalle-pedido__seccion">
+        <p class="detalle-pedido__etiqueta">Nombre: <span class="detalle-pedido__dato">{{ nombreCliente() }}</span> </p>
+        <p class="detalle-pedido__etiqueta">Apellido: <span class="detalle-pedido__dato">{{ apellidoCliente() }}</span> </p>
+        @if (rfcCliente()) {<!--El de cliente es opcional, pero el de Trabajador es obligatorio-->
+            <p class="detalle-pedido__etiqueta">RFC: <span class="detalle-pedido__dato">{{ rfcCliente() }}</span> </p>
+        }
+    </div>
+
+    <h3 class="detalle-pedido__seccion-titulo">Detalles Tienda:</h3>
+    <div class="detalle-pedido__seccion">
+        <p class="detalle-pedido__etiqueta">Nombre: <span class="detalle-pedido__dato">{{ nombreTienda() }}</span> </p>
+        <p class="detalle-pedido__etiqueta">RFC: <span class="detalle-pedido__dato">{{ rfcTienda() }}</span> </p>
+        <p class="detalle-pedido__etiqueta">Teléfono: <span class="detalle-pedido__dato">{{ telefonoTienda() }}</span> </p>
+        <p class="detalle-pedido__etiqueta">Domicilio Fiscal: <span class="detalle-pedido__dato">{{ domicilioFiscalTienda() }}</span> </p>
+        <p class="detalle-pedido__etiqueta">Régimen Fiscal: <span class="detalle-pedido__dato">{{ regimenFiscalTienda() }}</span> </p>
+    </div>
+</article>

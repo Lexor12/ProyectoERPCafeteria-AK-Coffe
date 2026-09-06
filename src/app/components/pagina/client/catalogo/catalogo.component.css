@@ -1,0 +1,76 @@
+.catalogo {
+    padding: 30px 25px;
+}
+
+.catalogo__toolbar {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.catalogo__titulo-texto {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--main--heading);
+}
+
+.catalogo__campo {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+
+.catalogo__etiqueta {
+    font-size: 13px;
+    color: var(--main--text);
+    white-space: nowrap;
+}
+
+.catalogo__input {
+    width: 90px;
+    padding: 8px 10px;
+    background-color: var(--input--bg);
+    border: 1px solid var(--input--border);
+    border-radius: 6px;
+    font-size: 13px;
+    color: var(--input--text);
+    font-family: inherit;
+}
+
+.catalogo__input:focus {
+    outline: none;
+    border-color: var(--main--accent);
+}
+
+.catalogo__buscador {
+    flex: 1;
+    min-width: 200px;
+    margin-left: auto;
+    padding: 10px 14px;
+    background-color: var(--input--bg);
+    border: 1px solid var(--input--border);
+    border-radius: 6px;
+    font-size: 14px;
+    color: var(--input--text);
+    font-family: inherit;
+}
+
+.catalogo__buscador::placeholder {
+    color: var(--input--placeholder);
+}
+
+.catalogo__buscador:focus {
+    outline: none;
+    border-color: var(--main--accent);
+}
+
+.catalogo__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+    align-items: stretch; 
+    gap: 25px;
+}

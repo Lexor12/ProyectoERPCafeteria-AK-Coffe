@@ -1,0 +1,40 @@
+<div class="card-registro">
+    <div class="card-registro__promocion">
+        <h2 class="card-registro__promocion-titulo">¿Ya tienes una cuenta?</h2>
+        <button class="card-registro__boton-entrar" type="button" (click)="cambiarVista.emit()">Entrar</button>
+        <p class="card-registro__promocion-texto">Inicia sesión para continuar disfrutando de tus cafés favoritos de siempre.</p>
+    </div>
+
+    <div class="card-registro__divisor"></div>
+
+    <div class="card-registro__formulario">
+        <h2 class="card-registro__titulo">Registrarse</h2>
+        <form [formGroup]="formularioRegistro" (ngSubmit)="registrarCliente()">
+            <div class="card-registro__campo">
+                <label class="card-registro__etiqueta" for="nombre">Nombre:</label>
+                <input class="card-registro__input" type="text" id="nombre" formControlName="nombre" placeholder="John Doe">
+            </div>
+            <div class="card-registro__campo">
+                <label class="card-registro__etiqueta" for="apellido">Apellido:</label>
+                <input class="card-registro__input" type="text" id="apellido" formControlName="apellido" placeholder="López Pérez">
+            </div>
+            <div class="card-registro__campo">
+                <label class="card-registro__etiqueta" for="correo">Correo Electrónico:</label>
+                <input class="card-registro__input" type="email" id="correo" formControlName="correo" placeholder="correo@ejemplo.com">
+            </div>
+            <div class="card-registro__campo">
+                <label class="card-registro__etiqueta" for="telefono">Teléfono:</label>
+                <input class="card-registro__input" type="tel" id="telefono" formControlName="telefono" placeholder="3320394895">
+            </div>
+            <div class="card-registro__campo">
+                <label class="card-registro__etiqueta" for="contrasena">Contraseña:</label>
+                <input class="card-registro__input" type="password" id="contrasena" formControlName="contrasena" placeholder="contraseña">
+            </div>
+            <div class="card-registro__campo">
+                <label class="card-registro__etiqueta" for="confirmarContrasena">Confirmar Contraseña:</label>
+                <input class="card-registro__input" type="password" id="confirmarContrasena" formControlName="confirmarContrasena" placeholder="contraseña">
+            </div>
+            <button class="card-registro__boton-crear-cuenta" type="submit">Crear Cuenta</button>
+        </form>
+    </div>
+</div>
