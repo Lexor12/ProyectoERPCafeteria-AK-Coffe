@@ -7,7 +7,8 @@ import { Component, input, output, signal, effect } from '@angular/core';
   styleUrl: './agregar-editar-trabajador-rh.component.css',
 })
 export class AgregarEditarTrabajadorRhComponent {
-  idTrabajador = input<string>(''); // vacío = modo "agregar", con valor = modo "editar"
+  // Inputs que recibe desde el componente padre
+  idTrabajador = input<string>('');
   nombreInicial = input<string>('');
   apellidoInicial = input<string>('');
   areaInicial = input<string>('');
@@ -17,6 +18,7 @@ export class AgregarEditarTrabajadorRhComponent {
   horaEntradaInicial = input<string>('');
   horaSalidaInicial = input<string>('');
 
+  // Signals para manejar los datos del formulario localmente
   nombre = signal<string>('');
   apellido = signal<string>('');
   area = signal<string>('');
@@ -27,6 +29,7 @@ export class AgregarEditarTrabajadorRhComponent {
   horaSalida = signal<string>('');
 
   constructor() {
+    // Sincroniza los valores iniciales de los inputs cuando cambian, o sea cuando editamos
     effect(() => {
       this.nombre.set(this.nombreInicial());
       this.apellido.set(this.apellidoInicial());
@@ -39,13 +42,15 @@ export class AgregarEditarTrabajadorRhComponent {
     });
   }
 
+  // Eventos de salida hacia el componente padre
   cerrar = output<void>();
   cancelar = output<void>();
-  aceptar = output<{
+  aceptar = output<{//Aqui enviamos todos los datos del modal
     idTrabajador: string; nombre: string; apellido: string; area: string; fechaIngreso: string;
     salario: number; rfc: string; horaEntrada: string; horaSalida: string;
   }>();
 
+  // Funciones para actualizar los signals cuando el usuario escribe en los inputs
   actualizarNombre(evento: Event): void { this.nombre.set((evento.target as HTMLInputElement).value); }
   actualizarApellido(evento: Event): void { this.apellido.set((evento.target as HTMLInputElement).value); }
   actualizarArea(evento: Event): void { this.area.set((evento.target as HTMLInputElement).value); }
@@ -55,9 +60,13 @@ export class AgregarEditarTrabajadorRhComponent {
   actualizarHoraEntrada(evento: Event): void { this.horaEntrada.set((evento.target as HTMLInputElement).value); }
   actualizarHoraSalida(evento: Event): void { this.horaSalida.set((evento.target as HTMLInputElement).value); }
 
+  // Emite el evento para cerrar el modal
   clickCerrar(): void { this.cerrar.emit(); }
+
+  // Emite el evento para cancelar
   clickCancelar(): void { this.cancelar.emit(); }
 
+  // Envia toda la información del trabajador al componente padre
   clickAceptar(): void {
     this.aceptar.emit({
       idTrabajador: this.idTrabajador(),

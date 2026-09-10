@@ -3,15 +3,7 @@ import { ProductoProveedorComponent } from '../cards/producto-proveedor/producto
 import { SurtirProductoProveedorComponent } from '../modals/surtir-producto-proveedor/surtir-producto-proveedor.component';
 import { AgregarProveedorComponent } from '../modals/agregar-proveedor/agregar-proveedor.component';
 import { AgregarProductoProveedorComponent } from '../modals/agregar-producto-proveedor/agregar-producto-proveedor.component';
-
-interface ProductoProveedor {
-  idProducto: string;
-  nombre: string;
-  descripcion: string;
-  precio: number;
-  idProveedor: string;
-  imagenUrl: string;
-}
+import { ProductoProveedor } from '../../../../Models/ProductoProveedor.model';
 
 @Component({
   selector: 'app-proveedores.component',
@@ -20,11 +12,15 @@ interface ProductoProveedor {
   styleUrl: './proveedores.component.css',
 })
 export class ProveedoresComponent {
+  // Por ahora los proveedores están quemados aquí, a futuro esto debe venir de una consulta a la BD
+  // (idealmente con su propio Model, igual que ProductoProveedor)
   proveedores = signal<{ idProveedor: string; nombre: string }[]>([
     { idProveedor: 'p1', nombre: 'Café del Valle' },
     { idProveedor: 'p2', nombre: 'Distribuidora Norte' },
   ]);
 
+  // Igual que arriba, esta lista de productos por proveedor es solo de prueba,
+  // en la Práctica 2 se traería del backend según el proveedor autenticado/seleccionado
   productos = signal<ProductoProveedor[]>([
     {
       idProducto: 'a1b2c3d4-e5f6-7890-abcd-ef0123456789',
@@ -52,13 +48,18 @@ export class ProveedoresComponent {
     },
   ]);
 
+  // Vacío significa "Todos" en el filtro (ver el <option value=""> del select en el HTML)
   proveedorSeleccionado = signal<string>('');
   buscador = signal<string>('');
 
+  // Guarda el producto sobre el que se dio clic en "Surtir", el HTML revisa esta señal
+  // con un @if para saber si abrir el modal de surtido o no
   productoASurtir = signal<ProductoProveedor | null>(null);
   mostrarModalAgregarProveedor = signal<boolean>(false);
   mostrarModalAgregarProducto = signal<boolean>(false);
 
+  // Filtra por proveedor seleccionado (si está vacío no filtra nada) y por nombre del buscador,
+  // se recalcula solo cuando cambia alguna de las tres señales que usa adentro
   productosFiltrados = computed(() => {
     return this.productos().filter(p =>
       (this.proveedorSeleccionado() === '' || p.idProveedor === this.proveedorSeleccionado()) &&
@@ -74,6 +75,8 @@ export class ProveedoresComponent {
     this.buscador.set((evento.target as HTMLInputElement).value);
   }
 
+  // Busca el producto por id (el que manda la card) y lo guarda, esto hace que el @if
+  // del HTML detecte el cambio y abra el modal de surtido con los datos de ese producto
   surtirProducto(idProducto: string): void {
     const producto = this.productos().find(p => p.idProducto === idProducto);
     this.productoASurtir.set(producto ?? null);
@@ -83,8 +86,10 @@ export class ProveedoresComponent {
     this.productoASurtir.set(null);
   }
 
+  // Esta función se debe ampliar en la Práctica 2 para hacer la petición real al backend,
+  // que actualice la cantidad disponible del producto en la BD (según RQF22/RQF23),
+  // por ahora solo cierra el modal sin mandar nada a ningún lado
   confirmarSurtido(datos: { idProducto: string; cantidad: number }): void {
-    //Aquí eventualmente iría la llamada al servicio para actualizar el stock en la BD
     this.productoASurtir.set(null);
   }
 
@@ -96,11 +101,13 @@ export class ProveedoresComponent {
     this.mostrarModalAgregarProducto.set(false);
   }
 
+  // Aqui guardara productos en la base de datos, ya en un futuro se hará la consulta y se ingresarán los valores obtenidos del model
+  // (falta distinguir con datos.productoExistente si es un producto nuevo o si solo se está
+  // asociando uno ya existente a este proveedor, eso se resuelve en la Práctica 2)
   guardarProducto(datos: {
     productoExistente: boolean; idProveedor: string; idProductoExistente: string;
     nombre: string; descripcion: string; precioUnitario: number; imagen: File | null;
   }): void {
-    //Aqui guardara productos
     this.mostrarModalAgregarProducto.set(false);
   }
 
@@ -112,8 +119,8 @@ export class ProveedoresComponent {
     this.mostrarModalAgregarProveedor.set(false);
   }
 
+  // Aqui guardara proveedores en la base de datos, ya en un futuro se hará la consulta y se ingresarán los valores obtenidos del model
   guardarProveedor(datos: { nombre: string; telefono: string }): void {
-    //Aqui guardara proveedores
     this.mostrarModalAgregarProveedor.set(false);
   }
 }

@@ -9,6 +9,8 @@
 
     <div class="card-registro__formulario">
         <h2 class="card-registro__titulo">Registrarse</h2>
+        <!-- Mismo caso que en login, [formGroup] conecta el form completo con formularioRegistro,
+        y (ngSubmit) espera hasta que se le de submit para correr registrarCliente() -->
         <form [formGroup]="formularioRegistro" (ngSubmit)="registrarCliente()">
             <div class="card-registro__campo">
                 <label class="card-registro__etiqueta" for="nombre">Nombre:</label>

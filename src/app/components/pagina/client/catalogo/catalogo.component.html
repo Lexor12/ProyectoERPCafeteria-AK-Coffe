@@ -21,11 +21,12 @@
                 [nombre]="producto.nombre"
                 [descripcion]="producto.descripcion"
                 [precio]="producto.precio"
-                [stockDisponible]="producto.stockDisponible"
+                [stockDisponible]="producto.stock"
                 [imagenUrl]="producto.imagenUrl"
                 (agregar)="agregarAlCarrito($event)"><!--! ACLARACION PARA FUTURO: () es para manejar los eventos que recibe del hijo-->
             </app-producto-catalogo>
         } @empty {
+        <!--Igual que en las demás secciones, avisamos al usuario en vez de dejar el grid vacío sin explicación-->
         <p class="catalogo__vacio">No hay productos que coincidan con tu búsqueda.</p>
         }
     </div>

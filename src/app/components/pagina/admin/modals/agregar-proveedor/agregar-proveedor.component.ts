@@ -12,6 +12,8 @@ export class AgregarProveedorComponent {
 
   cerrar = output<void>();
   cancelar = output<void>();
+  // Este output manda un objeto con los dos campos juntos, en vez de emitir cada campo por separado,
+  // asi el padre recibe todo en un solo evento
   aceptar = output<{ nombre: string; telefono: string }>();
 
   actualizarNombre(evento: Event): void {

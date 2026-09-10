@@ -2,18 +2,7 @@ import { Component, signal, computed } from '@angular/core';
 import { TrabajadorRhComponent } from '../cards/trabajador-rh/trabajador-rh.component';
 import { AgregarEditarTrabajadorRhComponent } from '../modals/agregar-editar-trabajador-rh/agregar-editar-trabajador-rh.component';
 import { AsistenciasTrabajadorRhComponent } from '../modals/asistencias-trabajador-rh/asistencias-trabajador-rh.component';
-
-interface Trabajador {
-  idTrabajador: string;
-  nombre: string;
-  apellido: string;
-  area: string;
-  fechaIngreso: string; // formato ISO: yyyy-MM-dd
-  salario: number;
-  rfc: string;
-  horaEntrada: string; // formato 24h: HH:mm
-  horaSalida: string;  // formato 24h: HH:mm
-}
+import { Trabajador } from '../../../../Models/trabajador.model';
 
 @Component({
   selector: 'app-rh.component',
@@ -75,7 +64,8 @@ export class RhComponent {
     );
   });
 
-  // ---- Conversión de hora para mostrar en cards (24h -> "8:00 a.m") ----
+  //Conversión de hora para mostrar en cards (24h -> "8:00 a.m")
+  //Por defecto, se muestra en formato de 24h, y esto llega a ser cansado de leer, asi que lo convertimos a el formato a.m / p.m que yo entiendo mejor
   horaLegible(hora24: string): string {
     if (!hora24) return '';
     const [horasStr, minutosStr] = hora24.split(':');
@@ -116,7 +106,7 @@ export class RhComponent {
     idTrabajador: string; nombre: string; apellido: string; area: string; fechaIngreso: string;
     salario: number; rfc: string; horaEntrada: string; horaSalida: string;
   }): void {
-    if (datos.idTrabajador) {
+    if (datos.idTrabajador) {//Como aun no tenemos la conexión con la base de datos, solo actualizamos aqui en el navegador, pero en un futuro se hará la consulta a la BD
       this.trabajadores.update(lista =>
         lista.map(t => t.idTrabajador === datos.idTrabajador
           ? {

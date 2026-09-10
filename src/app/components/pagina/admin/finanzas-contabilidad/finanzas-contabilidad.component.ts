@@ -1,8 +1,6 @@
 import { Component, signal, computed  } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-type Periodo = 'dia' | 'mes' | 'anio';
-
 @Component({
   selector: 'app-finanzas-contabilidad.component',
   imports: [CommonModule],
@@ -16,7 +14,10 @@ export class FinanzasContabilidadComponent {
 
   fechaInicio = signal<string>('');
   fechaFin = signal<string>('');
-  periodo = signal<Periodo>('dia');
+
+  // Guarda cuál botón de periodo está seleccionado actualmente (dia/mes/anio),
+  // el HTML lo usa para marcar visualmente el botón activo con la clase --activo
+  periodo = signal<string>('dia'); // "dia" por defecto, cuadra con el botón que se ve resaltado al abrir
 
   actualizarFechaInicio(evento: Event): void {
     this.fechaInicio.set((evento.target as HTMLInputElement).value);
@@ -26,19 +27,26 @@ export class FinanzasContabilidadComponent {
     this.fechaFin.set((evento.target as HTMLInputElement).value);
   }
 
-  cambiarPeriodo(periodo: Periodo): void {
-    this.periodo.set(periodo);
+  seleccionarPeriodoDia(): void {
+    this.periodo.set('dia');
+    //Aqui se recalcularía segun los datos que correspondan al día de hoy
+  }
+  seleccionarPeriodoMes(): void {
+    this.periodo.set('mes');
+    //Aqui se recalcularía segun los datos que correspondan al Mes
+  }
+  seleccionarPeriodoAnio(): void {
+    this.periodo.set('anio');
+    //Aqui se recalcularía segun los datos que correspondan al Año
   }
 
   clickAplicar(): void {
     //Aquí eventualmente se recalcularían ingresos/egresos/balance según el rango de fechas y el periodo
-    console.log('Aplicar filtro', this.fechaInicio(), this.fechaFin(), this.periodo());
   }
 
   clickBorrar(): void {
     this.fechaInicio.set('');
     this.fechaFin.set('');
-    this.periodo.set('dia');
   }
 
   clickExportarPDF(): void {

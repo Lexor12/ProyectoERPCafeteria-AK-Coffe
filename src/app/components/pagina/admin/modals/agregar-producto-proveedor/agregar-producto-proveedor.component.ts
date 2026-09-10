@@ -7,9 +7,14 @@ import { Component, input, output, signal } from '@angular/core';
   styleUrl: './agregar-producto-proveedor.component.css',
 })
 export class AgregarProductoProveedorComponent {
+  // Inputs que recibe desde el componente padre, estos almacenan todos los proveedores
+  //que actualmente existen que se van a mostrar dentro del selector se seleccionar un proveedor
   proveedores = input<{ idProveedor: string; nombre: string }[]>([]);
+  //Aqui mostramos todos los productos existentes, en caso de que el usuario seleccione que el producto que se desea
+  //agregar es uno existente
   productosExistentes = input<{ idProducto: string; nombre: string }[]>([]);
 
+  // Estados para controlar el formulario y la vista
   productoExistente = signal<boolean>(false);
   idProveedor = signal<string>('');
   idProductoExistente = signal<string>('');
@@ -17,9 +22,11 @@ export class AgregarProductoProveedorComponent {
   descripcion = signal<string>('');
   precioUnitario = signal<number>(0);
 
+  // Manejo de la vista previa y archivo de imagen
   imagenPreview = signal<string>('images/sin-foto.png');
   archivoImagen = signal<File | null>(null);
 
+  // Eventos de salida hacia el padre
   cerrar = output<void>();
   cancelar = output<void>();
   aceptar = output<{
@@ -40,6 +47,7 @@ export class AgregarProductoProveedorComponent {
     this.idProveedor.set((evento.target as HTMLSelectElement).value);
   }
 
+  // Actualiza el id del producto existente seleccionado
   actualizarProductoSeleccionado(evento: Event): void {
     this.idProductoExistente.set((evento.target as HTMLSelectElement).value);
   }
@@ -55,18 +63,22 @@ export class AgregarProductoProveedorComponent {
   actualizarPrecioUnitario(evento: Event): void {
     this.precioUnitario.set(Number((evento.target as HTMLInputElement).value));
   }
+
   actualizarImagen(evento: Event): void {
-    //Aqui recibe la imagen y la manda o procesa
+    // Aqui recibe la imagen y la manda o procesa
   }
 
+  // Emite el evento para cerrar el modal
   clickCerrar(): void {
     this.cerrar.emit();
   }
 
+  // Emite el evento para cancelar la accion
   clickCancelar(): void {
     this.cancelar.emit();
   }
 
+  // Envía los datos del formulario al componente padre
   clickAceptar(): void {
     this.aceptar.emit({
       productoExistente: this.productoExistente(),

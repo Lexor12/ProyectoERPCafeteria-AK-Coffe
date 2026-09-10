@@ -9,23 +9,27 @@
             </div>
         </div>
         <div class="navbar__rutas"> 
+            <!-- Para saber que rutas mostrar, verificamos el rol y si existe una sesión activa -->
             @if (!sesionActiva){
                 <a class="navbar__boton navbar__enlace--cta" [routerLink]="['/auth']" routerLinkActive="router-link-active">Entrar</a>
             }
-            @else if (rol=='cliente'){
+            @else if (rol=='cliente'){ 
                 @for (r of rutasCliente; track r.path){
                     <a class="navbar__enlace navbar__enlace--cta" [routerLink]="[r.path]" routerLinkActive="router-link-active">{{r.label}}</a>
                 }
+                <!-- Mostramos todas las rutas del rol cliente por defecto, las cuales definimos en el .ts -->
             }
             @else if (rol=='administrador'){
                 @for (r of rutasAdmin; track r.path){
                     <a class="navbar__enlace navbar__enlace--cta" [routerLink]="[r.path]" routerLinkActive="router-link-active">{{r.label}}</a>
                 }
+                <!-- Mostramos todas las rutas del rol administrador por defecto, las cuales definimos en el .ts -->
             }
             @if (sesionActiva){
                 <div>
                     <button class="navbar__boton " (click)="cerrarSesion()">Cerrar sesión</button>
                 </div>
+                <!-- El botón de cerrar sesión solo debería ser visible si existe una sesión activa -->
             }
         </div>
     </nav>

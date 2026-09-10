@@ -15,9 +15,9 @@
         </div>
 
         <div class="finanzas__periodo">
-            <button class="finanzas__periodo-boton" [class.finanzas__periodo-boton--activo]="periodo() === 'dia'" type="button" (click)="cambiarPeriodo('dia')">Día</button>
-            <button class="finanzas__periodo-boton" [class.finanzas__periodo-boton--activo]="periodo() === 'mes'" type="button" (click)="cambiarPeriodo('mes')">Mes</button>
-            <button class="finanzas__periodo-boton" [class.finanzas__periodo-boton--activo]="periodo() === 'anio'" type="button" (click)="cambiarPeriodo('anio')">Año</button>
+            <button class="finanzas__periodo-boton" [class.finanzas__periodo-boton--activo]="periodo() === 'dia'" type="button" (click)="seleccionarPeriodoDia()">Día</button>
+            <button class="finanzas__periodo-boton" [class.finanzas__periodo-boton--activo]="periodo() === 'mes'" type="button" (click)="seleccionarPeriodoMes()">Mes</button>
+            <button class="finanzas__periodo-boton" [class.finanzas__periodo-boton--activo]="periodo() === 'anio'" type="button" (click)="seleccionarPeriodoAnio()">Año</button>
         </div>
     </div>
 
@@ -35,7 +35,9 @@
             <p class="finanzas__resumen-valor">$ {{ balance() | number }}</p>
         </div>
     </div>
-
+    <!--Solo tendremos un div que muestra eso, ya que el uso de canvas para mostrar las gráficas
+        lo haremos más adelante, ahorita es solo es esqueleto funcional
+    -->
     <div class="finanzas__grafica-contenedor">
         <div class="finanzas__grafica-placeholder">GRAFICA/s</div>
     </div>

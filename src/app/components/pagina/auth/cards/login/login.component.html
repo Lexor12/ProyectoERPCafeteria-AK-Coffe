@@ -1,9 +1,16 @@
 <div class="card-login">
     <div class="card-login__formulario">
         <h2 class="card-login__titulo">Iniciar Sesión</h2>
+        <!-- [formGroup] conecta este <form> con el FormGroup que arme en el .ts, o sea, todo lo que
+        pase aqui adentro (los inputs) se va a ir guardando ahi -->
+        <!-- (ngSubmit) es el evento que se dispara cuando alguien le da submit al form (le da enter o
+        aprieta el boton type="submit"), y ya se encarga de esperar a que el usuario termine de llenar
+        todo, no como hacerlo campo por campo con (input) -->
         <form [formGroup]="formularioLogin" (ngSubmit)="iniciarSesion()">
             <div class="card-login__campo">
                 <label class="card-login__etiqueta" for="correo">Correo Electrónico:</label>
+                <!-- formControlName conecta este input especificamente con el FormControl "correo"
+                que defini arriba, tiene que llamarse exactamente igual o no los relaciona -->
                 <input class="card-login__input" type="email" id="correo" formControlName="correo" placeholder="correo@ejemplo.com">
             </div>
             <div class="card-login__campo">

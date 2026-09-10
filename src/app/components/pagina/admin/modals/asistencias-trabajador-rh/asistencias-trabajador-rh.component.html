@@ -6,7 +6,9 @@
 
     <div class="modal-asistencias__trabajador">
         <div class="modal-asistencias__imagen">
-            <img src="images/trabajador.png">
+            <!-- Por defecto un trabajador no tiene una imagen, solo los productos, entonces esta ruta
+            muestra la imagen genérica para todos los trabajadores -->
+            <img src="images/trabajador.png" alt="Imagen genérica de trabajador">
         </div>
         <div class="modal-asistencias__datos">
             <p class="modal-asistencias__etiqueta">Nombre: <span class="modal-asistencias__dato">{{ nombre() }}</span></p>
@@ -22,6 +24,8 @@
     </div>
 
     <div class="modal-asistencias__lista">
+        <!-- Esta muestra todas las asistencias del trabajador, estas en el .CSS se muestran como lista
+        con scroll ya que el div padre posee el uso de scroll en vertical -->
         @for (asistencia of asistencias(); track asistencia.dia) {
             <div class="modal-asistencias__fila">
                 <span class="modal-asistencias__fila-dato"><strong>Día:</strong> {{ asistencia.dia }}</span>
@@ -30,30 +34,30 @@
             </div>
         }
     </div>
-    <div class="modal-trabajador__separador"></div>
+    <div class="modal-asistencias__separador"></div>
     <div class="modal-asistencias__nueva">
         <div class="modal-asistencias__inputs">
             <div class="modal-asistencias__campo">
                 <label class="modal-asistencias__etiqueta-campo">Nueva Asistencia:</label>
                 <input class="modal-asistencias__input-fecha" type="date" [value]="fechaAsistencia()" (change)="actualizarAsistencia($event)">
-                
             </div>
             <div class="modal-asistencias__campo">
+                <!-- Estos dos de aqui abajo estan en readonly, pq a futuro deberian llenarse solos
+                cuando el trabajador realmente checa entrada/salida, no capturarse a mano -->
                 <label class="modal-asistencias__etiqueta-campo">Hora de Entrada:</label>
                 <input class="modal-asistencias__input" type="text" [value]="nuevaHoraEntrada()" placeholder="--:--" readonly>
-                
             </div>
             <div class="modal-asistencias__campo">
                 <label class="modal-asistencias__etiqueta-campo">Hora de Salida:</label>
                 <input class="modal-asistencias__input" type="text" [value]="nuevaHoraSalida()" placeholder="--:--" readonly>
             </div>
         </div>
-        <div class="modal-asistencias__">
+        <div class="modal-asistencias__acciones-asistencia">
             <button class="modal-asistencias__boton-aceptar" type="button" (click)="clickAceptarAsistencia()">Aceptar</button>
             <button class="modal-asistencias__boton-cancelar" type="button" (click)="clickCancelarAsistencia()">Cancelar</button>
         </div>
     </div>
-    <div class="modal-trabajador__separador"></div>
+    <div class="modal-asistencias__separador"></div>
     <div class="modal-asistencias__fechas">
         <div class="modal-asistencias__campo-fecha">
             <label class="modal-asistencias__etiqueta-campo">Fecha Inicio:</label>

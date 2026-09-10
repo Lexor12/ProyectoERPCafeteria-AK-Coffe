@@ -27,10 +27,16 @@
                 (editar)="editarProducto($event)">
             </app-producto-inventario>
         } @empty {
+            <!-- En caso de no haber productos por mostrar no vale la pena
+            el hecho de mostrar solo el bg sin nada, al mostrar este mensaje
+            retroalimentamos al usuario 
+            -->
             <p class="inventario__vacio">No hay productos que coincidan con tu búsqueda.</p>
         }
     </div>
 </section>
+<!--Abrimos el Modal para mostrar el producto que se seleccionó, en caso de que
+no haya uno seleccionado el modal no se abrirá-->
 @if (productoSeleccionado(); as producto) {
     <app-editar-producto-inventario
         [idProducto]="producto.idProducto"

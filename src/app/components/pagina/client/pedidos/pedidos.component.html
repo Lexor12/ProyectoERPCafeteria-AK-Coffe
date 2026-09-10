@@ -6,27 +6,28 @@
         <div class="pedidos__opciones">
             <label class="pedidos__radio pedidos__border"></label>
             <label class="pedidos__radio">
-                <input id="esadoActivo" type="radio" name="filtroCancelado" (change)="cambiarFiltroActivo(true)" checked="true">
+                <input id="estadoActivo" type="radio" name="filtroCancelado" (change)="cambiarFiltroActivo(true)" checked="true">
                 Activo
             </label>
             <label class="pedidos__radio">
-                <input id="esadoActivo" type="radio" name="filtroCancelado" (change)="cambiarFiltroActivo(false)">
+                <input id="estadoInactivo" type="radio" name="filtroCancelado" (change)="cambiarFiltroActivo(false)">
                 Inactivo
             </label>
             <label class="pedidos__radio pedidos__border"></label>
             <label class="pedidos__radio">
-                <input id="estadoPendiente" type="radio" name="filtroEntrega" (change)="cambiarFiltroEntregado(true)" checked="true">
+                <input id="estadoEntregado" type="radio" name="filtroEntrega" (change)="cambiarFiltroEntregado(true)">
                 Entregados
             </label>
-                <label class="pedidos__radio">
-                <input id="estadoPendiente" type="radio" name="filtroEntrega" (change)="cambiarFiltroEntregado(false)">
+            <label class="pedidos__radio">
+                <input id="estadoPendiente" type="radio" name="filtroEntrega" (change)="cambiarFiltroEntregado(false)" checked="true">
                 Pendiente
             </label>
             <label class="pedidos__radio pedidos__border"></label>
         </div>
-        <input class="catalogo__buscador" type="text" placeholder="Buscador..." (input)="actualizarBuscador($event)">
+        <input class="pedidos__buscador" type="text" placeholder="Buscador..." (input)="actualizarBuscador($event)">
     </div>
     <div class="pedidos__grid">
+        <!-- Hacemos el muestro según la lista filtrada, para que en cada momento de actualización de un filtro se muestre el resultado sin tener que refrescar la página-->
         @for (pedido of pedidosFiltrados(); track pedido.idVenta) {
         <app-producto-pedido
             [idVenta]="pedido.idVenta"
@@ -43,6 +44,7 @@
         }
     </div>
 </section>
+<!--Para mostrar los detalles hacemos simplemente si en el objeto que almacena el producto seleccionado cambia de null a un producto existente, este se mostrará-->
 @if (pedidoSeleccionado(); as pedido) {
     <app-detalles-pedido
         [nombreProducto]="pedido.nombre"

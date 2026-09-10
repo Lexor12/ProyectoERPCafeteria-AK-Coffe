@@ -1,18 +1,6 @@
 import { Component, signal, computed  } from '@angular/core';
 import { ProductoPedidoComponent } from '../cards/producto-pedido/producto-pedido.component';
-
-interface PedidoAdmin {
-  idVenta: string;
-  nombre: string;
-  precio: number;
-  cantidad: number;
-  fechaCompra: string;
-  entregado: boolean;
-  cancelado: boolean;
-  imagenUrl: string;
-  nombreCliente: string;
-}
-
+import { PedidoAdmin } from '../../../../Models/pedidosAdmin';
 @Component({
   selector: 'app-pedidos-admin.component',
   imports: [ProductoPedidoComponent],

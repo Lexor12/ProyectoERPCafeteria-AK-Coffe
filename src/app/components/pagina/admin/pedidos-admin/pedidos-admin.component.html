@@ -28,10 +28,13 @@
         <input class="pedidos__buscador" type="text" placeholder="Buscador por Nombre de Cliente..." (input)="actualizarBuscador($event)">
     </div>
     <div class="pedidos__grid">
+        <!--Aqui se muestran todos los pedidos que se han registrado de cualquier persona, estos requieren si o si el nombre, esta muestra la lista filtrada, que también es un computed, 
+        para que cuando se actualice un filtro se automáticamente detecte y reenderice-->
         @for (pedido of pedidosFiltrados(); track pedido.idVenta) {
         <app-producto-pedido
             [idVenta]="pedido.idVenta"
             [nombre]="pedido.nombre"
+            [nombreCliente]="pedido.nombreCliente"
             [precio]="pedido.precio"
             [cantidad]="pedido.cantidad"
             [fechaCompra]="pedido.fechaCompra"
@@ -40,7 +43,8 @@
             (marcarEntregado)="marcarEntregado($event)">
         </app-producto-pedido>
         } @empty {
-        <p class="pedidos__vacio">No hay pedidos que coincidan.</p>
+            <!-- Esto es fundamental para que en caso de no haber productos notificar al administrador que no existe ningúno-->
+            <p class="pedidos__vacio">No hay pedidos que coincidan.</p>
         }
     </div>
 </section>

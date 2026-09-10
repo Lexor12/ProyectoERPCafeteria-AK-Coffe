@@ -1,15 +1,7 @@
 import { Component,computed,signal } from '@angular/core';
 import { ProductoInventarioComponent } from '../cards/producto-inventario/producto-inventario.component';
 import { EditarProductoInventarioComponent } from '../modals/editar-producto-inventario/editar-producto-inventario.component';
-
-interface ProductoInventario {
-  idProducto: string;
-  nombre: string;
-  descripcion: string;
-  precio: number;
-  stock: number;
-  imagenUrl: string;
-}
+import { Producto } from '../../../../Models/producto.model';
 
 @Component({
   selector: 'app-inventario.component',
@@ -18,7 +10,7 @@ interface ProductoInventario {
   styleUrl: './inventario.component.css',
 })
 export class InventarioComponent {
-  productos = signal<ProductoInventario[]>([
+  productos = signal<Producto[]>([
     {
       idProducto: 'a1b2c3d4-e5f6-7890-abcd-ef0123456789',
       nombre: 'Café Americano',
@@ -45,11 +37,14 @@ export class InventarioComponent {
     },
   ]);
 
-  precioMin = signal<number | null>(null);
-  precioMax = signal<number | null>(null);
+  precioMin = signal<number | null>(null); // Al principio es null, ya que por defecto no existe un valor en el cuadro de texto
+  precioMax = signal<number | null>(null); // Así que ponemos null para identificar cuando no ha utilizado este filtro
+  // Esta almacenará los valores de la busqueda, y se actualizará constantemente
   buscador = signal<string>('');
-  
-  productoSeleccionado = signal<ProductoInventario | null>(null);
+
+  // Cuando un usuario da clic sobre un producto, aquí se guarda para mostrarlo
+  // este objeto se analiza en el HTML, en caso de que exista un Producto asociado, se abrirá el modal
+  productoSeleccionado = signal<Producto | null>(null);
 
   productosFiltrados = computed(() => {
     return this.productos().filter(p =>
@@ -74,18 +69,25 @@ export class InventarioComponent {
   }
 
   desactivarProducto(idProducto: string): void {
-    this.productos.update(lista => lista.filter(p => p.idProducto !== idProducto));
+    // Aqui no se debe eliminar el producto de plano, solo se marca activo en false,
+    // pq el RQNF15 dice que un producto con ventas/compras asociadas no debe borrarse fisicamente
+    this.productos.update(lista =>
+      lista.map(p => p.idProducto === idProducto ? { ...p, activo: false } : p)
+    );
   }
-  
+
   editarProducto(idProducto: string): void {
     const producto = this.productos().find(p => p.idProducto === idProducto);
     this.productoSeleccionado.set(producto ?? null);
   }
-  
+
   cerrarModal(): void {
     this.productoSeleccionado.set(null);
   }
-  
+
+  // Esta función recibe lo que el modal manda, y realiza la actualización del producto, en este caso,
+  // no se utiliza la variable de arriba ya que la tarjeta directamente manda el id del producto,
+  // entonces se vuelve a filtrar, eso se hace en parte por seguridad
   guardarEdicion(datos: { idProducto: string; nombre: string; descripcion: string; precioUnitario: number }): void {
     this.productos.update(lista =>
       lista.map(p => p.idProducto === datos.idProducto

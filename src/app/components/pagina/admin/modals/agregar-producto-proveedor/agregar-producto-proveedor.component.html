@@ -8,6 +8,7 @@
         <label class="modal-agregar-producto__etiqueta">Proveedor:</label>
         <select class="modal-agregar-producto__input" (change)="actualizarProveedor($event)">
             <option value="">Selector</option>
+            <!--Aqui cargamos todo los provedores, en este caso solo el nombre, ya que el número no es un parametro escencial para identifiicar un proveedor-->
             @for (proveedor of proveedores(); track proveedor.idProveedor) {
                 <option [value]="proveedor.idProveedor">{{ proveedor.nombre }}</option>
             }
@@ -28,7 +29,8 @@
         </div>
     </div>
 
-    @if (productoExistente()) {
+    @if (productoExistente()) {<!--En caso de que el usuario seleccione la opción de producto existente, 
+        debemos de mostrar automáticamente esta sección y ocultar la otra-->
         <div class="modal-agregar-producto__campo">
             <label class="modal-agregar-producto__etiqueta">Producto:</label>
             <select class="modal-agregar-producto__input" (change)="actualizarProductoSeleccionado($event)">
@@ -38,7 +40,7 @@
                 }
             </select>
         </div>
-    } @else {
+    } @else {<!--Esta siempre se muestra por defecto, ya que en el modal lo primero que se muestra es la opción de crear un producto-->
         <div class="modal-agregar-producto__producto">
             <div class="modal-agregar-producto__imagen-contenedor">
                 <div class="modal-agregar-producto__imagen">

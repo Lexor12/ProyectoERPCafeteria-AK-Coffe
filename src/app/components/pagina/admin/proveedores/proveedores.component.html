@@ -2,6 +2,8 @@
     <div class="proveedores__toolbar">
         <div class="proveedores__campo">
             <label class="proveedores__titulo-texto">Proveedor:</label>
+            <!--Este select filtra los productos por proveedor, el value vacío del "Todos"
+            hace que productosFiltrados no aplique ningún filtro de proveedor-->
             <select class="proveedores__select" (change)="actualizarProveedor($event)">
                 <option value="">Todos</option>
                 @for (proveedor of proveedores(); track proveedor.idProveedor) {
@@ -25,11 +27,13 @@
                 (surtir)="surtirProducto($event)">
             </app-producto-proveedor>
         } @empty {
+            <!--Igual que en inventario, avisamos al usuario en vez de dejar el grid vacío sin explicación-->
             <p class="proveedores__vacio">No hay productos que coincidan con tu búsqueda.</p>
         }
     </div>
 </section>
 
+<!--Modal de Surtir, solo se abre si hay un producto guardado en productoASurtir-->
 @if (productoASurtir(); as producto) {
     <app-surtir-producto-proveedor
         [idProducto]="producto.idProducto"
@@ -43,6 +47,8 @@
     </app-surtir-producto-proveedor>
 }
 
+<!--Modal de Agregar Producto, le mandamos la lista completa de proveedores y de productos existentes
+para que el usuario pueda elegir asociar el producto nuevo a un proveedor, o elegir uno que ya existe-->
 @if (mostrarModalAgregarProducto()) {
     <app-agregar-producto-proveedor
         [proveedores]="proveedores()"
@@ -53,6 +59,7 @@
     </app-agregar-producto-proveedor>
 }
 
+<!--Modal de Agregar Proveedor, este no necesita ningún dato inicial porque siempre es para crear uno nuevo-->
 @if (mostrarModalAgregarProveedor()) {
     <app-agregar-proveedor
         (cerrar)="cerrarModalProveedor()"

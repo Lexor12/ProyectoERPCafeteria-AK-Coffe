@@ -16,12 +16,13 @@ export class EditarProductoInventarioComponent {
   nombre = signal<string>('');
   descripcion = signal<string>('');
   precioUnitario = signal<number>(0);
-
+  //El imagen Preview permite mostrar o la imagen que justamente acaba de ingresar o la imagen default que posee el producto, en caso de que no exista una, se muestra la por defecto
+  //que es una imagen que refiere a un "no imagen", esta raro pero en visual se ve mejor
   imagenPreview = signal<string>('images/sin-foto.png');
   archivoImagen = signal<File | null>(null);
 
   constructor() {
-    effect(() => {
+    effect(() => {// Sincroniza los valores iniciales de los inputs cuando cambian, o sea cuando editamos
       this.nombre.set(this.nombreInicial());
       this.descripcion.set(this.descripcionInicial());
       this.precioUnitario.set(this.precioInicial());
@@ -46,7 +47,7 @@ export class EditarProductoInventarioComponent {
   }
 
   actualizarImagen(evento: Event): void {
-    //
+    //Aqui va el proceso que manda la imagen a la BD y que tambien la carga como preview
   }
 
   clickCerrar(): void {

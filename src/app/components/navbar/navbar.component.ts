@@ -8,12 +8,13 @@ import { RouterLink ,RouterLinkActive} from '@angular/router';
   styleUrl: './navbar.component.css',
 })
 export class NavbarComponent {
+  //Como aun no hacemos consulta a la base de datos, tenemos esta propiedad que identifica el tipo de rol del usuario
   rol:string='administrador';
   //rol:string='cliente';
   //rol:string='administrador';
   sesionActiva:boolean=true;
   nombreUsuario='';
-
+  //Estas rutas son por default, son las mismas que se definieron antes
   rutasCliente=[
     { label: 'Catálogo', path: '/tienda' },
     { label: 'Carrito', path: '/carrito' },
