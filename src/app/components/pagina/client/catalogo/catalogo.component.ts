@@ -66,6 +66,7 @@ export class CatalogoComponent {
     } else {//Si no, se agrega, obviamente parece raro esto porque si yo en mi carrito tengo 20 productos de algo, y luego se agotan pues no se actualiza, pero
       //en la sección de hacer una compra en todo momento se valida que la cantidad a comprar si esté disponible, en caso de que no, pues el backend dispara un error
       carritoActual.push(evento);
+      alert('Producto/s agregado/s al carrito');
     }
     localStorage.setItem('mi_carrito', JSON.stringify(carritoActual));
   }
