@@ -23,10 +23,12 @@
                 <label class="modal-trabajador__etiqueta">Área:</label>
                 <input class="modal-trabajador__input" type="text" [value]="area()" placeholder="Escriba el área..." (input)="actualizarArea($event)">
             </div>
-            <div class="modal-trabajador__campo">
-                <label class="modal-trabajador__etiqueta">Fecha Ingreso:</label>
-                <input class="modal-trabajador__input" type="date" [value]="fechaIngreso()" (input)="actualizarFechaIngreso($event)">
-            </div>
+            @if(!idTrabajador()){
+                <div class="modal-trabajador__campo">
+                    <label class="modal-trabajador__etiqueta">Fecha Ingreso:</label>
+                    <input class="modal-trabajador__input" type="date" [value]="fechaIngreso()" (input)="actualizarFechaIngreso($event)">
+                </div>
+            }
             <div class="modal-trabajador__campo">
                 <label class="modal-trabajador__etiqueta">Salario:</label>
                 <input class="modal-trabajador__input" type="number" [value]="salario()" placeholder="$0" (input)="actualizarSalario($event)">

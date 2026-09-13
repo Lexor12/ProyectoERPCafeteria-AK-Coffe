@@ -39,6 +39,11 @@
                     <option [value]="producto.idProducto">{{ producto.nombre }}</option>
                 }
             </select>
+            
+        </div>
+        <div class="modal-agregar-producto__campo">
+            <label class="modal-agregar-producto__etiqueta">Precio Unitario:</label>
+            <input class="modal-agregar-producto__input" type="number" min="0" placeholder="$100" (input)="actualizarPrecioUnitario($event)">
         </div>
     } @else {<!--Esta siempre se muestra por defecto, ya que en el modal lo primero que se muestra es la opción de crear un producto-->
         <div class="modal-agregar-producto__producto">
@@ -52,15 +57,15 @@
             <div class="modal-agregar-producto__datos">
                 <div class="modal-agregar-producto__campo">
                     <label class="modal-agregar-producto__etiqueta">Nombre:</label>
-                    <input class="modal-agregar-producto__input" type="text" placeholder="Escriba el nombre..." (input)="actualizarNombre($event)">
+                    <input class="modal-agregar-producto__input" type="text" placeholder="Escriba el nombre..." (input)="actualizarNombre($event)" max="100">
                 </div>
                 <div class="modal-agregar-producto__campo">
                     <label class="modal-agregar-producto__etiqueta">Descripción:</label>
-                    <input class="modal-agregar-producto__input" type="text" placeholder="Descripción..." (input)="actualizarDescripcion($event)">
+                    <input class="modal-agregar-producto__input" type="text" placeholder="Descripción..." (input)="actualizarDescripcion($event)" max="300">
                 </div>
                 <div class="modal-agregar-producto__campo">
                     <label class="modal-agregar-producto__etiqueta">Precio Unitario:</label>
-                    <input class="modal-agregar-producto__input" type="number" placeholder="$100" (input)="actualizarPrecioUnitario($event)">
+                    <input class="modal-agregar-producto__input" type="number" min="0" placeholder="$100" (input)="actualizarPrecioUnitario($event)">
                 </div>
             </div>
         </div>

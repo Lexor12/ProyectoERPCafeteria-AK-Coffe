@@ -1,8 +1,9 @@
-import { Component, signal, computed } from '@angular/core';
+import { Component, signal, computed, OnInit } from '@angular/core';
 import { TrabajadorRhComponent } from '../cards/trabajador-rh/trabajador-rh.component';
 import { AgregarEditarTrabajadorRhComponent } from '../modals/agregar-editar-trabajador-rh/agregar-editar-trabajador-rh.component';
 import { AsistenciasTrabajadorRhComponent } from '../modals/asistencias-trabajador-rh/asistencias-trabajador-rh.component';
-import { Trabajador } from '../../../../Models/trabajador.model';
+import { Trabajador } from '../../../../Models/trabajador';
+import { TrabajadorService } from '../../../../Services/trabajador.service';
 
 @Component({
   selector: 'app-rh.component',
@@ -10,43 +11,11 @@ import { Trabajador } from '../../../../Models/trabajador.model';
   templateUrl: './rh.component.html',
   styleUrl: './rh.component.css',
 })
-export class RhComponent {
-  //Estos idealmente se traen desde la base de datos, pero como aun no tenemos conexion, no quiero cagarla
-  trabajadores = signal<Trabajador[]>([
-    {
-      idTrabajador: 't1a2b3c4-d5e6-7890-abcd-ef0123456789',
-      nombre: 'Juan Carlos',
-      apellido: 'López Pérez',
-      area: 'Caja',
-      fechaIngreso: '2026-10-04',
-      salario: 240,
-      rfc: 'LOPJ900101ABC',
-      horaEntrada: '08:00',
-      horaSalida: '16:00',
-    },
-    {
-      idTrabajador: 't2b3c4d5-e6f7-8901-bcde-f01234567890',
-      nombre: 'María Fernanda',
-      apellido: 'Ramírez Solís',
-      area: 'Cocina',
-      fechaIngreso: '2026-03-12',
-      salario: 260,
-      rfc: 'RASM910212XYZ',
-      horaEntrada: '09:00',
-      horaSalida: '17:00',
-    },
-    {
-      idTrabajador: 't3c4d5e6-f7g8-9012-cdef-012345678901',
-      nombre: 'Luis Ángel',
-      apellido: 'Morales Cruz',
-      area: 'Logística',
-      fechaIngreso: '2026-01-20',
-      salario: 235,
-      rfc: 'MOCL880515DEF',
-      horaEntrada: '08:00',
-      horaSalida: '16:00',
-    },
-  ]);
+export class RhComponent implements OnInit{
+  //Ya por fin se traen de la base de datos los valores!!
+  constructor(private trabajadorService: TrabajadorService) {}
+
+  trabajadores = signal<Trabajador[]>([]);
 
   areas = computed(() => [...new Set(this.trabajadores().map(t => t.area))]);
 
@@ -63,6 +32,21 @@ export class RhComponent {
       (t.nombre + ' ' + t.apellido).toLowerCase().includes(this.buscador().toLowerCase())
     );
   });
+
+  ngOnInit(): void {//Aqui cargamos todos los valores de Trabajadores del arreglo de arriba
+    this.cargarTrabajadores();
+  }
+
+  cargarTrabajadores(): void {
+    this.trabajadorService.obtenerTrabajadores().subscribe({
+      next: (trabajadoresRecibidos) => {
+        this.trabajadores.set(trabajadoresRecibidos);//Justo aqui es donde se asigna el resultado en formato lista de Trabjador al signal del componente
+      },
+      error: (error) => {
+        alert('No se pudieron cargar los trabajadores');
+      }
+    });
+  }
 
   //Conversión de hora para mostrar en cards (24h -> "8:00 a.m")
   //Por defecto, se muestra en formato de 24h, y esto llega a ser cansado de leer, asi que lo convertimos a el formato a.m / p.m que yo entiendo mejor
@@ -84,10 +68,6 @@ export class RhComponent {
     this.buscador.set((evento.target as HTMLInputElement).value);
   }
 
-  desactivarTrabajador(idTrabajador: string): void {
-    this.trabajadores.update(lista => lista.filter(t => t.idTrabajador !== idTrabajador));
-  }
-
   editarTrabajador(idTrabajador: string): void {
     const trabajador = this.trabajadores().find(t => t.idTrabajador === idTrabajador);
     this.trabajadorEnEdicion.set(trabajador ?? null);
@@ -101,34 +81,61 @@ export class RhComponent {
     this.trabajadorEnEdicion.set(null);
     this.mostrarModalAgregar.set(false);
   }
+  // De aqui para abajo, son funciones QUE SI requieren un proceso en la base de datos
+  desactivarTrabajador(idTrabajador: string): void {
+    this.trabajadorService.cambiarActivoTrabajador(idTrabajador, false).subscribe({
+      next: () => {
+        this.trabajadores.update(lista => lista.filter(t => t.idTrabajador !== idTrabajador));
+      },
+      error: (error) => {
+        alert('No se pudo desactivar el trabajador');
+      }
+    });
+  }
 
   guardarTrabajador(datos: {
     idTrabajador: string; nombre: string; apellido: string; area: string; fechaIngreso: string;
     salario: number; rfc: string; horaEntrada: string; horaSalida: string;
   }): void {
-    if (datos.idTrabajador) {//Como aun no tenemos la conexión con la base de datos, solo actualizamos aqui en el navegador, pero en un futuro se hará la consulta a la BD
-      this.trabajadores.update(lista =>
-        lista.map(t => t.idTrabajador === datos.idTrabajador
-          ? {
-              ...t,
-              nombre: datos.nombre,
-              apellido: datos.apellido,
-              area: datos.area,
-              fechaIngreso: datos.fechaIngreso,
-              salario: datos.salario,
-              rfc: datos.rfc,
-              horaEntrada: datos.horaEntrada,
-              horaSalida: datos.horaSalida,
-            }
-          : t
-        )
-      );
+    const datosParaEnviar = {
+      nombre: datos.nombre,
+      apellido: datos.apellido,
+      area: datos.area,
+      fechaIngreso: datos.fechaIngreso,
+      salario: datos.salario,
+      rfc: datos.rfc,
+      horaEntrada: datos.horaEntrada,
+      horaSalida: datos.horaSalida,
+    };
+    if (datos.idTrabajador) {
+      // Modo editar: ya existe un idTrabajador
+      this.trabajadorService.editarTrabajador(datos.idTrabajador, datosParaEnviar).subscribe({
+        next: () => {
+          this.trabajadores.update(lista =>
+            lista.map(t => t.idTrabajador === datos.idTrabajador
+              ? { ...t, ...datosParaEnviar }
+              : t
+            )
+          );
+          this.trabajadorEnEdicion.set(null);
+          this.mostrarModalAgregar.set(false);
+        },
+        error: (error) => {
+          alert('No se pudo editar el trabajador');
+        }
+      });
     } else {
-      // Modo agregar: no hay id todavía, aquí lo generarías/lo pondría el backend
-      console.log('Nuevo trabajador:', datos);
+      // Modo agregar: no hay id todavía, lo genera el backend
+      this.trabajadorService.crearTrabajador(datosParaEnviar).subscribe({
+        next: () => {
+          this.cargarTrabajadores();
+          this.mostrarModalAgregar.set(false);
+        },
+        error: (error) => {
+          alert('No se pudo registrar el trabajador');
+        }
+      });
     }
-    this.trabajadorEnEdicion.set(null);
-    this.mostrarModalAgregar.set(false);
   }
 
   verAsistencias(idTrabajador: string): void {
@@ -136,13 +143,10 @@ export class RhComponent {
     this.trabajadorEnAsistencias.set(trabajador ?? null);
   }
 
-  registrarAsistencia(datos: { idTrabajador: string; horaEntrada: string; horaSalida: string }): void {
-    console.log('Nueva asistencia para', datos.idTrabajador, datos.horaEntrada, datos.horaSalida);
-  }
-
-  descargarNomina(datos: { idTrabajador: string; fechaInicio: string; fechaFin: string }): void {
-    console.log('Descargar nómina de', datos.idTrabajador, datos.fechaInicio, datos.fechaFin);
-  }
+  //Aqui habian 2 funciones, eran las que antes habia yo pensado que serían mandadas del hijo (del modulo de asistencias),
+  /*Pero la verdad ví que es mejor dejar la logica en el hjo ya que si hay bastante calculo y procesamiento, sirve que calo a ver que tal sirve,
+  aclaro aqui en caso de en un futuro no entender donde se hace el proceso de nomina y el proceso de asistencias, todo se lleva en el hijo, en el
+  modal de asistencias-trabajador-rh */
 
   cerrarModalAsistencias(): void {
     this.trabajadorEnAsistencias.set(null);

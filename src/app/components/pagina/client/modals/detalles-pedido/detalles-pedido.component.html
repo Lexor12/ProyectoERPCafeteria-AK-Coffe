@@ -3,20 +3,32 @@
         <h2 class="detalle-pedido__titulo">Detalles de Pedido</h2>
         <button class="detalle-pedido__cerrar" type="button" (click)="clickCerrar()">X</button>
     </div>
-
+    <div class="detalle-pedido__separador"></div>
     <div class="detalle-pedido__producto">
-        <div class="detalle-pedido__imagen">
-            <img [src]="imagenUrl()">
+        <!--
+        Aqui se cargan en formato de lista todos los productos que se seleccionarión
+        -->
+        <p class="detalle-pedido__pedidos-titulo">Productos del pedido</p>
+        <div class="detalle-pedido__pedidos">
+            @for (producto of productos(); track producto.nombre) {
+                <div class="detalle-pedido__datos">
+                    <div class="detalle-pedido__datos-izquierda">
+                        <p class="detalle-pedido__etiqueta">Nombre: <span class="detalle-pedido__dato">{{ producto.nombre }}</span></p>
+                        <p class="detalle-pedido__etiqueta">Cantidad: <span class="detalle-pedido__dato">{{ producto.cantidad }}</span></p>
+                    </div>
+                    <div class="detalle-pedido__datos-derecha">
+                        <p class="detalle-pedido__etiqueta">Precio Unitario: <span class="detalle-pedido__dato">$ {{ producto.precioUnitario.toFixed(2) }}</span></p>
+                        <p class="detalle-pedido__etiqueta">Subtotal: <span class="detalle-pedido__dato">{{ producto.subtotal.toFixed(2) }}</span></p>
+                    </div>
+                </div>
+            }
         </div>
-        <div class="detalle-pedido__datos">
-            <p class="detalle-pedido__etiqueta">Nombre: <span class="detalle-pedido__dato">{{ nombreProducto() }}</span> </p>
-            <p class="detalle-pedido__etiqueta">Descripción: <span class="detalle-pedido__dato">{{ descripcion() }}</span> </p>
-            <p class="detalle-pedido__etiqueta">Cantidad: <span class="detalle-pedido__dato">{{ cantidad() }}</span></p>
-            <p class="detalle-pedido__etiqueta">Precio Unitario: <span class="detalle-pedido__dato">{{ precioUnitario().toFixed(2) }}</span> </p>
+        <div class="detalle-pedido__separador"></div>
+        <div class="detalle-pedido__detalles">
             <p class="detalle-pedido__etiqueta">IVA (16%): <span class="detalle-pedido__dato">$ {{ iva().toFixed(2) }}</span></p>
-            <p class="detalle-pedido__etiqueta">Precio Total: <span class="detalle-pedido__dato">$ {{ precioTotal().toFixed(2) }}</span></p>
-            <p class="detalle-pedido__etiqueta">Proceso: <span class="detalle-pedido__dato">{{ proceso() }}</span></p>
-            <p class="detalle-pedido__etiqueta">Estado: <span class="detalle-pedido__dato">{{ estado() }}</span></p>
+                    <p class="detalle-pedido__etiqueta">Precio Total: <span class="detalle-pedido__dato">$ {{ precioTotal().toFixed(2) }}</span></p>
+                    <p class="detalle-pedido__etiqueta">Proceso: <span class="detalle-pedido__dato">{{ proceso() }}</span></p>
+                    <p class="detalle-pedido__etiqueta">Estado: <span class="detalle-pedido__dato">{{ estado() }}</span></p>
         </div>
     </div>
     <h3 class="detalle-pedido__seccion-titulo">Detalles Cliente:</h3>

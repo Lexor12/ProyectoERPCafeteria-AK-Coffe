@@ -1,6 +1,6 @@
-import { Component, output } from '@angular/core';
+import { Component, output,signal } from '@angular/core';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
-
+import { AuthService } from '../../../../../Services/auth.service';
 // Esta función la saqué fuera de la clase pq no depende de ninguna instancia del componente, o sea,
 // solo necesita el FormGroup completo para comparar los dos campos de contraseña entre si
 // (aunque realmente la pude meter dentro de la clase tambien, pero investigando vi que asi se hace
@@ -19,6 +19,13 @@ function validadorContrasena(grupo: AbstractControl): ValidationErrors | null {
 })
 export class RegisterComponent {
   cambiarVista = output<void>();
+
+  constructor(private authService: AuthService) {}
+
+  // Guardo aqui el mensaje que venga del backend, ya sea de error (correo duplicado)
+  // o de éxito, para mostrarlo en el HTML
+  mensajeError = signal<string>('');
+
 
   // Aqui cada FormControl trae su propio arreglo de Validators, que son como "reglas" que checan
   // que lo que se escribio sea valido antes de dejar mandar el formulario
@@ -71,6 +78,31 @@ export class RegisterComponent {
       this.formularioRegistro.markAllAsTouched();
       return;
     }
-    // aqui iría la logica de registro
+    this.mensajeError.set('');
+
+    // Armo el objeto tal como lo espera el backend, sacando cada valor del formulario
+    const datosNuevoUsuario = {
+      nombre: this.formularioRegistro.value.nombre!,
+      apellido: this.formularioRegistro.value.apellido!,
+      correo: this.formularioRegistro.value.correo!,
+      password: this.formularioRegistro.value.contrasena!,
+      telefono: this.formularioRegistro.value.telefono!,
+    };
+    this.authService.registro(datosNuevoUsuario).subscribe({
+      next: (respuesta) => {
+        if (respuesta.creado) {
+          // Ya que se creó la cuenta, regreso a la vista de Login para que inicie sesión
+          setTimeout(() => {
+            this.cambiarVista.emit();
+          }, 1500);
+        } else {
+          this.mensajeError.set(respuesta.mensaje);
+        }
+      },
+      error: (error) => {
+        alert('Error al registrar');
+        this.mensajeError.set('Ocurrió un error, intenta de nuevo');
+      }
+    });
   }
 }

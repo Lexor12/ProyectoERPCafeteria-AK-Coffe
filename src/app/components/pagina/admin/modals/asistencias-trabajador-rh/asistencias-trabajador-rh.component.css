@@ -15,7 +15,8 @@
     background-color: var(--modal--bg);
     border-radius: 16px;
     padding: 30px 35px;
-    max-width: 460px;
+    max-width: 560px;
+    min-width: 480px;
     margin: 0 auto;
     max-height: 90vh;
     overflow-y: auto;

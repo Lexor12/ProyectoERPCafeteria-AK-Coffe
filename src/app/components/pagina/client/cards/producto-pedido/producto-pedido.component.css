@@ -17,16 +17,6 @@
     flex:1;
 }
 
-.producto__imagen {
-    width: 45%;
-    height: 100%;
-    border-radius: 8px;
-}
-
-.producto__imagen img {
-    height: 100%;
-    border-radius: 8px;
-}
 
 .producto__info {
     display: flex;

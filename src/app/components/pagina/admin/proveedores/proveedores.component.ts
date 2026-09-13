@@ -1,9 +1,13 @@
-import { Component, signal, computed } from '@angular/core';
+import { Component, signal, computed, OnInit } from '@angular/core';
 import { ProductoProveedorComponent } from '../cards/producto-proveedor/producto-proveedor.component';
 import { SurtirProductoProveedorComponent } from '../modals/surtir-producto-proveedor/surtir-producto-proveedor.component';
 import { AgregarProveedorComponent } from '../modals/agregar-proveedor/agregar-proveedor.component';
 import { AgregarProductoProveedorComponent } from '../modals/agregar-producto-proveedor/agregar-producto-proveedor.component';
-import { ProductoProveedor } from '../../../../Models/ProductoProveedor.model';
+import { ProductoProveedor } from '../../../../Models/productoProveedor';
+import { ProductoProveedorService } from '../../../../Services/productoProveedor.service';
+import { ProveedorService } from '../../../../Services/proveedor.service';
+import { CompraService } from '../../../../Services/compra.service';
+import { ProductoService } from '../../../../Services/producto.service';
 
 @Component({
   selector: 'app-proveedores.component',
@@ -11,42 +15,18 @@ import { ProductoProveedor } from '../../../../Models/ProductoProveedor.model';
   templateUrl: './proveedores.component.html',
   styleUrl: './proveedores.component.css',
 })
-export class ProveedoresComponent {
-  // Por ahora los proveedores están quemados aquí, a futuro esto debe venir de una consulta a la BD
-  // (idealmente con su propio Model, igual que ProductoProveedor)
-  proveedores = signal<{ idProveedor: string; nombre: string }[]>([
-    { idProveedor: 'p1', nombre: 'Café del Valle' },
-    { idProveedor: 'p2', nombre: 'Distribuidora Norte' },
-  ]);
+export class ProveedoresComponent implements OnInit{
+  constructor(
+    private productoProveedorService: ProductoProveedorService,
+    private proveedorService: ProveedorService,
+    private compraService:CompraService,
+    private productoService:ProductoService
+  ) {}
+  // Ya no relleno esto a mano, se llena con la lista real de proveedores del backend
+  proveedores = signal<{ idProveedor: string; nombre: string }[]>([]);
 
-  // Igual que arriba, esta lista de productos por proveedor es solo de prueba,
-  // en la Práctica 2 se traería del backend según el proveedor autenticado/seleccionado
-  productos = signal<ProductoProveedor[]>([
-    {
-      idProducto: 'a1b2c3d4-e5f6-7890-abcd-ef0123456789',
-      nombre: 'Café Americano',
-      descripcion: 'Bebida caliente que se prepara combinando un espresso con agua caliente.',
-      precio: 123.50,
-      idProveedor: 'p1',
-      imagenUrl: 'images/cafe-americano.png'
-    },
-    {
-      idProducto: 'f9e8d7c6-b5a4-3210-fedc-ba9876543210',
-      nombre: 'Capuchino Especial',
-      descripcion: 'Espresso con leche texturizada al vapor y una densa capa de espuma cremosa.',
-      precio: 58.50,
-      idProveedor: 'p2',
-      imagenUrl: 'images/cafe-capuccino.png'
-    },
-    {
-      idProducto: '12345678-abcd-ef01-2345-6789abcdef01',
-      nombre: 'Latte Vainilla',
-      descripcion: 'Suave mezcla de espresso, leche caliente y un toque de jarabe de vainilla artesanal.',
-      precio: 65.00,
-      idProveedor: 'p1',
-      imagenUrl: 'images/cafe-latte.png'
-    },
-  ]);
+  // Igual, arranca vacío hasta que se elija un proveedor y se pidan sus productos
+  productos = signal<ProductoProveedor[]>([]);
 
   // Vacío significa "Todos" en el filtro (ver el <option value=""> del select en el HTML)
   proveedorSeleccionado = signal<string>('');
@@ -67,6 +47,33 @@ export class ProveedoresComponent {
     );
   });
 
+  //A CONTINUACIÓN USAREMOS NgOnInit para que cuando cargue el componente todos los provedores y productos carguen al mismo tiempo
+  ngOnInit(): void {
+    this.cargarProveedores();
+    this.cargarProductosProovedores();
+  }
+
+  cargarProveedores(): void {
+    this.proveedorService.obtenerProveedores().subscribe({
+      next: (proveedoresRecibidos) => {
+        this.proveedores.set(proveedoresRecibidos);
+      },
+      error: (error) => {
+        alert('No se pudieron cargar los proveedores');
+      }
+    });
+  }
+  cargarProductosProovedores():void{
+    this.productoProveedorService.obtenerProductosProveedor().subscribe({
+      next: (productos)=>{
+        this.productos.set(productos)
+      },
+      error: (error)=>{
+        alert('Error al cargar los producots de los proveedores')
+      }
+    })
+  }
+
   actualizarProveedor(evento: Event): void {
     this.proveedorSeleccionado.set((evento.target as HTMLSelectElement).value);
   }
@@ -77,20 +84,51 @@ export class ProveedoresComponent {
 
   // Busca el producto por id (el que manda la card) y lo guarda, esto hace que el @if
   // del HTML detecte el cambio y abra el modal de surtido con los datos de ese producto
-  surtirProducto(idProducto: string): void {
-    const producto = this.productos().find(p => p.idProducto === idProducto);
+  surtirProducto(datos: { idProducto: string; idProveedor: string }): void {
+    const producto = this.productos().find(p => 
+      p.idProducto === datos.idProducto && p.idProveedor === datos.idProveedor
+    );
     this.productoASurtir.set(producto ?? null);
+  }
+
+  // Esta sí llama al backend real: borra la asociación producto-proveedor (Catalogo_Proveedor),
+  // el producto en sí sigue existiendo
+  eliminarProductoProveedor(datos: { idProducto: string; idProveedor: string }): void {
+    this.productoProveedorService.eliminarProductoProveedor(datos.idProveedor, datos.idProducto).subscribe({
+      next: () => {
+        this.productos.update(lista => 
+          lista.filter(p => !(p.idProducto === datos.idProducto && p.idProveedor === datos.idProveedor))
+        );
+      },
+      error: (error) => {
+        alert('No se pudo eliminar el producto del proveedor');
+      }
+    });
   }
 
   cerrarModalSurtir(): void {
     this.productoASurtir.set(null);
   }
 
-  // Esta función se debe ampliar en la Práctica 2 para hacer la petición real al backend,
-  // que actualice la cantidad disponible del producto en la BD (según RQF22/RQF23),
-  // por ahora solo cierra el modal sin mandar nada a ningún lado
-  confirmarSurtido(datos: { idProducto: string; cantidad: number }): void {
-    this.productoASurtir.set(null);
+  // Ya no lee this.proveedorSeleccionado(), el idProveedor viene directo del modal,
+  // que a su vez lo heredó de la card sobre la que se dio clic en "Surtir"
+  confirmarSurtido(datos: { idProducto: string; idProveedor: string; cantidad: number; costoUnitario: number }): void {
+      this.compraService.registrarCompraProductoExistente(datos.idProveedor, datos.idProducto, datos.cantidad, datos.costoUnitario).subscribe({
+        next: (respuesta) => {
+          if (respuesta.registrada) {
+            // Recargamos toda la lista de productos-proveedor, ya que ahora no dependemos
+            // de un filtro específico seleccionado (podríamos estar en "Todos")
+            this.cargarProductosProovedores();
+          } else {
+            alert('No se pudo registrar la compra');
+          }
+          this.productoASurtir.set(null);
+        },
+        error: (error) => {
+          alert('Error al registrar la compra');
+          this.productoASurtir.set(null);
+        }
+      });
   }
 
   clickAgregarProducto(): void {
@@ -101,16 +139,56 @@ export class ProveedoresComponent {
     this.mostrarModalAgregarProducto.set(false);
   }
 
-  // Aqui guardara productos en la base de datos, ya en un futuro se hará la consulta y se ingresarán los valores obtenidos del model
-  // (falta distinguir con datos.productoExistente si es un producto nuevo o si solo se está
-  // asociando uno ya existente a este proveedor, eso se resuelve en la Práctica 2)
+  // Reemplaza guardarProducto por esta:
   guardarProducto(datos: {
     productoExistente: boolean; idProveedor: string; idProductoExistente: string;
-    nombre: string; descripcion: string; precioUnitario: number; imagen: File | null;
+    nombre: string; descripcion: string; imagenBase64: string | null ;
+    costoUnitario: number;
   }): void {
-    this.mostrarModalAgregarProducto.set(false);
-  }
+    if (datos.productoExistente) {
+      // Producto que ya existe: solo lo asociamos al catálogo del proveedor
+      this.productoProveedorService.asociarProductoProveedor(datos.idProveedor, datos.idProductoExistente, datos.costoUnitario).subscribe({
+        next: () => {
+          this.mostrarModalAgregarProducto.set(false);
+          this.cargarProveedores();
+          this.cargarProductosProovedores();
+          this.actualizarProveedor({ target: { value: datos.idProveedor } } as any);
+        },
+        error: (error) => {
+          alert('No se pudo asociar el producto al proveedor');
+        }
+      });
+    } else {
+      // Producto nuevo: se crea desde cero + se asocia + se registra la compra, todo junto
+      const productoNuevo = {
+        nombre: datos.nombre,
+        descripcion: datos.descripcion,
+      };
 
+      this.compraService.registrarCompraProductoNuevo(datos.idProveedor, productoNuevo, datos.costoUnitario).subscribe({
+        next: (respuesta) => {
+          if (respuesta.registrada) {
+            // Si el usuario sí seleccionó una imagen, la subimos usando el idProducto
+            // que acaba de regresar el backend al crear el producto
+            if (datos.imagenBase64 && respuesta.idProducto) {
+              this.productoService.subirImagenProducto(respuesta.idProducto, datos.imagenBase64).subscribe({
+                error: (error) => alert('No se pudo subir la imagen del producto nuevo')
+              });
+            }
+            this.mostrarModalAgregarProducto.set(false);
+            this.cargarProveedores();
+            this.cargarProductosProovedores();
+            this.actualizarProveedor({ target: { value: datos.idProveedor } } as any);
+          } else {
+            alert('No se pudo registrar el producto nuevo');
+          }
+        },
+        error: (error) => {
+          alert('Error al registrar el producto nuevo');
+        }
+      });
+    }
+  }
   clickAgregarProveedor(): void {
     this.mostrarModalAgregarProveedor.set(true);
   }
@@ -119,8 +197,15 @@ export class ProveedoresComponent {
     this.mostrarModalAgregarProveedor.set(false);
   }
 
-  // Aqui guardara proveedores en la base de datos, ya en un futuro se hará la consulta y se ingresarán los valores obtenidos del model
   guardarProveedor(datos: { nombre: string; telefono: string }): void {
-    this.mostrarModalAgregarProveedor.set(false);
+    this.proveedorService.crearProveedor(datos.nombre, datos.telefono).subscribe({
+      next: () => {
+        this.mostrarModalAgregarProveedor.set(false);
+        this.cargarProveedores(); // recargamos para que aparezca en el <select>
+      },
+      error: (error) => {
+        alert('No se pudo registrar el proveedor');
+      }
+    });
   }
 }

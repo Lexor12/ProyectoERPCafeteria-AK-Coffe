@@ -33,14 +33,15 @@
         @for (pedido of pedidosFiltrados(); track pedido.idVenta) {
         <app-producto-pedido
             [idVenta]="pedido.idVenta"
-            [nombre]="pedido.nombre"
-            [nombreCliente]="pedido.nombreCliente"
-            [precio]="pedido.precio"
-            [cantidad]="pedido.cantidad"
             [fechaCompra]="pedido.fechaCompra"
-            [imagenUrl]="pedido.imagenUrl"
+            [totalPagado]="pedido.totalPagado"
+            [entregado]="pedido.entregado"
+            [cancelado]="pedido.cancelado"
+            [nombreCliente]="pedido.nombreCliente"
+            [apellidoCliente]="pedido.apellidoCliente"
             (marcarCancelado)="cancelarPedido($event)"
-            (marcarEntregado)="marcarEntregado($event)">
+            (marcarEntregado)="marcarEntregado($event)"
+            (verDetalle)="verDetalle($event)">
         </app-producto-pedido>
         } @empty {
             <!-- Esto es fundamental para que en caso de no haber productos notificar al administrador que no existe ningúno-->
@@ -48,3 +49,13 @@
         }
     </div>
 </section>
+@if (pedidoSeleccionado(); as pedido) {
+    <app-detalles-pedido-admin
+        [productos]="pedido.productos"
+        [entregado]="pedido.entregado"
+        [cancelado]="pedido.cancelado"
+        [nombreCliente]="pedido.nombreCliente"
+        [apellidoCliente]="pedido.apellidoCliente"
+        (cerrar)="cerrarModal()">
+    </app-detalles-pedido-admin>
+}

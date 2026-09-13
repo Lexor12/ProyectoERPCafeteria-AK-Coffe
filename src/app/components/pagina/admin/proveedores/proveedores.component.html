@@ -17,14 +17,16 @@
     </div>
 
     <div class="proveedores__grid">
-        @for (producto of productosFiltrados(); track producto.idProducto) {
+        @for (producto of productosFiltrados(); track producto.idProducto + '_' + producto.idProveedor) {
             <app-producto-proveedor
                 [idProducto]="producto.idProducto"
+                [idProveedor]="producto.idProveedor"
                 [nombre]="producto.nombre"
                 [descripcion]="producto.descripcion"
                 [precio]="producto.precio"
                 [imagenUrl]="producto.imagenUrl"
-                (surtir)="surtirProducto($event)">
+                (surtir)="surtirProducto($event)"
+                (eliminar)="eliminarProductoProveedor($event)">
             </app-producto-proveedor>
         } @empty {
             <!--Igual que en inventario, avisamos al usuario en vez de dejar el grid vacío sin explicación-->
@@ -37,6 +39,7 @@
 @if (productoASurtir(); as producto) {
     <app-surtir-producto-proveedor
         [idProducto]="producto.idProducto"
+        [idProveedor]="producto.idProveedor"
         [nombre]="producto.nombre"
         [descripcion]="producto.descripcion"
         [precioUnitario]="producto.precio"

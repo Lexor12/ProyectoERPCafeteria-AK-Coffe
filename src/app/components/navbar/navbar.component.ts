@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component,inject,Inject } from '@angular/core';
 import { RouterLink ,RouterLinkActive} from '@angular/router';
-
+import { SesionService } from '../../Services/sesion.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-navbar',
   imports: [RouterLink,RouterLinkActive],
@@ -8,13 +9,9 @@ import { RouterLink ,RouterLinkActive} from '@angular/router';
   styleUrl: './navbar.component.css',
 })
 export class NavbarComponent {
-  //Como aun no hacemos consulta a la base de datos, tenemos esta propiedad que identifica el tipo de rol del usuario
-  rol:string='administrador';
-  //rol:string='cliente';
-  //rol:string='administrador';
-  sesionActiva:boolean=true;
-  nombreUsuario='';
-  //Estas rutas son por default, son las mismas que se definieron antes
+  constructor(private router:Router){}
+  //Este recibe la instancia singletone del sistema para identificar si hay un usuario logueado en el sistema
+  sesionService=inject(SesionService)
   rutasCliente=[
     { label: 'Catálogo', path: '/tienda' },
     { label: 'Carrito', path: '/carrito' },
@@ -28,6 +25,7 @@ export class NavbarComponent {
     { label: 'Pedidos', path: '/admin/pedidos' },
   ];
   cerrarSesion(): void{
-    this.sesionActiva=false;
+    this.sesionService.cerrarSesion()//Llamamos el metodo de cerrar sesión, nadamás
+    this.router.navigate(['/'])
   }
 }

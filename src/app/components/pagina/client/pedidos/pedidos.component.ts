@@ -1,7 +1,9 @@
-import { Component,signal,computed } from '@angular/core';
+import { Component,signal,computed, OnInit, inject } from '@angular/core';
 import { ProductoPedidoComponent } from '../cards/producto-pedido/producto-pedido.component';
 import { DetallesPedidoComponent } from '../modals/detalles-pedido/detalles-pedido.component';
 import { PedidoCliente } from '../../../../Models/pedidoCliente';
+import { PedidoClienteService } from '../../../../Services/pedidoCliente.service';
+import { SesionService } from '../../../../Services/sesion.service';
 
 @Component({
   selector: 'app-pedidos.component',
@@ -9,67 +11,11 @@ import { PedidoCliente } from '../../../../Models/pedidoCliente';
   templateUrl: './pedidos.component.html',
   styleUrl: './pedidos.component.css',
 })
-export class PedidosComponent {
-  pedidos = signal<PedidoCliente[]>([
-    {
-      idVenta: 'a1b2c3d4-0001',
-      nombre: 'Café Americano',
-      descripcion: 'Bebida caliente que se prepara combinando un espresso con agua caliente.',
-      precio: 45.00,
-      cantidad: 2,
-      fechaCompra: '04/10/2026',
-      entregado: false,
-      cancelado: false,
-      imagenUrl: 'images/cafe-americano.png',
-      rfcCliente: 'JUPE900101XXX',
-      nombreCliente: 'Alondra',
-      apellidoCliente: 'López Zúñiga',
-      nombreTienda: 'AK Coffee',
-      rfcTienda: 'AKC230115M3A',
-      telefonoTienda: '3344556677',
-      domicilioFiscalTienda: 'Av. Patria 1234, Col. Altamira, C.P. 45116, Zapopan, Jalisco',
-      regimenFiscalTienda: '626 - Régimen Simplificado de Confianza (RESICO)',
-    },
-    {
-      idVenta: 'a1b2c3d4-0002',
-      nombre: 'Capuchino Especial',
-      descripcion: 'Espresso con leche texturizada al vapor y una densa capa de espuma cremosa.',
-      precio: 58.50,
-      cantidad: 1,
-      fechaCompra: '02/10/2026',
-      entregado: false,
-      cancelado: false,
-      imagenUrl: 'images/cafe-capuccino.png',
-      rfcCliente: '', // opcional, este cliente no lo capturo
-      nombreCliente: 'Alondra',
-      apellidoCliente: 'López Zúñiga',
-      nombreTienda: 'AK Coffee',
-      rfcTienda: 'AKC230115M3A',
-      telefonoTienda: '3344556677',
-      domicilioFiscalTienda: 'Av. Patria 1234, Col. Altamira, C.P. 45116, Zapopan, Jalisco',
-      regimenFiscalTienda: '626 - Régimen Simplificado de Confianza (RESICO)',
-    },
-    {
-      idVenta: 'a1b2c3d4-0003',
-      nombre: 'Latte Vainilla',
-      descripcion: 'Suave mezcla de espresso, leche caliente y un toque de jarabe de vainilla artesanal.',
-      precio: 65.00,
-      cantidad: 3,
-      fechaCompra: '28/09/2026',
-      entregado: false,
-      cancelado: false,
-      imagenUrl: 'images/cafe-latte.png',
-      rfcCliente: 'JUPE900101XXX',
-      nombreCliente: 'Alondra',
-      apellidoCliente: 'López Zúñiga',
-      nombreTienda: 'AK Coffee',
-      rfcTienda: 'AKC230115M3A',
-      telefonoTienda: '3344556677',
-      domicilioFiscalTienda: 'Av. Patria 1234, Col. Altamira, C.P. 45116, Zapopan, Jalisco',
-      regimenFiscalTienda: '626 - Régimen Simplificado de Confianza (RESICO)',
-    },
-  ]);
+export class PedidosComponent implements OnInit {
+  constructor(private pedidoClienteService:PedidoClienteService){}
 
+  sesionService=inject(SesionService)
+  pedidos = signal<PedidoCliente[]>([]);
   entregado = signal<boolean>(false);
   activo = signal<boolean>(true);
   buscador=signal<string>('');
@@ -79,9 +25,26 @@ export class PedidosComponent {
   pedidosFiltrados = computed(() => {//Esta es la colección de productos o la lista de productos que el HTML usará para cargar las cards de productos, que se basa en los filtros
     return this.pedidos().filter(p => //que son ingresados por el usuario
       (p.cancelado!=this.activo())&&(p.entregado==this.entregado())&&(
-      p.nombre.toLowerCase().includes(this.buscador().toLowerCase())));
+      p.nombreCliente.toLowerCase().includes(this.buscador().toLowerCase())));
   });
 
+  ngOnInit(): void {
+    this.cargarPedidos();
+  }
+  cargarPedidos():void{
+    const usuario=this.sesionService.usuarioActual()
+    if(!usuario)return
+    // .subscribe() es como decirle "cuando tengas la respuesta, avísame". El "next" se ejecuta
+    // si todo salió bien, y el "error" se ejecuta si algo falló (el server tronó, no hay internet, etc)
+    this.pedidoClienteService.obtenerPedidosCliente(usuario.idUsuario).subscribe({
+      next: (pedidosRecibidos)=>{
+        this.pedidos.set(pedidosRecibidos)
+      },
+      error: (error)=>{
+        alert("No se pudieron cargar los pedidos")
+      }
+    })
+  }
 
   actualizarBuscador(evento: Event): void {
     this.buscador.set((evento.target as HTMLInputElement).value);
@@ -105,6 +68,6 @@ export class PedidosComponent {
   }
 
   descargarFactura(idVenta: string): void {
-    console.log('Descargando factura de', idVenta);
+    //
   }
 }

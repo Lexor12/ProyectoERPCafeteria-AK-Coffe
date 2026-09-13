@@ -18,5 +18,8 @@
             </div>
         </div>
     </div>
-    <button class="producto__boton" type="button" (click)="clickSurtir()">Surtir</button>
+    <div class="producto__acciones">
+        <button class="producto__boton producto__boton--desactivar" type="button" (click)="clickEliminar()">Eliminar</button>
+        <button class="producto__boton producto__boton--editar" type="button" (click)="clickSurtir()">Surtir</button>
+    </div>
 </div>

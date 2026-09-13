@@ -24,19 +24,20 @@ export class AgregarProductoProveedorComponent {
 
   // Manejo de la vista previa y archivo de imagen
   imagenPreview = signal<string>('images/sin-foto.png');
-  archivoImagen = signal<File | null>(null);
+  //Aqui se almacena la imagen pero en base 64
+  imagenBase64 = signal<string | null>(null);
 
   // Eventos de salida hacia el padre
   cerrar = output<void>();
   cancelar = output<void>();
-  aceptar = output<{
-    productoExistente: boolean;
-    idProveedor: string;
-    idProductoExistente: string;
-    nombre: string;
-    descripcion: string;
-    precioUnitario: number;
-    imagen: File | null;
+  aceptar = output<{ 
+    productoExistente: boolean,
+    idProveedor: string, 
+    idProductoExistente: string, 
+    nombre: string, 
+    descripcion: string,
+    imagenBase64: string | null,
+    costoUnitario: number,
   }>();
 
   cambiarProductoExistente(valor: boolean): void {
@@ -65,8 +66,18 @@ export class AgregarProductoProveedorComponent {
   }
 
   actualizarImagen(evento: Event): void {
-    // Aqui recibe la imagen y la manda o procesa
-  }
+    const input = evento.target as HTMLInputElement;
+    const archivo = input.files?.[0];
+    if (!archivo) return;
+
+    const lector = new FileReader();
+    lector.onload = () => {
+        const base64 = lector.result as string;
+        this.imagenPreview.set(base64);
+        this.imagenBase64.set(base64);
+    };
+    lector.readAsDataURL(archivo);
+}
 
   // Emite el evento para cerrar el modal
   clickCerrar(): void {
@@ -82,12 +93,13 @@ export class AgregarProductoProveedorComponent {
   clickAceptar(): void {
     this.aceptar.emit({
       productoExistente: this.productoExistente(),
-      idProveedor: this.idProveedor(),
-      idProductoExistente: this.idProductoExistente(),
-      nombre: this.nombre(),
+      idProveedor: this.idProveedor(), 
+      idProductoExistente: this.idProductoExistente(), 
+      nombre: this.nombre(), 
       descripcion: this.descripcion(),
-      precioUnitario: this.precioUnitario(),
-      imagen: this.archivoImagen(),
-    });
+      imagenBase64: this.imagenBase64(),
+      costoUnitario: this.precioUnitario()
+    }
+    )
   }
 }

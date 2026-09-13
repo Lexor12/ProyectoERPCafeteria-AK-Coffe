@@ -18,6 +18,9 @@
                 <input class="card-login__input" type="password" id="contrasena" formControlName="contrasena" placeholder="contraseña">
             </div>
             <button class="card-login__boton-entrar" type="submit">Entrar</button>
+            @if (mensajeError()) {
+                <p class="card-login__error">{{ mensajeError() }}</p>
+            }
         </form>
     </div>
 

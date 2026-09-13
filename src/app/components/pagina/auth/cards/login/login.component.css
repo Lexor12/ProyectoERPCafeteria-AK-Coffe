@@ -141,3 +141,12 @@
         margin: 30px 0;
     }
 }
+
+
+.card-login__error{
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    font-size: smaller;
+    color: var(--status--danger);
+}

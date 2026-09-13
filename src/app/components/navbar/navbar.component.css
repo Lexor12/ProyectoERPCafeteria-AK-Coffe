@@ -90,3 +90,9 @@
         order: 2;
     }
 }
+
+@media print{
+    .navbar{
+        display: none;
+    }
+}

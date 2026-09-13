@@ -8,6 +8,7 @@ import { Component, input, output, signal, computed  } from '@angular/core';
 })
 export class SurtirProductoProveedorComponent {
   idProducto = input.required<string>();
+  idProveedor = input.required<string>(); // <- nuevo input
   nombre = input.required<string>();
   descripcion = input.required<string>();
   precioUnitario = input.required<number>();
@@ -18,7 +19,7 @@ export class SurtirProductoProveedorComponent {
 
   cerrar = output<void>();
   cancelar = output<void>();
-  aceptar = output<{ idProducto: string; cantidad: number }>();
+  aceptar = output<{ idProducto: string; idProveedor: string; cantidad: number; costoUnitario: number; }>();
 
   actualizarCantidad(evento: Event): void {
     const valor = Number((evento.target as HTMLInputElement).value);
@@ -34,6 +35,11 @@ export class SurtirProductoProveedorComponent {
   }
 
   clickAceptar(): void {
-    this.aceptar.emit({ idProducto: this.idProducto(), cantidad: this.cantidad() });
+    this.aceptar.emit({ 
+      idProducto: this.idProducto(), 
+      idProveedor: this.idProveedor(),
+      cantidad: this.cantidad(), 
+      costoUnitario: this.precioUnitario() 
+    });
   }
 }

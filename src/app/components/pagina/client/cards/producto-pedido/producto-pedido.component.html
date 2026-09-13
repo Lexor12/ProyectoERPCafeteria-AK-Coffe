@@ -1,20 +1,17 @@
 <div class="producto">
     <div class="producto__contenido">
-        <div class="producto__imagen">
-            <img [src]="imagenUrl()">
-        </div>
         <div class="producto__info">
             <div class="producto__contenedor">
-                <span class="producto__etiqueta">Nombre:</span>
-                <span class="producto__valor">{{nombre()}}</span>
+                <span class="producto__etiqueta">Nombre de Cliente:</span>
+                <span class="producto__valor">{{nombreCliente()}}</span>
             </div>
             <div class="producto__contenedor">
-                <span class="producto__etiqueta">Precio:</span>
-                <span class="producto__valor">{{precio()}}</span>
+                <span class="producto__etiqueta">Apellido de Cliente:</span>
+                <span class="producto__valor">{{apellidoCliente()}}</span>
             </div>
             <div class="producto__contenedor">
-                <span class="producto__etiqueta">Cantidad:</span>
-                <span class="producto__valor">{{cantidad()}}</span>
+                <span class="producto__etiqueta">Total de Compra:</span>
+                <span class="producto__valor">$ {{totalPagado().toFixed(2)}}</span>
             </div>
             <div class="producto__contenedor">
                 <span class="producto__etiqueta">Fecha de Compra:</span>

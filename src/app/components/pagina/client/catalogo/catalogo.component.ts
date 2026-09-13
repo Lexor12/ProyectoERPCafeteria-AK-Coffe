@@ -2,6 +2,7 @@ import { Component,signal,computed, inject, PLATFORM_ID } from '@angular/core';
 import { ProductoCatalogoComponent } from '../cards/producto-catalogo/producto-catalogo.component';
 import { isPlatformBrowser,CommonModule } from '@angular/common';
 import { Producto } from '../../../../Models/producto.model';
+import { ProductoService } from '../../../../Services/producto.service';
 
 @Component({
   selector: 'app-catalogo.component',
@@ -11,33 +12,10 @@ import { Producto } from '../../../../Models/producto.model';
 })
 export class CatalogoComponent {
   platformId=inject(PLATFORM_ID)
+
+  constructor(private productoService: ProductoService) {}//Creamos el constructor que tendra de manera privada el Servicio para obtener y gestioanr los Productos de la BD
   //Estos idealmente se traen desde la base de datos, pero como aun no tenemos conexion, no quiero cagarla
-  productos = signal<Producto[]>([
-    { 
-    idProducto: 'a1b2c3d4-e5f6-7890-abcd-ef0123456789', 
-    nombre: 'Café Americano', 
-    descripcion: 'Bebida caliente que se prepara combinando un espresso con agua caliente.', 
-    precio: 45.00, 
-    stock: 16, 
-    imagenUrl: 'images/cafe-americano.png' 
-  },
-  { 
-    idProducto: 'f9e8d7c6-b5a4-3210-fedc-ba9876543210', 
-    nombre: 'Capuchino Especial', 
-    descripcion: 'Espresso con leche texturizada al vapor y una densa capa de espuma cremosa.', 
-    precio: 58.50, 
-    stock: 10, 
-    imagenUrl: 'images/cafe-capuccino.png' 
-  },
-  { 
-    idProducto: '12345678-abcd-ef01-2345-6789abcdef01', 
-    nombre: 'Latte Vainilla', 
-    descripcion: 'Suave mezcla de espresso, leche caliente y un toque de jarabe de vainilla artesanal.', 
-    precio: 65.00, 
-    stock: 8, 
-    imagenUrl: 'images/cafe-latte.png' 
-  },
-  ]);
+  productos = signal<Producto[]>([]); //Por defecto vacia ya que los objetos se obtendran dinámicamente
 
   precioMin=signal<number|null>(null)//por defecto lo dejamos en nulo
   precioMax=signal<number|null>(null)//por defecto lo dejamos en nulo
@@ -50,6 +28,20 @@ export class CatalogoComponent {
       p.nombre.toLowerCase().includes(this.buscador().toLowerCase())//Hacemos lowercase para evitar problemas de que el usuario ingresa mayúscula o minúscula
     )
   })
+
+  ngOnInit(): void {
+    this.cargarProductos();
+  }
+  cargarProductos(): void {
+    this.productoService.obtenerProductos().subscribe({
+      next: (productosRecibidos) => {
+        this.productos.set(productosRecibidos);
+      },
+      error: (error) => {
+        alert('No se pudo cargar el catálogo');
+      }
+    });
+  }
 
   actualizarPrecioMin(evento: Event): void {
     const valor = (evento.target as HTMLInputElement).value;

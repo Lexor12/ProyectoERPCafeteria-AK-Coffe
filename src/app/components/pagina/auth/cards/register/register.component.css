@@ -82,7 +82,7 @@
     color: var(--modal--label);
     margin-bottom: 6px;
 }
- 
+
 .card-registro__input {
     background-color: var(--input--bg);
     border: 1px solid var(--input--border);
@@ -143,4 +143,11 @@
         align-self: auto;
         margin: 30px 0;
     }
+}
+
+.card-registro__error{
+    display: flex;
+    justify-content: center;
+    font-size: smaller;
+    color: var(--status--danger);
 }

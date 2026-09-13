@@ -1,5 +1,5 @@
 import { Component,input,output,computed } from '@angular/core';
-
+import { ProductoDeVenta } from '../../../../../Models/productoDeVenta';
 @Component({
   selector: 'app-detalles-pedido',
   imports: [],
@@ -10,13 +10,11 @@ import { Component,input,output,computed } from '@angular/core';
 export class DetallesPedidoComponent {
   //Resumen, simplemente tenemos muchas propiedades que reciben datos del padre, y todas estas solo se muestran, no hay actualizaciones
   //simplemente se muestran los datos
-  nombreProducto = input.required<string>();
-  descripcion = input.required<string>();
-  cantidad = input.required<number>();
-  precioUnitario = input.required<number>();
+  productos = input.required<ProductoDeVenta[]>();
+  
   entregado = input.required<boolean>();
   cancelado = input.required<boolean>();
-  imagenUrl = input<string>('');
+
 
   nombreCliente = input.required<string>();
   apellidoCliente = input.required<string>();
@@ -32,7 +30,7 @@ export class DetallesPedidoComponent {
 
   cerrar = output<void>();
 
-  subtotal = computed(() => this.cantidad() * this.precioUnitario());//En la BD no se guarda estos valores, así que deben ser calculados mediante los otros, y como se van a mostrar debemos usar computed para proceder con el cálculo y mostrarlos
+  subtotal = computed(() => this.productos().reduce((suma, p) => suma + p.subtotal, 0));
   iva = computed(() => this.subtotal() * 0.16);
   precioTotal = computed(() => this.subtotal() + this.iva());
 

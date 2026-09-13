@@ -179,3 +179,18 @@
     transform: scale(1.05);
     opacity: 0.92;
 }
+@media print {
+    .finanzas__boton-aplicar{
+        display: none
+    }
+    .finanzas__boton-borrar{
+        display: none;
+    }
+    .finanzas__acciones {
+        display: none;
+    }
+
+    .finanzas__grafica-contenedor {
+        break-inside: avoid;
+    }
+}

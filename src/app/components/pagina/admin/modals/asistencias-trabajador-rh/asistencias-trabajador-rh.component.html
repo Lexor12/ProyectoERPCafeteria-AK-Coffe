@@ -26,11 +26,11 @@
     <div class="modal-asistencias__lista">
         <!-- Esta muestra todas las asistencias del trabajador, estas en el .CSS se muestran como lista
         con scroll ya que el div padre posee el uso de scroll en vertical -->
-        @for (asistencia of asistencias(); track asistencia.dia) {
+        @for (asistencia of asistencias(); track asistencia.idAsistencia) {
             <div class="modal-asistencias__fila">
-                <span class="modal-asistencias__fila-dato"><strong>Día:</strong> {{ asistencia.dia }}</span>
-                <span class="modal-asistencias__fila-dato"><strong>Hora Entrada:</strong> {{ asistencia.horaEntrada }}</span>
-                <span class="modal-asistencias__fila-dato"><strong>Hora Salida:</strong> {{ asistencia.horaSalida }}</span>
+                <span class="modal-asistencias__fila-dato"><strong>Día:</strong> {{ asistencia.fecha  }}</span>
+                <span class="modal-asistencias__fila-dato"><strong>Hora Entrada:</strong> {{ asistencia.horaEntrada  }}</span>
+                <span class="modal-asistencias__fila-dato"><strong>Hora Salida:</strong> {{ asistencia.horaSalida || 'Sin registrar'  }}</span>
             </div>
         }
     </div>
@@ -45,11 +45,11 @@
                 <!-- Estos dos de aqui abajo estan en readonly, pq a futuro deberian llenarse solos
                 cuando el trabajador realmente checa entrada/salida, no capturarse a mano -->
                 <label class="modal-asistencias__etiqueta-campo">Hora de Entrada:</label>
-                <input class="modal-asistencias__input" type="text" [value]="nuevaHoraEntrada()" placeholder="--:--" readonly>
+                <input class="modal-asistencias__input" type="time" [value]="nuevaHoraEntrada()" (change)="actualizarNuevaHoraEntrada($event)">
             </div>
             <div class="modal-asistencias__campo">
                 <label class="modal-asistencias__etiqueta-campo">Hora de Salida:</label>
-                <input class="modal-asistencias__input" type="text" [value]="nuevaHoraSalida()" placeholder="--:--" readonly>
+                <input class="modal-asistencias__input" type="time" [value]="nuevaHoraSalida()" (change)="actualizarNuevaHoraSalida($event)">
             </div>
         </div>
         <div class="modal-asistencias__acciones-asistencia">

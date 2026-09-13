@@ -19,7 +19,8 @@ export class EditarProductoInventarioComponent {
   //El imagen Preview permite mostrar o la imagen que justamente acaba de ingresar o la imagen default que posee el producto, en caso de que no exista una, se muestra la por defecto
   //que es una imagen que refiere a un "no imagen", esta raro pero en visual se ve mejor
   imagenPreview = signal<string>('images/sin-foto.png');
-  archivoImagen = signal<File | null>(null);
+  //Aqui se almacena la imagen pero en base 64
+  imagenBase64 = signal<string | null>(null);
 
   constructor() {
     effect(() => {// Sincroniza los valores iniciales de los inputs cuando cambian, o sea cuando editamos
@@ -32,7 +33,7 @@ export class EditarProductoInventarioComponent {
 
   cerrar = output<void>();
   cancelar = output<void>();
-  aceptar = output<{ idProducto: string; nombre: string; descripcion: string; precioUnitario: number; imagen: File | null }>();
+  aceptar = output<{ idProducto: string; nombre: string; descripcion: string; precioUnitario: number; imagenBase64: string | null  }>();
 
   actualizarNombre(evento: Event): void {
     this.nombre.set((evento.target as HTMLInputElement).value);
@@ -47,7 +48,20 @@ export class EditarProductoInventarioComponent {
   }
 
   actualizarImagen(evento: Event): void {
-    //Aqui va el proceso que manda la imagen a la BD y que tambien la carga como preview
+    const input = evento.target as HTMLInputElement;
+    const archivo = input.files?.[0];
+    if (!archivo) return;
+
+    // FileReader lee el contenido del archivo, aquí lo pedimos como "data URL"
+    // que es justo el formato base64 con el encabezado "data:image/png;base64,..." que recibe el backend que acabo de configurar
+    //
+    const lector = new FileReader();
+    lector.onload = () => {
+        const base64 = lector.result as string;
+        this.imagenPreview.set(base64); // Esto actualiza la vista previa al instante
+        this.imagenBase64.set(base64);  // Esto es lo que se manda al backend después
+    };
+    lector.readAsDataURL(archivo);
   }
 
   clickCerrar(): void {
@@ -64,7 +78,7 @@ export class EditarProductoInventarioComponent {
       nombre: this.nombre(),
       descripcion: this.descripcion(),
       precioUnitario: this.precioUnitario(),
-      imagen: this.archivoImagen(),
+      imagenBase64: this.imagenBase64(),
     });
   }
 }
