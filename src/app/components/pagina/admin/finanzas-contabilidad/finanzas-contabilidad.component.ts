@@ -2,6 +2,8 @@ import { Component, signal, computed, ViewChild, ElementRef, AfterViewInit } fro
 import { CommonModule } from '@angular/common';
 import { Chart } from 'chart.js/auto';
 import { ReporteFinanzaService } from '../../../../Services/reporteFinanzas.service';
+import { ReporteFinanza } from '../../../../Models/reporteFinanza';
+import { DatoFinanciero } from '../../../../Models/datoFinanciero.model';
 
 @Component({
   selector: 'app-finanzas-contabilidad.component',
@@ -105,25 +107,41 @@ export class FinanzasContabilidadComponent implements AfterViewInit {
     });
   }
 
-  dibujarGrafica(reporte: { detalleVentas: { fecha: string; monto: number }[]; detalleCompras: { fecha: string; monto: number }[] }): void {
-    // Juntamos todas las fechas que aparecen en ventas y en compras, sin repetir,
-    // y las ordenamos, para que las dos lineas de la grafica usen el mismo eje X
-    const fechasVentas = reporte.detalleVentas.map(v => v.fecha);
-    const fechasCompras = reporte.detalleCompras.map(c => c.fecha);
-    const todasLasFechas = [...new Set([...fechasVentas, ...fechasCompras])].sort();
+  dibujarGrafica(reporte: ReporteFinanza): void {
+    // Cada registro llega con fecha y hora ('yyyy-MM-dd HH:mm:ss').
+    // Si el reporte es de un solo día, la etiqueta del eje X es la hora ('08:00');
+    // si es de varios días, es el día ('2026-09-13')
+    const esUnSoloDia = reporte.fechaInicio === reporte.fechaFin;
 
-    // Por cada fecha del eje X, buscamos si hay un monto para ese dia, si no hay ponemos 0
-    const datosIngresos = todasLasFechas.map(fecha => {
-      const venta = reporte.detalleVentas.find(v => v.fecha === fecha);
-      return venta ? venta.monto : 0;
-    });
+    const etiquetaDe = (fecha: string): string => {
+      return esUnSoloDia ? fecha.substring(11, 13) + ':00' : fecha.substring(0, 10);
+    };
 
-    const datosEgresos = todasLasFechas.map(fecha => {
-      const compra = reporte.detalleCompras.find(c => c.fecha === fecha);
-      return compra ? compra.monto : 0;
-    });
+    // Junta los registros que caen en la misma hora (o día), sumando sus montos
+    const sumarPorEtiqueta = (lista: DatoFinanciero[]): Map<string, number> => {
+      const montos = new Map<string, number>();
+      for (const dato of lista) {
+        const etiqueta = etiquetaDe(dato.fecha);
+        montos.set(etiqueta, (montos.get(etiqueta) ?? 0) + dato.monto);
+      }
+      return montos;
+    };
 
-    // Si ya habia una grafica dibujada antes, la destruimos, si no Chart.js las va apilando
+    const ventas = sumarPorEtiqueta(reporte.detalleVentas);
+    const compras = sumarPorEtiqueta(reporte.detalleCompras);
+    const nomina = sumarPorEtiqueta(reporte.detalleNomina);
+
+    // Un solo día: eje X con las 24 horas. Varios días: las fechas que aparecen, sin repetir y ordenadas
+    const todasLasFechas = esUnSoloDia
+      ? Array.from({ length: 24 }, (_, hora) => `${String(hora).padStart(2, '0')}:00`)
+      : [...new Set([...ventas.keys(), ...compras.keys(), ...nomina.keys()])].sort();
+
+    // Monto de cada etiqueta (0 si no hubo movimiento), redondeado a 2 decimales
+    const montoDe = (montos: Map<string, number>, etiqueta: string): number => {
+      return Math.round((montos.get(etiqueta) ?? 0) * 100) / 100;
+    };
+
+    // Si ya había una gráfica dibujada antes, la destruimos, si no Chart.js las va apilando
     if (this.grafica) {
       this.grafica.destroy();
     }
@@ -134,22 +152,27 @@ export class FinanzasContabilidadComponent implements AfterViewInit {
         labels: todasLasFechas,
         datasets: [
           {
-            label: 'Ingresos',
-            data: datosIngresos,
+            label: 'Ingresos (ventas)',
+            data: todasLasFechas.map(etiqueta => montoDe(ventas, etiqueta)),
             borderColor: '#2e7d32',
             backgroundColor: '#2e7d32',
           },
           {
-            label: 'Egresos',
-            data: datosEgresos,
+            label: 'Egresos (compras)',
+            data: todasLasFechas.map(etiqueta => montoDe(compras, etiqueta)),
             borderColor: '#c62828',
             backgroundColor: '#c62828',
+          },
+          {
+            label: 'Egresos (nómina)',
+            data: todasLasFechas.map(etiqueta => montoDe(nomina, etiqueta)),
+            borderColor: '#ef6c00',
+            backgroundColor: '#ef6c00',
           }
         ]
       }
     });
   }
-
   clickExportarPDF(): void {
     window.print();
   }

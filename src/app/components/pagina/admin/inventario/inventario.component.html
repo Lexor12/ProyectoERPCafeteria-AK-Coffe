@@ -12,6 +12,7 @@
             <input class="inventario__input" type="number" (input)="actualizarPrecioMax($event)">
         </div>
         <input class="inventario__buscador" type="text" placeholder="Buscador..." (input)="actualizarBuscador($event)">
+        <button class="inventario__boton-agregar" type="button" (click)="agregarProducto()">+</button>
     </div>
 
     <div class="inventario__grid">
@@ -44,6 +45,13 @@ no haya uno seleccionado el modal no se abrirá-->
         [descripcionInicial]="producto.descripcion"
         [precioInicial]="producto.precio"
         [imagenUrlInicial]="producto.imagenUrl"
+        (cerrar)="cerrarModal()"
+        (cancelar)="cerrarModal()"
+        (aceptar)="guardarEdicion($event)">
+    </app-editar-producto-inventario>
+}
+@if (agregarNuevoProducto()) {
+    <app-editar-producto-inventario
         (cerrar)="cerrarModal()"
         (cancelar)="cerrarModal()"
         (aceptar)="guardarEdicion($event)">

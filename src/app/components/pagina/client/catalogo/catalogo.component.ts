@@ -37,7 +37,7 @@ export class CatalogoComponent {
       next: (productosRecibidos) => {
         this.productos.set(productosRecibidos);
       },
-      error: (error) => {
+      error: () => {
         alert('No se pudo cargar el catálogo');
       }
     });
@@ -58,10 +58,20 @@ export class CatalogoComponent {
   }
 
   agregarAlCarrito(evento: { idProducto: string; cantidad: number }): void {//Este método se encarga de agregar al carrito los productos que fueron seleccionados desde los hijos
+    const productoSeleccionado = this.productos().find(p=>p.idProducto==evento.idProducto)
+    if(!productoSeleccionado)return;
+    if(productoSeleccionado.stock==0){
+      alert("No hay stock suficiente de este producto");
+      return;
+    }
     if(!isPlatformBrowser(this.platformId))return//Esto ya lo expliqué en la sección de carrito, pero pues es porque Angular no sabe si se ejecuta en el navegador o en el servidor de Angular 
     const carritoActual = JSON.parse(localStorage.getItem('mi_carrito') || '[]');//Obtenemos el carrito actual, si no existe se crea un arreglo vacío
     const productoExistente = carritoActual.find((item: any) => item.idProducto === evento.idProducto);//Si el producto existe, se aumenta la cantidad
     if (productoExistente) {
+      if((productoExistente.cantidad+evento.cantidad)>productoSeleccionado?.stock){
+        alert("En tu carrito llevas la cantidad máxima disponible de este producto, no puedes agregar más.")
+        return;
+      }
       productoExistente.cantidad += evento.cantidad;
     } else {//Si no, se agrega, obviamente parece raro esto porque si yo en mi carrito tengo 20 productos de algo, y luego se agotan pues no se actualiza, pero
       //en la sección de hacer una compra en todo momento se valida que la cantidad a comprar si esté disponible, en caso de que no, pues el backend dispara un error

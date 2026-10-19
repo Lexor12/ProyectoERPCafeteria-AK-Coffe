@@ -1,0 +1,24 @@
+.terminos {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    line-height: 1.6;
+}
+
+.terminos__titulo {
+    margin-bottom: 0.25rem;
+}
+
+.terminos__fecha {
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+}
+
+.terminos h2 {
+    margin-top: 1.75rem;
+    font-size: 1.15rem;
+}
+
+.terminos ul {
+    padding-left: 1.5rem;
+}

@@ -1,4 +1,4 @@
-import { Component, output, signal  } from '@angular/core';
+import { Component, effect, input, output, signal  } from '@angular/core';
 
 @Component({
   selector: 'app-agregar-proveedor',
@@ -10,11 +10,21 @@ export class AgregarProveedorComponent {
   nombre = signal<string>('');
   telefono = signal<string>('');
 
+  nombreInicial=input<string>('');
+  telefonoInicial=input<string>('');
+
   cerrar = output<void>();
   cancelar = output<void>();
   // Este output manda un objeto con los dos campos juntos, en vez de emitir cada campo por separado,
   // asi el padre recibe todo en un solo evento
   aceptar = output<{ nombre: string; telefono: string }>();
+
+  constructor(){
+    effect(()=>{
+      this.nombre.set(this.nombreInicial());
+      this.telefono.set(this.telefonoInicial());
+    })
+  }
 
   actualizarNombre(evento: Event): void {
     this.nombre.set((evento.target as HTMLInputElement).value);

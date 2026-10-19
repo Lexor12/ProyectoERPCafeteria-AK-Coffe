@@ -1,10 +1,10 @@
 <section class="auth">
     @if (login) {
-        <app-login (cambiarVista)="login = false"></app-login>
+        <app-register (cambiarVista)="login = false"></app-register>
         <!-- Aqui en vez de tener que crear una función dentro de auth, para solo hacer un cambio,
         decidí simplemente modificar la propiedad, la cual es pública -->
     } @else {
-        <app-register (cambiarVista)="login = true"></app-register>
+        <app-login (cambiarVista)="login = true"></app-login>
         <!-- Aqui ocurre lo mismo de arriba, al momento de actualizar la variable se vuelve a checar la vista y se muestra el seleccionado -->
     }
 </section>

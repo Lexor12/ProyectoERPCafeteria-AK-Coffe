@@ -20,8 +20,8 @@
 .producto__imagen {
     width: 300px;
     height: 100%;
-    min-height: 200px;
-    max-height: 320px;
+    max-height: 200px;
+    max-width: 221px;
     border-radius: 8px;
 }
 

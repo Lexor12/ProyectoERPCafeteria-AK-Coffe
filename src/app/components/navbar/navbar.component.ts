@@ -1,7 +1,8 @@
-import { Component,inject,Inject } from '@angular/core';
+import { Component,inject,Inject, OnInit, signal } from '@angular/core';
 import { RouterLink ,RouterLinkActive} from '@angular/router';
-import { SesionService } from '../../Services/sesion.service';
+
 import { Router } from '@angular/router';
+import { AuthService } from '../../Services/auth.service';
 @Component({
   selector: 'app-navbar',
   imports: [RouterLink,RouterLinkActive],
@@ -9,9 +10,11 @@ import { Router } from '@angular/router';
   styleUrl: './navbar.component.css',
 })
 export class NavbarComponent {
+  
   constructor(private router:Router){}
+  
   //Este recibe la instancia singletone del sistema para identificar si hay un usuario logueado en el sistema
-  sesionService=inject(SesionService)
+  authService=inject(AuthService)
   rutasCliente=[
     { label: 'Catálogo', path: '/tienda' },
     { label: 'Carrito', path: '/carrito' },
@@ -25,7 +28,7 @@ export class NavbarComponent {
     { label: 'Pedidos', path: '/admin/pedidos' },
   ];
   cerrarSesion(): void{
-    this.sesionService.cerrarSesion()//Llamamos el metodo de cerrar sesión, nadamás
-    this.router.navigate(['/'])
+    this.authService.cerrarSesion();
+    this.router.navigate(['/']);
   }
 }

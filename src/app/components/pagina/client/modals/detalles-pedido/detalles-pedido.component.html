@@ -27,10 +27,12 @@
         <div class="detalle-pedido__detalles">
             <p class="detalle-pedido__etiqueta">IVA (16%): <span class="detalle-pedido__dato">$ {{ iva().toFixed(2) }}</span></p>
                     <p class="detalle-pedido__etiqueta">Precio Total: <span class="detalle-pedido__dato">$ {{ precioTotal().toFixed(2) }}</span></p>
-                    <p class="detalle-pedido__etiqueta">Proceso: <span class="detalle-pedido__dato">{{ proceso() }}</span></p>
-                    <p class="detalle-pedido__etiqueta">Estado: <span class="detalle-pedido__dato">{{ estado() }}</span></p>
+                    <p class="detalle-pedido__etiqueta">Estado de Entrega: <span class="detalle-pedido__dato">{{ proceso() }}</span></p>
+                    <p class="detalle-pedido__etiqueta">Estado de Pedido: <span class="detalle-pedido__dato">{{ estado() }}</span></p>
+                    <p class="detalle-pedido__etiqueta">Fecha de Compra: <span class="detalle-pedido__dato">{{ fechaCompra() }}</span></p>
         </div>
     </div>
+    
     <h3 class="detalle-pedido__seccion-titulo">Detalles Cliente:</h3>
     <div class="detalle-pedido__seccion">
         <p class="detalle-pedido__etiqueta">Nombre: <span class="detalle-pedido__dato">{{ nombreCliente() }}</span> </p>
@@ -49,5 +51,6 @@
         <p class="detalle-pedido__etiqueta">Teléfono: <span class="detalle-pedido__dato">{{ telefonoTienda() }}</span> </p>
         <p class="detalle-pedido__etiqueta">Domicilio Fiscal: <span class="detalle-pedido__dato">{{ domicilioFiscalTienda() }}</span> </p>
         <p class="detalle-pedido__etiqueta">Régimen Fiscal: <span class="detalle-pedido__dato">{{ regimenFiscalTienda() }}</span> </p>
+        <div class="detalle-pedido__separador"></div>
     </div>
 </article>

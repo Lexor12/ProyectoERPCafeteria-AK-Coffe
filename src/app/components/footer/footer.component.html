@@ -1,0 +1,15 @@
+<footer class="footer">
+    <div class="footer__contenido">
+        <div class="footer__marca">
+            <p class="footer__nombre">AK Coffee</p>
+            <p class="footer__detalle">Av. Siempre Viva 123, Zapopan, Jalisco</p>
+            <p class="footer__detalle">Tel. 33 1234 5678</p>
+            <p class="footer__detalle">Email. akcoffe.contacto@gmail.com</p>
+        </div>
+        <nav class="footer__enlaces">
+            <a [routerLink]="['/terminos-y-condiciones']" routerLinkActive="router-link-active">Términos y Condiciones</a>
+            <a [routerLink]="['/aviso-de-privacidad']" routerLinkActive="router-link-active">Aviso de Privacidad</a>
+        </nav>
+    </div>
+    <p class="footer__copyright">&copy; {{ anio }} AK Coffee. Todos los derechos reservados.</p>
+</footer>

@@ -110,7 +110,7 @@ export class AsistenciasTrabajadorRhComponent implements OnInit{
     this.fechaAsistencia.set('');
   }
 
-  clickDescargarNomina(): void {
+  clickCalcularNomina(): void {
     if (!this.fechaInicio() || !this.fechaFin()) {
       alert('Falta la fecha de inicio o la fecha de fin para calcular la nomina');
       return;
@@ -118,12 +118,6 @@ export class AsistenciasTrabajadorRhComponent implements OnInit{
 
     this.nominaService.calcularNomina(this.idTrabajador(), this.fechaInicio(), this.fechaFin()).subscribe({
       next: (nomina: any) => {
-        // Por ahora solo mostramos los datos calculados en el resumen, la generacion
-        // del comprobante en XML y su descarga real todavia falta hacerse
-        if (nomina.mensaje) {
-          console.log(nomina);
-          return;
-        }
         this.diasTrabajados.set(nomina.diasTrabajados);
         this.salarioDiario.set(nomina.salarioDiario);
         this.totalAPagar.set(nomina.totalAPagar);

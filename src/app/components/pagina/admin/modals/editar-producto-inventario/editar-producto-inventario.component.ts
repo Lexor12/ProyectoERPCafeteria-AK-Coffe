@@ -7,12 +7,12 @@ import { Component, input, output, signal, effect } from '@angular/core';
   styleUrl: './editar-producto-inventario.component.css',
 })
 export class EditarProductoInventarioComponent {
-  idProducto = input.required<string>();
+  idProducto= input<string>('');
   nombreInicial = input<string>('');
   descripcionInicial = input<string>('');
   precioInicial = input<number>(0);
   imagenUrlInicial = input<string>('images/sin-foto.png');
-
+  
   nombre = signal<string>('');
   descripcion = signal<string>('');
   precioUnitario = signal<number>(0);
@@ -21,6 +21,7 @@ export class EditarProductoInventarioComponent {
   imagenPreview = signal<string>('images/sin-foto.png');
   //Aqui se almacena la imagen pero en base 64
   imagenBase64 = signal<string | null>(null);
+
 
   constructor() {
     effect(() => {// Sincroniza los valores iniciales de los inputs cuando cambian, o sea cuando editamos

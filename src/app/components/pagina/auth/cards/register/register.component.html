@@ -9,58 +9,46 @@
 
     <div class="card-registro__formulario">
         <h2 class="card-registro__titulo">Registrarse</h2>
-        <!-- Mismo caso que en login, [formGroup] conecta el form completo con formularioRegistro,
-        y (ngSubmit) espera hasta que se le de submit para correr registrarCliente() -->
-        <form [formGroup]="formularioRegistro" (ngSubmit)="registrarCliente()">
+        <form (submit)="registrarCliente($event)">
             <div class="card-registro__campo">
                 <label class="card-registro__etiqueta" for="nombre">Nombre:</label>
-                <input class="card-registro__input" type="text" id="nombre" formControlName="nombre" placeholder="John Doe">
-                <!-- .invalid checa si el campo no cumple sus validators, .touched checa si el usuario
-                ya interactuó con él (o si se forzó con markAllAsTouched) -->
-                @if (formularioRegistro.get('nombre')?.invalid && formularioRegistro.get('nombre')?.touched) {
-                    <p class="card-registro__error">El nombre debe tener entre 2 y 50 letras, sin números.</p>
-                }
+                <input class="card-registro__input" type="text" id="nombre" (input)="actualizarNombre($event)" placeholder="John Doe" maxlength="50" required>
             </div>
             <div class="card-registro__campo">
                 <label class="card-registro__etiqueta" for="apellido">Apellido:</label>
-                <input class="card-registro__input" type="text" id="apellido" formControlName="apellido" placeholder="López Pérez">
-                @if (formularioRegistro.get('apellido')?.invalid && formularioRegistro.get('apellido')?.touched) {
-                    <p class="card-registro__error">El apellido debe tener entre 2 y 50 letras, sin números.</p>
-                }
+                <input class="card-registro__input" type="text" id="apellido" (input)="actualizarApellido($event)"  placeholder="López Pérez" maxlength="50" required>
             </div>
             <div class="card-registro__campo">
                 <label class="card-registro__etiqueta" for="correo">Correo Electrónico:</label>
-                <input class="card-registro__input" type="email" id="correo" formControlName="correo" placeholder="correo@ejemplo.com">
-                @if (formularioRegistro.get('correo')?.invalid && formularioRegistro.get('correo')?.touched) {
-                    <p class="card-registro__error">Ingresa un correo válido.</p>
-                }
+                <input class="card-registro__input" type="email" id="correo" (input)="actualizarCorreo($event)" placeholder="correo@ejemplo.com" required>
             </div>
             <div class="card-registro__campo">
                 <label class="card-registro__etiqueta" for="telefono">Teléfono:</label>
-                <input class="card-registro__input" type="tel" id="telefono" formControlName="telefono" placeholder="3320394895">
-                @if (formularioRegistro.get('telefono')?.invalid && formularioRegistro.get('telefono')?.touched) {
-                    <p class="card-registro__error">El teléfono debe tener exactamente 10 dígitos.</p>
-                }
+                <input class="card-registro__input" type="tel" id="telefono" (input)="actualizarTelefono($event)" maxlength="10" placeholder="3320394895" required>
+
             </div>
             <div class="card-registro__campo">
                 <label class="card-registro__etiqueta" for="contrasena">Contraseña:</label>
-                <input class="card-registro__input" type="password" id="contrasena" formControlName="contrasena" placeholder="contraseña">
-                @if (formularioRegistro.get('contrasena')?.invalid && formularioRegistro.get('contrasena')?.touched) {
-                    <p class="card-registro__error">Mínimo 8 caracteres, con al menos una mayúscula y un número.</p>
-                }
+                <input class="card-registro__input" type="password" id="contrasena" (input)="actualizarContrasena($event)" maxlength="64" placeholder="contraseña" required>
+
             </div>
             <div class="card-registro__campo">
                 <label class="card-registro__etiqueta" for="confirmarContrasena">Confirmar Contraseña:</label>
-                <input class="card-registro__input" type="password" id="confirmarContrasena" formControlName="confirmarContrasena" placeholder="contraseña">
-                <!-- Este es distinto: el error "contrasenasNoCoinciden" vive en el FormGroup completo,
-                no en un FormControl individual, porque tu validador lo pusiste a nivel del grupo -->
-                @if (formularioRegistro.errors?.['contrasenasNoCoinciden'] && formularioRegistro.get('confirmarContrasena')?.touched) {
-                    <p class="card-registro__error">Las contraseñas no coinciden.</p>
-                }
+                <input class="card-registro__input" type="password" id="confirmarContrasena" (input)="actualizarContrasenaValidacion($event)" maxlength="64" placeholder="contraseña" required>
+            </div>
+            <!-- Campo de Términos y Condiciones -->
+            <div class="card-registro__campo-terminos">
+                <input type="checkbox" id="terminos" (change)="actualizarTerminos($event)" required>
+                <label for="terminos" style="font-size: 0.9rem;">
+                    He leído y aceptado los <a [routerLink]="['/terminos-y-condiciones']" routerLinkActive="router-link-active">Términos y Condiciones</a> y el <a [routerLink]="['/aviso-de-privacidad']" routerLinkActive="router-link-active">Aviso de Privacidad</a>
+                </label>
             </div>
             <button class="card-registro__boton-crear-cuenta" type="submit">Crear Cuenta</button>
             @if (mensajeError()) {
                 <p class="card-registro__error">{{ mensajeError() }}</p>
+            }
+            @if (mensajeExito()) {
+                <p class="card-registro__error" style="color: green;">{{ mensajeError() }}</p>
             }
         </form>
     </div>

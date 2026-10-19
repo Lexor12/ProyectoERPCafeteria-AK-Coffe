@@ -82,6 +82,8 @@
 }
 .modal-surtir-producto__separador {
     border-bottom: 1px solid var(--cards--border);
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 .modal-surtir-producto__datos {
     flex: 1;

@@ -8,10 +8,13 @@ import { ProductoProveedorService } from '../../../../Services/productoProveedor
 import { ProveedorService } from '../../../../Services/proveedor.service';
 import { CompraService } from '../../../../Services/compra.service';
 import { ProductoService } from '../../../../Services/producto.service';
+import { Producto } from '../../../../Models/producto.model';
+import { Proveedor } from '../../../../Models/proveedor';
+import { EditarProductoProveedorComponent } from '../modals/editar-producto-proveedor/editar-producto-proveedor.component';
 
 @Component({
   selector: 'app-proveedores.component',
-  imports: [ProductoProveedorComponent,SurtirProductoProveedorComponent,AgregarProveedorComponent,AgregarProductoProveedorComponent ],
+  imports: [ProductoProveedorComponent,SurtirProductoProveedorComponent,AgregarProveedorComponent,AgregarProductoProveedorComponent,EditarProductoProveedorComponent ],
   templateUrl: './proveedores.component.html',
   styleUrl: './proveedores.component.css',
 })
@@ -23,13 +26,16 @@ export class ProveedoresComponent implements OnInit{
     private productoService:ProductoService
   ) {}
   // Ya no relleno esto a mano, se llena con la lista real de proveedores del backend
-  proveedores = signal<{ idProveedor: string; nombre: string }[]>([]);
+  proveedores = signal<Proveedor[]>([]);
 
   // Igual, arranca vacío hasta que se elija un proveedor y se pidan sus productos
   productos = signal<ProductoProveedor[]>([]);
+  productosInventario=signal<Producto[]>([])
+  editandoAProveedor=signal<boolean>(false);
+  editandoProductoProveedor=signal<ProductoProveedor | null>(null);
 
   // Vacío significa "Todos" en el filtro (ver el <option value=""> del select en el HTML)
-  proveedorSeleccionado = signal<string>('');
+  proveedorSeleccionado = signal<Proveedor | null>(null);
   buscador = signal<string>('');
 
   // Guarda el producto sobre el que se dio clic en "Surtir", el HTML revisa esta señal
@@ -42,7 +48,7 @@ export class ProveedoresComponent implements OnInit{
   // se recalcula solo cuando cambia alguna de las tres señales que usa adentro
   productosFiltrados = computed(() => {
     return this.productos().filter(p =>
-      (this.proveedorSeleccionado() === '' || p.idProveedor === this.proveedorSeleccionado()) &&
+      (this.proveedorSeleccionado() === null || p.idProveedor === this.proveedorSeleccionado()?.idProveedor) &&
       p.nombre.toLowerCase().includes(this.buscador().toLowerCase())
     );
   });
@@ -64,18 +70,28 @@ export class ProveedoresComponent implements OnInit{
     });
   }
   cargarProductosProovedores():void{
+    this.productoService.obtenerProductos().subscribe({
+      next:(productos)=>{
+        this.productosInventario.set(productos)
+      },
+      error: (error)=>{
+        alert('Error al cargar los productos de los proveedores')
+      }
+    })
     this.productoProveedorService.obtenerProductosProveedor().subscribe({
       next: (productos)=>{
         this.productos.set(productos)
       },
       error: (error)=>{
-        alert('Error al cargar los producots de los proveedores')
+        alert('Error al cargar los productos de los proveedores')
       }
     })
   }
 
   actualizarProveedor(evento: Event): void {
-    this.proveedorSeleccionado.set((evento.target as HTMLSelectElement).value);
+    const proveedor=this.proveedores().find(p=>p.idProveedor===(evento.target as HTMLSelectElement).value)
+    if(proveedor)
+    this.proveedorSeleccionado.set(proveedor);
   }
 
   actualizarBuscador(evento: Event): void {
@@ -105,9 +121,50 @@ export class ProveedoresComponent implements OnInit{
       }
     });
   }
-
+  editarProductoProveedor(datos: { idProducto: string; idProveedor: string }):void{
+    const producto = this.productos().find(p =>
+      p.idProducto === datos.idProducto && p.idProveedor === datos.idProveedor
+    );
+    this.editandoProductoProveedor.set(producto ?? null);
+  }
   cerrarModalSurtir(): void {
     this.productoASurtir.set(null);
+  }
+  cerrarModalEditar():void{
+    this.editandoProductoProveedor.set(null);
+  }
+  confirmarEdicion(datos: { idProductoProveedor: string; nombre: string; descripcion: string; precioUnitario: number; imagenBase64: string | null }): void {
+    this.productoProveedorService.editarProductoProveedor(datos.idProductoProveedor, {
+      nombre: datos.nombre,
+      descripcion: datos.descripcion,
+      precioUnitario: datos.precioUnitario
+    }).subscribe({
+      next: () => {
+        const encontrado = this.productos().find(p => p.idProductoProveedor === datos.idProductoProveedor);
+        if (datos.imagenBase64 && encontrado) {
+          this.productoService.subirImagenProducto(encontrado.idProducto, datos.imagenBase64).subscribe({
+            next: () => {
+              alert('Se actualizo correctamente el producto del proveedor');
+              this.finalizarEdicion()}
+              ,
+            error: () => {
+              alert('Se guardaron los datos, pero no se pudo subir la imagen');
+              this.finalizarEdicion();
+            }
+          });
+        } else {
+          this.finalizarEdicion();
+        }
+      },
+      error: (error) => {
+        if (error.status === 409) alert('Ya existe un producto con ese nombre');
+        else alert('Error al editar el producto del proveedor');
+      }
+    });
+  }
+  finalizarEdicion(): void {
+    this.editandoProductoProveedor.set(null);
+    this.cargarProductosProovedores();
   }
 
   // Ya no lee this.proveedorSeleccionado(), el idProveedor viene directo del modal,
@@ -190,14 +247,51 @@ export class ProveedoresComponent implements OnInit{
     }
   }
   clickAgregarProveedor(): void {
+    this.editandoAProveedor.set(false);
     this.mostrarModalAgregarProveedor.set(true);
   }
-
+  clickEditarProveedor():void{
+    this.editandoAProveedor.set(true);
+    this.mostrarModalAgregarProveedor.set(true);
+  }
+  clickDesactivarProveedor():void{
+    const valoresProveedor=this.proveedorSeleccionado()
+    if(valoresProveedor)this.proveedorService.desactivarProveedor(valoresProveedor.idProveedor).subscribe({
+      next:()=>{
+        this.cargarProveedores();
+        this.cargarProductosProovedores();
+        this.proveedorSeleccionado.set(null)
+        alert("Proveedor desactivado con exito!")
+      },
+      error:()=>{
+        alert("Error al desactivar el proveedor")
+      }
+    })
+  }
   cerrarModalProveedor(): void {
+    this.editandoAProveedor.set(false);
     this.mostrarModalAgregarProveedor.set(false);
   }
 
   guardarProveedor(datos: { nombre: string; telefono: string }): void {
+    if(this.editandoAProveedor()){
+      const valoresProveedor=this.proveedorSeleccionado()
+      if(valoresProveedor)
+      this.proveedorService.editarProveedor(valoresProveedor.idProveedor,datos.nombre,datos.telefono).subscribe({
+        next:()=>{
+          this.cargarProveedores();
+          this.cargarProductosProovedores();
+          this.cerrarModalProveedor();
+          this.proveedorSeleccionado.set(null)
+          alert("Proveedor actualizado con exito!")
+        },
+        error:()=>{
+          alert("Error al actualizar el proveedor")
+        }
+      })
+      this.editandoAProveedor.set(false);
+      return;
+    }
     this.proveedorService.crearProveedor(datos.nombre, datos.telefono).subscribe({
       next: () => {
         this.mostrarModalAgregarProveedor.set(false);

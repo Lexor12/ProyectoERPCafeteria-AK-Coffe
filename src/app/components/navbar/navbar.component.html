@@ -2,7 +2,9 @@
     <nav class="navbar__contenedor">
         <div class="navbar__marca"> 
             <div class="navbar__logo"> 
-                <img src="ak-logo.ico" class="navbar__logo-imagen">
+                <a [routerLink]="['/']" routerLinkActive="router-link-active">
+                    <img src="ak-logo.ico" class="navbar__logo-imagen">
+                </a>
             </div>
             <div class="navbar__titulo"> 
                 <h1 class="navbar__titulo-texto">AK Coffee</h1>
@@ -10,22 +12,22 @@
         </div>
         <div class="navbar__rutas"> 
             <!-- Para saber que rutas mostrar, verificamos el rol y si existe una sesión activa -->
-            @if (!sesionService.usuarioActual()){
+            @if (!authService.sesionActiva()){
                 <a class="navbar__boton navbar__enlace--cta" [routerLink]="['/auth']" routerLinkActive="router-link-active">Entrar</a>
             }
-            @else if (sesionService.usuarioActual()?.rol==='cliente'){ 
+            @else if (authService.rolActual() === 'cliente'){ 
                 @for (r of rutasCliente; track r.path){
                     <a class="navbar__enlace navbar__enlace--cta" [routerLink]="[r.path]" routerLinkActive="router-link-active">{{r.label}}</a>
                 }
                 <!-- Mostramos todas las rutas del rol cliente por defecto, las cuales definimos en el .ts -->
             }
-            @else if (sesionService.usuarioActual()?.rol==='administrador'){
+            @else if (authService.rolActual() === 'administrador'){
                 @for (r of rutasAdmin; track r.path){
                     <a class="navbar__enlace navbar__enlace--cta" [routerLink]="[r.path]" routerLinkActive="router-link-active">{{r.label}}</a>
                 }
                 <!-- Mostramos todas las rutas del rol administrador por defecto, las cuales definimos en el .ts -->
             }
-            @if (sesionService.usuarioActual()){
+            @if (authService.sesionActiva()){
                 <div>
                     <button class="navbar__boton " (click)="cerrarSesion()">Cerrar sesión</button>
                 </div>

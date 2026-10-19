@@ -14,7 +14,7 @@ export class DetallesPedidoComponent {
   
   entregado = input.required<boolean>();
   cancelado = input.required<boolean>();
-
+  fechaCompra = input.required<string>();
 
   nombreCliente = input.required<string>();
   apellidoCliente = input.required<string>();

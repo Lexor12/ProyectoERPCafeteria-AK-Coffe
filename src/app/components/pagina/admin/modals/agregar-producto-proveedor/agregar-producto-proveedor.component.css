@@ -214,6 +214,8 @@ select.modal-agregar-producto__input {
 }
 .modal-agregar-producto__separador {
     border-bottom: 1px solid var(--cards--border);
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .modal-agregar-producto__badge {

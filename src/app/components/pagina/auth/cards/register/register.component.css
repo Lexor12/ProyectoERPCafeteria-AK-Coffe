@@ -151,3 +151,9 @@
     font-size: smaller;
     color: var(--status--danger);
 }
+.card-registro__campo-terminos{
+    display: flex; 
+    align-items: center; 
+    gap: 8px; 
+    margin-bottom: 1rem;
+}

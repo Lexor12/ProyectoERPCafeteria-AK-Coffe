@@ -1,25 +1,21 @@
 <div class="card-login">
     <div class="card-login__formulario">
         <h2 class="card-login__titulo">Iniciar Sesión</h2>
-        <!-- [formGroup] conecta este <form> con el FormGroup que arme en el .ts, o sea, todo lo que
-        pase aqui adentro (los inputs) se va a ir guardando ahi -->
-        <!-- (ngSubmit) es el evento que se dispara cuando alguien le da submit al form (le da enter o
-        aprieta el boton type="submit"), y ya se encarga de esperar a que el usuario termine de llenar
-        todo, no como hacerlo campo por campo con (input) -->
-        <form [formGroup]="formularioLogin" (ngSubmit)="iniciarSesion()">
+        <form (submit)="iniciarSesion($event)">
             <div class="card-login__campo">
                 <label class="card-login__etiqueta" for="correo">Correo Electrónico:</label>
-                <!-- formControlName conecta este input especificamente con el FormControl "correo"
-                que defini arriba, tiene que llamarse exactamente igual o no los relaciona -->
-                <input class="card-login__input" type="email" id="correo" formControlName="correo" placeholder="correo@ejemplo.com">
+                <input class="card-login__input" type="email" id="correo" (input)="actualizarCorreo($event)" placeholder="correo@ejemplo.com" required>
             </div>
             <div class="card-login__campo">
                 <label class="card-login__etiqueta" for="contrasena">Contraseña:</label>
-                <input class="card-login__input" type="password" id="contrasena" formControlName="contrasena" placeholder="contraseña">
+                <input class="card-login__input" type="password" id="contrasena" (input)="actualizarContrasena($event)" placeholder="contraseña" maxlength="64" required>
             </div>
             <button class="card-login__boton-entrar" type="submit">Entrar</button>
             @if (mensajeError()) {
                 <p class="card-login__error">{{ mensajeError() }}</p>
+            }
+            @if (mensajeExito()) {
+                <p class="card-registro__error" style="color: green;">{{ mensajeError() }}</p>
             }
         </form>
     </div>

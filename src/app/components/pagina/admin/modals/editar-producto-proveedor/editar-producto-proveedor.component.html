@@ -1,0 +1,39 @@
+<article class="modal-editar-producto-proveedor">
+    <div class="modal-editar-producto-proveedor__encabezado">
+        <h2 class="modal-editar-producto-proveedor__titulo">Agregar / Editar Producto</h2>
+        <button class="modal-editar-producto-proveedor__cerrar" type="button" (click)="clickCerrar()">X</button>
+    </div>
+
+    <div class="modal-editar-producto-proveedor__separador"></div>
+
+    <div class="modal-editar-producto-proveedor__producto">
+        <div class="modal-editar-producto-proveedor__imagen-contenedor">
+            <div class="modal-editar-producto-proveedor__imagen">
+                <img [src]="imagenPreview()">
+            </div>
+            <label class="modal-editar-producto-proveedor__badge" for="inputImagenEditar">Nueva</label>
+            <input id="inputImagenEditar" type="file" accept="image/*" (change)="actualizarImagen($event)" hidden>
+        </div>
+        <div class="modal-editar-producto-proveedor__datos">
+            <div class="modal-editar-producto-proveedor__campo">
+                <label class="modal-editar-producto-proveedor__etiqueta">Nombre:</label>
+                <input class="modal-editar-producto-proveedor__input" type="text" [value]="nombre()" placeholder="Escriba el nombre..." (input)="actualizarNombre($event)">
+            </div>
+            <div class="modal-editar-producto-proveedor__campo">
+                <label class="modal-editar-producto-proveedor__etiqueta">Descripción:</label>
+                <input class="modal-editar-producto-proveedor__input" type="text" [value]="descripcion()" placeholder="Descripción..." (input)="actualizarDescripcion($event)">
+            </div>
+            <div class="modal-editar-producto-proveedor__campo">
+                <label class="modal-editar-producto-proveedor__etiqueta">Precio Unitario:</label>
+                <input class="modal-editar-producto-proveedor__input" type="number" [value]="precioUnitario()" placeholder="$100" (input)="actualizarPrecioUnitario($event)">
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-editar-producto-proveedor__separador"></div>
+
+    <div class="modal-editar-producto-proveedor__acciones">
+        <button class="modal-editar-producto-proveedor__boton-cancelar" type="button" (click)="clickCancelar()">Cancelar</button>
+        <button class="modal-editar-producto-proveedor__boton-aceptar" type="button" (click)="clickAceptar()">Aceptar</button>
+    </div>
+</article>

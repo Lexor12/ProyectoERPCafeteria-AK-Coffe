@@ -74,3 +74,26 @@
     align-items: stretch; 
     gap: 25px;
 }
+
+.inventario__boton-agregar {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--cards--button-primary-bg);
+    color: var(--cards--button-primary-text);
+    border: none;
+    border-radius: 50%;
+    font-size: 18px;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.inventario__boton-agregar:hover {
+    transform: scale(1.05);
+    opacity: 0.92;
+}

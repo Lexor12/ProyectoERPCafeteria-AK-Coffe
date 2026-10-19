@@ -4,8 +4,8 @@ import { isPlatformBrowser,CommonModule } from '@angular/common';
 import { ProductoCarrito } from '../../../../Models/productoCarrito';
 import { ProductoCarritoService } from '../../../../Services/productoCarrito.service';
 import { VentaService } from '../../../../Services/venta.service';
-import { SesionService } from '../../../../Services/sesion.service';
 import { Router } from '@angular/router';
+import { AuthService } from '../../../../Services/auth.service';
 
 @Component({
   selector: 'app-carrito.component',
@@ -14,7 +14,7 @@ import { Router } from '@angular/router';
   styleUrl: './carrito.component.css',
 })
 export class CarritoComponent implements OnInit{
-  sesionService=inject(SesionService)
+  authService=inject(AuthService)
 
   platformId=inject(PLATFORM_ID)
   constructor(private productoCarritoService: ProductoCarritoService,private ventaService:VentaService,private router:Router) {}
@@ -47,8 +47,7 @@ export class CarritoComponent implements OnInit{
     if (this.items().length === 0) {
       return;
     }
-    const usuario=this.sesionService.usuarioActual()
-    if(!usuario)return
+    if(!this.authService.estaAutenticado())return
 
     // Antes de mandarlo a PayPal, armo un arreglo simple solo con lo que el backend necesita
     // saber: qué producto y cuánta cantidad, no hace falta mandarle todo el objeto completo
@@ -61,15 +60,20 @@ export class CarritoComponent implements OnInit{
       next: (resultado) => {
         if (resultado.valido) {
           // aqui se redirige a PayPal en un futurito
-          this.ventaService.registrarVenta(usuario.idUsuario, this.rfc(), itemsParaValidar).subscribe({
+          this.ventaService.registrarVenta(this.rfc(), itemsParaValidar).subscribe({
             next: (respuestaVenta) => {
-              if (respuestaVenta.registrada) {
-                // Aqui ya podrías vaciar el carrito y redirigir a "Mis pedidos"
-                if(!isPlatformBrowser(this.platformId))return
+              if (respuestaVenta.iniciado && respuestaVenta.enlacePago) {
+                if (!isPlatformBrowser(this.platformId)) return;
+                // Guardamos temporalmente el orderID y los datos por si los necesitamos al regresar
+                const sesion=respuestaVenta.orderID;
+                if(sesion)
+                sessionStorage.setItem('paypal_order_id', sesion);
+                sessionStorage.setItem('paypal_items', JSON.stringify(itemsParaValidar));
+                sessionStorage.setItem('paypal_rfc', this.rfc());
+                // Vaciamos el carrito local
                 localStorage.setItem('mi_carrito', JSON.stringify([]));
-                this.router.navigate(['/pedidos']);
-              } else {
-                alert('No se pudo registrar la venta');
+                // REDIRIGIMOS A PAYPAL
+                window.location.href = respuestaVenta.enlacePago;
               }
             },
             error: (error) => {
@@ -121,9 +125,25 @@ export class CarritoComponent implements OnInit{
     */
     if(!isPlatformBrowser(this.platformId))return
     const carritoMinimo = JSON.parse(localStorage.getItem('mi_carrito') || '[]');
+    let huboAjuste = false; // Para saber si hace falta reescribir el localStorage al final
+
     const carritoCompleto: ProductoCarrito[] = carritoMinimo.map((itemMinimo: { idProducto: string; cantidad: number }) => {
-      // Ya no busco en un arreglo fijo, ahora busco en la lista que llegó del backend
       const productoEncontrado = this.productosOficiales().find(p => p.idProducto === itemMinimo.idProducto);
+
+      //si la cantidad guardada excede el stock disponible actual, la recortamos
+      // al máximo disponible. Si el producto ya no existe o no tiene stock, se tratará
+      // como 0 y luego se descarta del carrito por completo (ver filter de abajo)
+      let cantidadAjustada = itemMinimo.cantidad;
+      if (productoEncontrado) {
+        if (cantidadAjustada > productoEncontrado.stockDisponible) {
+          cantidadAjustada = productoEncontrado.stockDisponible;
+          huboAjuste = true;
+        }
+      } else {
+        cantidadAjustada = 0;
+        huboAjuste = true;
+      }
+
       return {
         ...(productoEncontrado || {
           idProducto: itemMinimo.idProducto,
@@ -133,10 +153,25 @@ export class CarritoComponent implements OnInit{
           stockDisponible: 0,
           imagenUrl: ''
         }),
-        cantidad: itemMinimo.cantidad
+        cantidad: cantidadAjustada
       };
-    });
+    }).filter((item: ProductoCarrito) => item.cantidad > 0);
+    //ningún producto en el carrito debe quedar con cantidad menor a 1, así que
+    // si algo quedó en 0 (sin stock o producto inexistente), se elimina del carrito directo
+
     this.items.set(carritoCompleto);
+
+    // Si hubo algún ajuste (recorte de cantidad o eliminación por falta de stock),
+    // guardamos el carrito ya corregido de vuelta en localStorage, para que quede
+    // persistido y no se vuelva a mostrar la cantidad vieja al recargar la página
+    if (huboAjuste) {
+      const carritoParaGuardar = carritoCompleto.map((item: ProductoCarrito) => ({
+        idProducto: item.idProducto,
+        cantidad: item.cantidad
+      }));
+      localStorage.setItem('mi_carrito', JSON.stringify(carritoParaGuardar));
+      alert('Algunos productos de tu carrito fueron ajustados porque ya no tienen suficiente stock disponible');
+    }
   }
   eliminarDelCarrito(idProducto:string): void {//Para eliminar un producto del carrito lo que se hace es obtener los elementos del localstorage
     if(!isPlatformBrowser(this.platformId))return

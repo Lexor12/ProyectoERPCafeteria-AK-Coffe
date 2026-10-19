@@ -15,8 +15,15 @@ import { InventarioComponent } from './components/pagina/admin/inventario/invent
 import { PedidosAdminComponent } from './components/pagina/admin/pedidos-admin/pedidos-admin.component';
 import { ProveedoresComponent } from './components/pagina/admin/proveedores/proveedores.component';
 import { RhComponent } from './components/pagina/admin/rh/rh.component';
+import { authGuard } from './Guards/auth/auth-guard';
+import { roleGuard } from './Guards/role/role-guard';
+import { PagoExitosoComponent } from './components/pagina/client/pago-exitoso/pago-exitoso.component';
+import { PagoRechazadoComponent } from './components/pagina/client/pago-rechazado/pago-rechazado.component';
+import { TerminosYCondicionesComponent } from './components/pagina/client/terminos-y-condiciones/terminos-y-condiciones.component';
+import { AvisoDePrivacidadComponent } from './components/pagina/client/aviso-de-privacidad/aviso-de-privacidad.component';
 
 export const routes: Routes = [
+    //Ruta Pública: si entran a la raíz, van directo al landing page
     {
         path:'',component:LandingComponent
     },
@@ -24,27 +31,65 @@ export const routes: Routes = [
         path:'auth',component:AuthComponent
     },
     {
-        path:'tienda',component:CatalogoComponent
+        path:'terminos-y-condiciones',component:TerminosYCondicionesComponent,
+        //canActivate:[authGuard,roleGuard],
+        //data:{roles:['cliente']}
     },
     {
-        path:'carrito',component:CarritoComponent
+        path:'aviso-de-privacidad',component:AvisoDePrivacidadComponent,
+        //canActivate:[authGuard,roleGuard],
+        //data:{roles:['cliente']}
+    },
+    //Ruta Protegida tipo Cliente: pasa primero authGuard y luego roleGuard
+    {
+        path:'tienda',component:CatalogoComponent,
+        canActivate:[authGuard,roleGuard],
+        data:{roles:['cliente']}
     },
     {
-        path:'pedidos',component:PedidosComponent
+        path:'carrito',component:CarritoComponent,
+        canActivate:[authGuard,roleGuard],
+        data:{roles:['cliente']}
     },
     {
-        path:'admin/pedidos',component:PedidosAdminComponent
+        path:'tienda/pago-exitoso',component:PagoExitosoComponent,
+        canActivate:[authGuard,roleGuard],
+        data:{roles:['cliente']}
     },
     {
-        path:'admin/inventario',component:InventarioComponent
+        path:'tienda/pago-rechazado',component:PagoRechazadoComponent,
+        canActivate:[authGuard,roleGuard],
+        data:{roles:['cliente']}
     },
     {
-        path:'admin/proveedores',component:ProveedoresComponent
+        path:'pedidos',component:PedidosComponent,
+        canActivate:[authGuard,roleGuard],
+        data:{roles:['cliente']}
+    },
+    //Ruta Protegida tipo Admin: pasa primero authGuard y luego roleGuard
+    {
+        path:'admin/pedidos',component:PedidosAdminComponent,
+        canActivate:[authGuard,roleGuard],
+        data:{roles:['administrador']}
     },
     {
-        path:'admin/finanzas',component:FinanzasContabilidadComponent
+        path:'admin/inventario',component:InventarioComponent,
+        canActivate:[authGuard,roleGuard],
+        data:{roles:['administrador']}
     },
     {
-        path:'admin/rh',component:RhComponent
+        path:'admin/proveedores',component:ProveedoresComponent,
+        canActivate:[authGuard,roleGuard],
+        data:{roles:['administrador']}
+    },
+    {
+        path:'admin/finanzas',component:FinanzasContabilidadComponent,
+        canActivate:[authGuard,roleGuard],
+        data:{roles:['administrador']}
+    },
+    {
+        path:'admin/rh',component:RhComponent,
+        canActivate:[authGuard,roleGuard],
+        data:{roles:['administrador']}
     },
 ];

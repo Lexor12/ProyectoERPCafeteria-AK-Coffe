@@ -8,6 +8,9 @@ NAVBAR COLORS
   --navbar--route-active: #8B5E3C; /* el link de la pantalla en la que estás parado, un tono más claro para que resalte */
   --navbar--button-bg: #4A2E1F; /* fondo del botón "Entrar" que va del lado derecho */
   --navbar--button-text: #FFFFFF; /* letras blancas de ese botón "Entrar" */
+  --footer--bg: #2b1a12; /*Fondo oscuro más intenso que el logo*/
+  --footer--text: #f3e9dc; /*Fondo oscuro más intenso que el logo*/
+  --footer--text-light: #d8c7b2; /*Fondo oscuro más intenso que el logo*/
 }
 
 /*

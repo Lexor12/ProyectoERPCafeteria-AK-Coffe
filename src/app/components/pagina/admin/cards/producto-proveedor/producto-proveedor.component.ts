@@ -18,11 +18,15 @@ export class ProductoProveedorComponent {
 
   surtir = output<{ idProducto: string; idProveedor: string }>();
   eliminar = output<{ idProducto: string; idProveedor: string }>();
+  editar=output<{ idProducto: string; idProveedor: string }>();
 
   clickSurtir(): void {
     this.surtir.emit({ idProducto: this.idProducto(), idProveedor: this.idProveedor() });
   }
   clickEliminar():void{
     this.eliminar.emit({ idProducto: this.idProducto(), idProveedor: this.idProveedor() });
+  }
+  clickEditar():void{
+    this.editar.emit({ idProducto: this.idProducto(), idProveedor: this.idProveedor() })
   }
 }

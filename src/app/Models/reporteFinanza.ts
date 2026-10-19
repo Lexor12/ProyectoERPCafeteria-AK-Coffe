@@ -1,9 +1,4 @@
-// Representa un solo punto de dato para la gráfica (por ejemplo, un día o un mes con su monto)
-export interface DatoFinanciero {
-    fecha: string; // yyyy-MM-dd, o el label que corresponda según el periodo (día/mes/año)
-    monto: number;
-}
-
+import { DatoFinanciero } from "./datoFinanciero.model";
 // Representa el reporte financiero completo que arma el backend según el rango de fechas,
 // esto NO es un pedido ni una compra individual, es el resultado ya calculado/agrupado
 // (el backend es quien suma todas las ventas y compras del rango, aquí solo llega el resultado)
@@ -15,6 +10,7 @@ export interface ReporteFinanza {
     balance: number;  // ingresos - egresos (aunque esto también se podría calcular en el front con computed)
     detalleVentas: DatoFinanciero[];  // para la gráfica de ventas
     detalleCompras: DatoFinanciero[]; // para la gráfica de compras
+    detalleNomina: DatoFinanciero[];  // para la gráfica de pagos de nómina
 }
 /*
 RAZÓN DE ESTO:

@@ -10,6 +10,10 @@
                     <option [value]="proveedor.idProveedor">{{ proveedor.nombre }}</option>
                 }
             </select>
+            @if (proveedorSeleccionado()!==null) {
+                <button class="proveedores__boton-nuevo-proveedor" type="button" (click)="clickEditarProveedor()">Editar proveedor</button>
+                <button class="proveedores__boton-nuevo-proveedor" type="button" (click)="clickDesactivarProveedor()">Desactivar proveedor</button>
+            }
             <button class="proveedores__boton-nuevo-proveedor" type="button" (click)="clickAgregarProveedor()">Nuevo proveedor</button>
         </div>
         <input class="proveedores__buscador" type="text" placeholder="Buscador..." (input)="actualizarBuscador($event)">
@@ -26,7 +30,8 @@
                 [precio]="producto.precio"
                 [imagenUrl]="producto.imagenUrl"
                 (surtir)="surtirProducto($event)"
-                (eliminar)="eliminarProductoProveedor($event)">
+                (eliminar)="eliminarProductoProveedor($event)"
+                (editar)="editarProductoProveedor($event)">
             </app-producto-proveedor>
         } @empty {
             <!--Igual que en inventario, avisamos al usuario en vez de dejar el grid vacío sin explicación-->
@@ -55,18 +60,41 @@ para que el usuario pueda elegir asociar el producto nuevo a un proveedor, o ele
 @if (mostrarModalAgregarProducto()) {
     <app-agregar-producto-proveedor
         [proveedores]="proveedores()"
-        [productosExistentes]="productos()"
+        [productosExistentes]="productosInventario()"
         (cerrar)="cerrarModalProducto()"
         (cancelar)="cerrarModalProducto()"
         (aceptar)="guardarProducto($event)">
     </app-agregar-producto-proveedor>
 }
+@if(editandoProductoProveedor(); as productoProveedor){
+    <app-editar-producto-proveedor
+        [idProductoProveedor]="productoProveedor.idProductoProveedor"
+        [nombreInicial]="productoProveedor.nombre"
+        [descripcionInicial]="productoProveedor.descripcion"
+        [precioInicial]="productoProveedor.precio"
+        [imagenUrlInicial]="productoProveedor.imagenUrl"
+        (cerrar)="cerrarModalEditar()"
+        (cancelar)="cerrarModalEditar()"
+        (aceptar)="confirmarEdicion($event)"
+    >
+    </app-editar-producto-proveedor>
+}
 
 <!--Modal de Agregar Proveedor, este no necesita ningún dato inicial porque siempre es para crear uno nuevo-->
 @if (mostrarModalAgregarProveedor()) {
-    <app-agregar-proveedor
-        (cerrar)="cerrarModalProveedor()"
-        (cancelar)="cerrarModalProveedor()"
-        (aceptar)="guardarProveedor($event)">
-    </app-agregar-proveedor>
+    @if (editandoAProveedor() && proveedorSeleccionado(); as proveedor) {
+        <app-agregar-proveedor
+            [nombreInicial]="proveedor.nombre"
+            [telefonoInicial]="proveedor.telefono"
+            (cerrar)="cerrarModalProveedor()"
+            (cancelar)="cerrarModalProveedor()"
+            (aceptar)="guardarProveedor($event)">
+        </app-agregar-proveedor>
+    } @else {
+        <app-agregar-proveedor
+            (cerrar)="cerrarModalProveedor()"
+            (cancelar)="cerrarModalProveedor()"
+            (aceptar)="guardarProveedor($event)">
+        </app-agregar-proveedor>
+    }
 }

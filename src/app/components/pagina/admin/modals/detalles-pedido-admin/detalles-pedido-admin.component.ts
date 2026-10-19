@@ -14,7 +14,7 @@ export class DetallesPedidoAdminComponent {
 
   nombreCliente = input.required<string>();
   apellidoCliente = input.required<string>();
-
+  fechaCompra = input.required<string>();
   cerrar = output<void>();
 
   subtotal = computed(() => this.productos().reduce((suma, p) => suma + p.subtotal, 0));

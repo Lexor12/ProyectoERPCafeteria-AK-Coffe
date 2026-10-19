@@ -60,6 +60,8 @@
 
 .modal-editar-producto__separador {
     border-bottom: 1px solid var(--cards--border);
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .modal-editar-producto__producto {

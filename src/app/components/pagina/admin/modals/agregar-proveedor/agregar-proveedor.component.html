@@ -1,17 +1,17 @@
 <article class="modal-agregar-proveedor">
     <div class="modal-agregar-proveedor__encabezado">
-        <h2 class="modal-agregar-proveedor__titulo">Agregar Proveedor</h2>
+        <h2 class="modal-agregar-proveedor__titulo">Agregar / Editar Proveedor</h2>
         <button class="modal-agregar-proveedor__cerrar" type="button" (click)="clickCerrar()">X</button>
     </div>
     <div class="modal-agregar-proveedor__separador"></div>
     <div class="modal-agregar-proveedor__campo">
         <label class="modal-agregar-proveedor__etiqueta">Nombre:</label>
-        <input class="modal-agregar-proveedor__input" type="text" placeholder="Escriba el nombre..." (input)="actualizarNombre($event)">
+        <input class="modal-agregar-proveedor__input" type="text" placeholder="Escriba el nombre..." (input)="actualizarNombre($event)" [value]="nombre()">
     </div>
 
     <div class="modal-agregar-proveedor__campo">
         <label class="modal-agregar-proveedor__etiqueta">Teléfono:</label>
-        <input class="modal-agregar-proveedor__input" type="tel" placeholder="Escriba el teléfono..." (input)="actualizarTelefono($event)">
+        <input class="modal-agregar-proveedor__input" type="tel" placeholder="Escriba el teléfono..." (input)="actualizarTelefono($event)" [value]="telefono()">
     </div>
     <div class="modal-agregar-proveedor__separador"></div>
     <div class="modal-agregar-proveedor__acciones">

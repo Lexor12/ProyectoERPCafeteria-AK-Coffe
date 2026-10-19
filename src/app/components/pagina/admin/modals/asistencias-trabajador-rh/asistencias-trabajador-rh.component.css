@@ -269,7 +269,7 @@
     color: var(--cards--price);
 }
 
-.modal-asistencias__boton-descargar {
+.modal-asistencias__boton-calcular {
     background-color: var(--modal--button-primary-bg);
     color: var(--modal--button-primary-text);
     border: none;
@@ -282,7 +282,7 @@
     transition: transform 0.15s ease, opacity 0.15s ease;
 }
 
-.modal-asistencias__boton-descargar:hover {
+.modal-asistencias__boton-calcular:hover {
     transform: scale(1.05);
     opacity: 0.92;
 }
@@ -326,6 +326,8 @@
     flex-direction: column;
     gap: 10px;
 }
-.modal-trabajador__separador {
+.modal-asistencias__separador {
     border-bottom: 1px solid var(--cards--border);
+    margin-top: 10px;
+    margin-bottom: 10px;
 }

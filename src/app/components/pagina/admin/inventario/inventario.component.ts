@@ -19,7 +19,7 @@ export class InventarioComponent implements OnInit{
   precioMax = signal<number | null>(null); // Así que ponemos null para identificar cuando no ha utilizado este filtro
   // Esta almacenará los valores de la busqueda, y se actualizará constantemente
   buscador = signal<string>('');
-
+  agregarNuevoProducto = signal<boolean>(false);
   // Cuando un usuario da clic sobre un producto, aquí se guarda para mostrarlo
   // este objeto se analiza en el HTML, en caso de que exista un Producto asociado, se abrirá el modal
   productoSeleccionado = signal<Producto | null>(null);
@@ -75,6 +75,9 @@ export class InventarioComponent implements OnInit{
       }
     }) 
   }
+  agregarProducto():void{
+    this.agregarNuevoProducto.set(true);
+  }
 
   //ESTAS 2 FUNCIONES SON SOLO PARA GESTIONAR EL MODAL
   editarProducto(idProducto: string): void {//Esta función solo abre el modal, no edita el producto como tal
@@ -82,13 +85,36 @@ export class InventarioComponent implements OnInit{
     this.productoSeleccionado.set(producto ?? null);
   }
   cerrarModal(): void {
+    this.agregarNuevoProducto.set(false);
     this.productoSeleccionado.set(null);
   }
 
   // Esta función recibe lo que el modal manda, y realiza la actualización del producto, en este caso,
   // no se utiliza la variable de arriba ya que la tarjeta directamente manda el id del producto,
   // entonces se vuelve a filtrar, eso se hace en parte por seguridad
-  guardarEdicion(datos: { idProducto: string; nombre: string; descripcion: string; precioUnitario: number; imagenBase64: string | null }): void {
+  guardarEdicion(datos: {idProducto:string;nombre: string; descripcion: string; precioUnitario: number; imagenBase64: string | null }): void {
+    if(this.agregarNuevoProducto()){
+        this.productoService.registrarProductoNuevo({nombre: datos.nombre,descripcion:datos.descripcion,costoUnitario:datos.precioUnitario}).subscribe({
+          next: (resultado)=>{
+            if(datos.imagenBase64){
+              this.productoService.subirImagenProducto(resultado.idProducto,datos.imagenBase64).subscribe({
+                next: () => {
+                  this.cargarProductos()
+                },
+                error: ()=>{
+                  alert('No se pudo subir la imagen del producto');
+                }
+              })
+            }
+          },
+          error: ()=>{
+            alert('No se pudo guardar el producto');
+          }
+        })
+        this.cerrarModal()
+      return;
+    }
+
     this.productoService.editarProducto(datos.idProducto, { nombre: datos.nombre, descripcion: datos.descripcion, precio: datos.precioUnitario }).subscribe({
       next: () => {
         this.productos.update(lista =>
