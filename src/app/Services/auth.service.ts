@@ -29,7 +29,7 @@ export class AuthService{
     login(solicitud:solicitudLogin):Observable<RespuestaLogin>{
         return this.http.post<RespuestaLogin>(`${this.api}/login`, solicitud)
     }
-
+    
     // siempre crea usuarios con rol cliente. Si el correo ya existe el backend responde con error y su mensaje se muestra en el componente
     registro(datos: solicitudRegistro):Observable<RespuestaRegistro>{
         return this.http.post<RespuestaRegistro>(`${this.api}/registro`, datos)

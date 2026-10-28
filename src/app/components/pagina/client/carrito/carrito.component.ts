@@ -27,7 +27,6 @@ export class CarritoComponent implements OnInit{
   // esta variable guarda esa respuesta mientras arma el carrito completo en cargarCarrito()
   productosOficiales = signal<ProductoCarrito[]>([]);
 
-
   rfc = signal<string>('');//Por defecto, el RFC esta vacia, y es una opcíon que el cliente puede poner por pedido /venta
   //decidí que sea opcional ya que no siempre una persona quiere facturá, y el hecho de ingresar un RFC pues puede sentirse como inseguro parra un cliente
   //entonces, no es como que algo obligatorio, solo si quieres factura
@@ -105,6 +104,7 @@ export class CarritoComponent implements OnInit{
         this.isProcessing = false;
         alert(error.error?.mensaje ?? 'No se pudo validar el carrito')
         if(!isPlatformBrowser(this.platformId))return
+        //Vaciamos el carrito
         localStorage.setItem('mi_carrito', JSON.stringify([]));
       }
     });

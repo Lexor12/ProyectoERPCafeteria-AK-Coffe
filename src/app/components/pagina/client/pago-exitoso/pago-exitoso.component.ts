@@ -17,9 +17,12 @@ let procesandoPago = false;
 export class PagoExitosoComponent implements OnInit{
   titulo=signal<string>('La compra se ha registrado correctamente!')
   texto=signal<string>('Tu compra fue procesada por el sistema, ahora te estamos redirigiendo a tus pedidos')
+
   private platformId = inject(PLATFORM_ID);
   constructor(private ventaService:VentaService,private router:Router){}
+
   ngOnInit(): void{
+
     if(!isPlatformBrowser(this.platformId))return;
     const orderID = sessionStorage.getItem('paypal_order_id');
     const itemsGuardados = sessionStorage.getItem('paypal_items');
@@ -36,6 +39,7 @@ export class PagoExitosoComponent implements OnInit{
     const items: ItemCarrito[] = JSON.parse(itemsGuardados)
     
     const rfcCliente = rfcGuardado ?? '';
+    
     this.ventaService.procesarPagoVenta(orderID,rfcCliente,items).subscribe({
       next:(res)=>{
         procesandoPago = false

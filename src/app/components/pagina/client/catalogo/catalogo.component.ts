@@ -61,7 +61,7 @@ export class CatalogoComponent {
   agregarAlCarrito(evento: { idProducto: string; cantidad: number }): void {//Este método se encarga de agregar al carrito los productos que fueron seleccionados desde los hijos
     const productoSeleccionado = this.productos().find(p=>p.idProducto==evento.idProducto)
     if(!productoSeleccionado)return;
-    if(productoSeleccionado.stock==0){
+    if(productoSeleccionado.stock==0 || evento.cantidad > productoSeleccionado.stock || evento.cantidad <=0){
       alert("No hay stock suficiente de este producto");
       return;
     }
@@ -75,7 +75,8 @@ export class CatalogoComponent {
       }
       productoExistente.cantidad += evento.cantidad;
       alert('Cantidad actualizada en tu carrito');
-    } else {//Si no, se agrega, obviamente parece raro esto porque si yo en mi carrito tengo 20 productos de algo, y luego se agotan pues no se actualiza, pero
+    } else {
+      //Si no, se agrega, obviamente parece raro esto porque si yo en mi carrito tengo 20 productos de algo, y luego se agotan pues no se actualiza, pero
       //en la sección de hacer una compra en todo momento se valida que la cantidad a comprar si esté disponible, en caso de que no, pues el backend dispara un error
       carritoActual.push(evento);
       alert('Producto/s agregado/s al carrito');

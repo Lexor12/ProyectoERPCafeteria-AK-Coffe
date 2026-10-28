@@ -14,7 +14,7 @@ export class PagoRechazadoComponent implements OnInit {
   ngOnInit(): void {
     if(!isPlatformBrowser(this.platformId))return;
     const orderID = sessionStorage.getItem('paypal_order_id');
-    const itemsGuardados = sessionStorage.getItem('paypal_items');
+    const itemsGuardados = sessionStorage.getItem('paypal_items'); 
 
     if (!orderID || !itemsGuardados) {//Si el usuario intenta acceder sin haber hecho un pago lo regresamos a la tienda para evitar que permanezca en la pagina
       this.router.navigate(['/tienda']);
@@ -26,7 +26,7 @@ export class PagoRechazadoComponent implements OnInit {
     sessionStorage.removeItem('paypal_rfc');
     // Espera 5 segundos (5000 milisegundos) antes de ejecutar la redirección
     setTimeout(() => {
-      this.router.navigate(['/carrito']);
+      this.router.navigate(['/catalogo']);
     }, 5000);
   }
 }
