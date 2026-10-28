@@ -1,3 +1,5 @@
+/*La card es un flex en columna con gap, y el height al 100% hace que todas las cards de una fila del grid midan lo mismo aunque tengan menos contenido. 
+Los colores salen de las variables de styles.css*/
 .producto {
     display: flex;
     flex-direction: column;
@@ -9,7 +11,7 @@
     max-width: 100%;
     height: 100%;
 }
-
+/*El flex: 1 hace que esta parte crezca y ocupe el espacio libre, así los botones siempre quedan abajo de la card*/
 .producto__contenido {
     display: flex;
     flex-direction: row;
@@ -17,37 +19,39 @@
     flex:1;
 }
 
-
+/*Apilamos los datos del pedido en columna con un gap chico entre ellos*/
 .producto__info {
     display: flex;
     flex-direction: column;
     gap: 8px;
 }
-
+/*Cada par de etiqueta y valor reparte el espacio por igual dentro de la columna*/
 .producto__contenedor {
     flex: 1 1; 
 }
-
+/*La etiqueta va en negritas con el color de título de las cards, para que se distinga del valor que va a un lado*/
 .producto__etiqueta {
     font-size: 13px;
     font-weight: 700;
     color: var(--cards--title);
     margin-right: 4px;
 }
-
+/*El valor va con peso normal y el color de texto de las cards, así la etiqueta es la que resalta*/
 .producto__valor {
     font-size: 13px;
     font-weight: 400;
     color: var(--cards--text);
 }
-
+/*Flex en fila con gap para que los dos botones queden juntos y ocupen todo el ancho de la card*/
 .producto__acciones {
     width: 100%;
     display: flex;
     flex-direction: row;
     gap: 12px;
 }
-
+/*El flex: 1 hace que los dos botones midan lo mismo. 
+El font-family inherit es porque los botones no heredan la letra del sistema por defecto, 
+y el transition suaviza el hover*/
 .producto__boton {
     flex: 1;
     background-color: var(--cards--button-primary-bg);
@@ -62,7 +66,7 @@
     text-align: center;
     transition: transform 0.15s ease, opacity 0.15s ease;
 }
-
+/*Al pasar el mouse el botón crece un poco y baja su opacidad para que se note que se puede dar clic.*/
 .producto__boton:hover {
     transform: scale(1.05);
     opacity: 0.92;

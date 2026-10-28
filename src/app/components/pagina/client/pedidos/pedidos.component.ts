@@ -18,14 +18,12 @@ export class PedidosComponent implements OnInit {
   pedidos = signal<PedidoCliente[]>([]);
   entregado = signal<boolean>(false);
   activo = signal<boolean>(true);
-  buscador=signal<string>('');
   //Este objeto almacena en memoria (en dado caso) el pedido que fue seleccionado para ser visto con el modal de detalles
   pedidoSeleccionado = signal<PedidoCliente | null>(null);
 
   pedidosFiltrados = computed(() => {//Esta es la colección de productos o la lista de productos que el HTML usará para cargar las cards de productos, que se basa en los filtros
     return this.pedidos().filter(p => //que son ingresados por el usuario
-      (p.cancelado!=this.activo())&&(p.entregado==this.entregado())&&(
-      p.nombreCliente.toLowerCase().includes(this.buscador().toLowerCase())));
+      (p.cancelado!=this.activo())&&(p.entregado==this.entregado()));
   });
 
   ngOnInit(): void {
@@ -40,13 +38,9 @@ export class PedidosComponent implements OnInit {
         this.pedidos.set(pedidosRecibidos)
       },
       error: (error)=>{
-        alert("No se pudieron cargar los pedidos")
+        alert(error.error?.mensaje ?? 'No se pudieron cargar los pedidos')
       }
     })
-  }
-
-  actualizarBuscador(evento: Event): void {
-    this.buscador.set((evento.target as HTMLInputElement).value);
   }
   cambiarFiltroActivo(estado: boolean): void {
     this.activo.set(estado);
@@ -65,7 +59,17 @@ export class PedidosComponent implements OnInit {
   cerrarModal(): void {
     this.pedidoSeleccionado.set(null);
   }
-
+  //Los textos que van dentro del XML no pueden llevar estos caracteres tal cual porque rompen el archivo, 
+  // por eso los cambiamos por su versión escapada, igual que en la factura que manda el backend por correo
+  escaparXml(valor: unknown): string {
+    return String(valor)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&apos;');
+  }
+  
   descargarFactura(idVenta: string): void {
     //Buscamos el pedido en la lista actual por su id
     const pedido = this.pedidos().find(p => p.idVenta === idVenta);
@@ -75,27 +79,28 @@ export class PedidosComponent implements OnInit {
     }
 
     //Calculamos los valores fiscales igual que en el componente de detalles
-    const subtotal = pedido.productos.reduce((suma, p) => suma + p.subtotal, 0);//Reduce recorre la lista de productos del pedido para sumar todos los subtotales y obtener el subtotal general
-    const iva = subtotal * 0.16;
-    const precioTotal = subtotal + iva;
+    const subtotal = Math.round(pedido.productos.reduce((suma, p) => suma + p.subtotal, 0) * 100) / 100;
+    const iva = Math.round(subtotal * 0.16 * 100) / 100;
+    const precioTotal = Math.round((subtotal + iva) * 100) / 100;
+    //Usamos Math.round para redondear los valores y que coincidan en decimales igual que el pago realizado en PayPal
 
     const procesoTexto = pedido.entregado ? 'ENTREGADO' : 'PENDIENTE';
     const estadoTexto = pedido.cancelado ? 'CANCELADO' : 'ACTIVO';
 
     //Construimos el contenido XML con todos los datos integrados en el frontend
     const xmlContent = `<?xml version="1.0" encoding="UTF-8"?>
-    <Comprobante version="1.0" idVenta="${pedido.idVenta}" fechaCompra="${pedido.fechaCompra}">
+    <Comprobante version="1.0" idVenta="${this.escaparXml(pedido.idVenta)}" fechaCompra="${this.escaparXml(pedido.fechaCompra)}">
         <Tienda>
-            <Nombre>${pedido.nombreTienda}</Nombre>
-            <Rfc>${pedido.rfcTienda}</Rfc>
-            <Telefono>${pedido.telefonoTienda}</Telefono>
-            <DomicilioFiscal>${pedido.domicilioFiscalTienda}</DomicilioFiscal>
-            <RegimenFiscal>${pedido.regimenFiscalTienda}</RegimenFiscal>
+            <Nombre>${this.escaparXml(pedido.nombreTienda)}</Nombre>
+            <Rfc>${this.escaparXml(pedido.rfcTienda)}</Rfc>
+            <Telefono>${this.escaparXml(pedido.telefonoTienda)}</Telefono>
+            <DomicilioFiscal>${this.escaparXml(pedido.domicilioFiscalTienda)}</DomicilioFiscal>
+            <RegimenFiscal>${this.escaparXml(pedido.regimenFiscalTienda)}</RegimenFiscal>
         </Tienda>
         <Cliente>
-            <Nombre>${pedido.nombreCliente}</Nombre>
-            <Apellido>${pedido.apellidoCliente}</Apellido>
-            <Rfc>${pedido.rfcCliente || 'Sin RFC'}</Rfc>
+            <Nombre>${this.escaparXml(pedido.nombreCliente)}</Nombre>
+            <Apellido>${this.escaparXml(pedido.apellidoCliente)}</Apellido>
+            <Rfc>${this.escaparXml(pedido.rfcCliente || 'Sin RFC')}</Rfc>
         </Cliente>
         <EstadoPedido>
             <Entrega>${procesoTexto}</Entrega>
@@ -104,10 +109,10 @@ export class PedidosComponent implements OnInit {
         <Conceptos>
             ${pedido.productos.map(p => `
             <Producto>
-                <Nombre>${p.nombre}</Nombre>
+                <Nombre>${this.escaparXml(p.nombre)}</Nombre>
                 <Cantidad>${p.cantidad}</Cantidad>
-                <PrecioUnitario>${p.precioUnitario}</PrecioUnitario>
-                <Subtotal>${p.subtotal}</Subtotal>
+                <PrecioUnitario>${Number(p.precioUnitario).toFixed(2)}</PrecioUnitario>
+                <Subtotal>${Number(p.subtotal).toFixed(2)}</Subtotal>
             </Producto>
             `).join('')}
         </Conceptos>
@@ -118,18 +123,19 @@ export class PedidosComponent implements OnInit {
         </Totales>
     </Comprobante>`;
 
-      //Creamos el Blob y forzamos la descarga del archivo XML
-      const blob = new Blob([xmlContent], { type: 'application/xml;charset=utf-8' });
-      /*
-      Un Blob (Binary Large Object) es un archivo virtual que se crea de manera temporal en la memoria RAM del navegador. 
-      Aqí le paso el texto XML y le indico que su tipo de contenido MIME es application/xml con codificación de caracteres utf-8 para que respete acentos y ñ
-      */
-      const url = window.URL.createObjectURL(blob);//Creamos una URL para que apunte a ese objeto que acabamos de crear (para poder descargarlo)
-      const link = document.createElement('a');//Creamos una etiqueta tipo a
-      link.href = url;//Enlzamos la URL a la etiqueta
-      link.download = `factura_AK_COFFE.xml`;//Designamos el nombre con el que se descarga
-      
-      link.click();//Ejecutamos este evento para que nos descargue automáticamente el archivo
-      window.URL.revokeObjectURL(url);//Eliminamos el objeto para liberar memoria
+    //Creamos el Blob y forzamos la descarga del archivo XML
+    const blob = new Blob([xmlContent], { type: 'application/xml;charset=utf-8' });
+    /*
+    Un Blob (Binary Large Object) es un archivo virtual que se crea de manera temporal en la memoria RAM del navegador. 
+    Aqí le paso el texto XML y le indico que su tipo de contenido MIME es application/xml con codificación de caracteres utf-8 para que respete acentos y ñ
+    */
+    const url = window.URL.createObjectURL(blob);//Creamos una URL para que apunte a ese objeto que acabamos de crear (para poder descargarlo)
+    const link = document.createElement('a');//Creamos una etiqueta tipo a
+    link.href = url;//Enlzamos la URL a la etiqueta
+    link.download = `factura_AK_COFFE.xml`;//Designamos el nombre con el que se descarga
+    
+    link.click();//Ejecutamos este evento para que nos descargue automáticamente el archivo
+    window.URL.revokeObjectURL(url);//Eliminamos el objeto para liberar memoria
+    alert('Factura descargada con éxito');
   }
 }

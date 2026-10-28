@@ -1,5 +1,7 @@
 <section class="inventario">
     <div class="inventario__toolbar">
+        <!--los filtros no van dentro de un form porque cada input manda su valor al componente con (input) 
+        y este lo guarda en un signal, así la lista se filtra mientras se escribe-->
         <div class="inventario__titulo">
             <p class="inventario__titulo-texto">Filtro: </p>
         </div>
@@ -12,6 +14,7 @@
             <input class="inventario__input" type="number" (input)="actualizarPrecioMax($event)">
         </div>
         <input class="inventario__buscador" type="text" placeholder="Buscador..." (input)="actualizarBuscador($event)">
+        <!--el botón del más llama a agregarProducto, que abre el modal para crear un producto nuevo-->
         <button class="inventario__boton-agregar" type="button" (click)="agregarProducto()">+</button>
     </div>
 
@@ -50,6 +53,7 @@ no haya uno seleccionado el modal no se abrirá-->
         (aceptar)="guardarEdicion($event)">
     </app-editar-producto-inventario>
 }
+<!--es el mismo modal pero sin valores iniciales, así se abre vacío para crear un producto nuevo-->
 @if (agregarNuevoProducto()) {
     <app-editar-producto-inventario
         (cerrar)="cerrarModal()"

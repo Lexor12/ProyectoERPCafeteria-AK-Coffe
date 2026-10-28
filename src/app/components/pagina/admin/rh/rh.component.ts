@@ -43,7 +43,7 @@ export class RhComponent implements OnInit{
         this.trabajadores.set(trabajadoresRecibidos);//Justo aqui es donde se asigna el resultado en formato lista de Trabjador al signal del componente
       },
       error: (error) => {
-        alert('No se pudieron cargar los trabajadores');
+        alert(error.error?.mensaje ?? 'No se pudieron cargar los trabajadores')
       }
     });
   }
@@ -85,10 +85,13 @@ export class RhComponent implements OnInit{
   desactivarTrabajador(idTrabajador: string): void {
     this.trabajadorService.cambiarActivoTrabajador(idTrabajador, false).subscribe({
       next: () => {
+        alert('Trabajador desactivado con éxito');
         this.trabajadores.update(lista => lista.filter(t => t.idTrabajador !== idTrabajador));
+        this.trabajadorEnEdicion.set(null);
+        this.mostrarModalAgregar.set(false);
       },
       error: (error) => {
-        alert('No se pudo desactivar el trabajador');
+        alert(error.error?.mensaje ?? 'No se pudo desactivar el trabajador')
       }
     });
   }
@@ -111,6 +114,7 @@ export class RhComponent implements OnInit{
       // Modo editar: ya existe un idTrabajador
       this.trabajadorService.editarTrabajador(datos.idTrabajador, datosParaEnviar).subscribe({
         next: () => {
+          alert('Trabajador actualizado con éxito');
           this.trabajadores.update(lista =>
             lista.map(t => t.idTrabajador === datos.idTrabajador
               ? { ...t, ...datosParaEnviar }
@@ -121,18 +125,19 @@ export class RhComponent implements OnInit{
           this.mostrarModalAgregar.set(false);
         },
         error: (error) => {
-          alert('No se pudo editar el trabajador');
+          alert(error.error?.mensaje ?? 'No se pudo editar el trabajador')
         }
       });
     } else {
       // Modo agregar: no hay id todavía, lo genera el backend
       this.trabajadorService.crearTrabajador(datosParaEnviar).subscribe({
         next: () => {
+          alert('Trabajador registrado con éxito');
           this.cargarTrabajadores();
           this.mostrarModalAgregar.set(false);
         },
         error: (error) => {
-          alert('No se pudo registrar el trabajador');
+          alert(error.error?.mensaje ?? 'No se pudo registrar el trabajador')
         }
       });
     }

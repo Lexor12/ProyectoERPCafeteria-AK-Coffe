@@ -1,3 +1,4 @@
+<!--esta es la card de un pedido en el listado del administrador, los datos llegan del padre por inputs y los botones le avisan al padre con eventos-->
 <div class="producto">
     <div class="producto__contenido">
         <div class="producto__info">
@@ -11,7 +12,7 @@
             </div>
             <div class="producto__contenedor">
                 <span class="producto__etiqueta">Total de Compra:</span>
-                <span class="producto__valor">$ {{(totalPagado()*1.16).toFixed(2)}}</span>
+                <span class="producto__valor">$ {{(totalPagado()).toFixed(2)}}</span>
             </div>
             <div class="producto__contenedor">
                 <span class="producto__etiqueta">Fecha de Compra:</span>
@@ -19,6 +20,7 @@
             </div>
         </div>
     </div>
+    <!--el texto de los botones de cancelar y de entregado cambia según el estado actual del pedido con un ternario, así el mismo botón sirve para activar o desactivar cada estado-->
     <div class="producto__acciones">
         <button class="producto__boton producto__boton--detalles" type="button" (click)="detalles()">Detalles</button>
         <button class="producto__boton producto__boton--cancelar" type="button" (click)="cancelar()">{{ cancelado() ? 'Reactivar' : 'Cancelar' }}</button>

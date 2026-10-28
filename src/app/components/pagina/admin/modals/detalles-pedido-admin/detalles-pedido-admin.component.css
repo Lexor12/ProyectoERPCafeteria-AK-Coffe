@@ -1,3 +1,5 @@
+/*el :host es el contenedor de todo el componente y aquí lo uso para que el modal sea una capa fija que cubre toda la pantalla 
+con el fondo oscuro de la variable, centramos su contenido con flex y le doy un z-index alto para que quede encima de todo lo demás*/
 :host {
     position: fixed;
     top: 0;
@@ -10,11 +12,8 @@
     background-color: var(--modal--overlay);
     z-index: 999;
 }
-
-.detalle-pedido {
-    max-height: 85vh;
-    overflow-y: auto;
-}
+/*es la caja visible del modal con su fondo, esquinas redondeadas y sombra para despegarla del fondo oscuro, 
+uso flex en columna con gap para apilar sus secciones y el margin auto con max-width la mantiene angosta y centrada*/
 .detalle-pedido {
     background-color: var(--modal--bg);
     border-radius: 16px;
@@ -22,9 +21,11 @@
     max-width: 500px;
     margin: 0 auto;
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+    max-height: 85vh;
+    overflow-y: auto;
 }
 
-
+/*flex con space-between para dejar el título a la izquierda y el botón de cerrar a la derecha, los dos centrados verticalmente*/
 .detalle-pedido__encabezado {
     display: flex;
     flex-direction: row;
@@ -32,12 +33,13 @@
     align-items: center;
     margin-bottom: 25px;
 }
-
+/*tamaño grande con el color de título de los modales para que sea lo primero que se lea*/
 .detalle-pedido__titulo {
     font-size: 26px;
     color: var(--modal--title);
 }
-
+/*el flex-shrink en 0 evita que el botón se aplaste y el mismo ancho y alto lo hacen cuadrado, 
+con flex centramos la X y el font-family inherit es porque los botones no heredan la letra del sistema*/
 .detalle-pedido__cerrar {
     flex-shrink: 0;
     width: 32px;
@@ -55,13 +57,14 @@
     cursor: pointer;
     transition: transform 0.15s ease, opacity 0.15s ease;
 }
-
+/*al pasar el mouse el botón crece un poco y baja su opacidad para que se note que se puede dar clic, 
+el transition hace que el cambio sea suave y no un salto brusco*/
 .detalle-pedido__cerrar:hover {
     transform: scale(1.1);
     opacity: 0.92;
 }
 
-
+/*flex en fila con gap para dejar la imagen a un lado y los datos al otro*/
 .detalle-pedido__producto {
     display: flex;
     flex-direction: column;
@@ -70,7 +73,7 @@
     margin-bottom: 20px;
     border-bottom: 1px solid var(--cards--border);
 }
-
+/*flex en columna con align-items center para dejar la imagen y su etiqueta de nueva una debajo de la otra y centradas, el flex-shrink en 0 evita que se aplaste*/
 .detalle-pedido__imagen {
     flex-shrink: 0;
     width: 150px;
@@ -78,26 +81,25 @@
     border-radius: 10px;
     overflow: hidden;
 }
-
+/*caja de tamaño fijo con overflow hidden para que la imagen se recorte a sus esquinas redondeadas y no se salga de su espacio*/
 .detalle-pedido__imagen img {
     width: 100%;
     height: 100%;
     border-radius: 10px;
 }
-
+/*cada producto es una cajita con borde y el flex en fila con space-between deja nombre y cantidad a la izquierda y los precios a la derecha*/
 .detalle-pedido__datos {
     display: flex;
     flex-direction: column;
     gap: 6px;
 }
-
-
+/*va en negritas con el color de etiquetas de los modales y el min-width hace que todas midan parecido, así los inputs quedan alineados*/
 .detalle-pedido__etiqueta {
     font-size: 13.5px;
     font-weight: 700;
     color: var(--modal--label);
 }
-
+/*el dato va con peso normal para que la etiqueta sea la que resalte*/
 .detalle-pedido__dato {
     font-weight: 400;
     color: var(--cards--text);
@@ -109,7 +111,7 @@
     color: var(--modal--title);
     margin-bottom: 10px;
 }
-
+/*apila los datos en columna con gap y cierra con una línea abajo para separarlo de lo que sigue*/
 .detalle-pedido__seccion {
     display: flex;
     flex-direction: column;
@@ -124,6 +126,7 @@
     margin-bottom: 0;
     padding-bottom: 0;
 }
+/*flex en columna con gap, el max-height y el overflow-y scroll le dan scroll propio a la lista de productos para que un pedido con muchos no estire el modal*/
 .detalle-pedido__pedidos{
     display: flex;
     flex-direction: column;
@@ -140,11 +143,13 @@
     border-radius: 12px;
     padding: 12px 10px;
 }
+/*es una línea hecha con border-bottom y márgenes para separar las secciones del modal*/
 .detalle-pedido__separador {
     border-bottom: 1px solid var(--cards--border);
     margin-top: 10px;
     margin-bottom: 10px;
 }
+/*título chico de la lista de productos con el mismo color que los demás títulos del modal*/
 .detalle-pedido__pedidos-titulo{
     color: var(--modal--title);
     font-size: .8rem;

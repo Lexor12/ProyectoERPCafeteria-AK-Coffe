@@ -11,17 +11,14 @@ export class TrabajadorService{
     private api='http://localhost:3200/api/trabajadores'
     constructor(private http:HttpClient,private authService:AuthService){}
 
-    // Trae la lista de trabajadores activos, se usa en la página principal de RH,
-    // el parámetro de nombre es opcional, si no se manda regresa todos, si se manda
-    // el backend ya filtra por ese nombre (RQF50), así no hace falta filtrar en el front
+    // Trae los trabajadores activos para RH, el filtro por área y por nombre se hace en el componente
     obtenerTrabajadores():Observable<Trabajador[]>{
         return this.http.get<Trabajador[]>(this.api,{headers:{
                 Authorization: `Bearer ${this.authService.getToken()}`
             }})
     }
 
-    // Esto es del formulario de "Registrar Trabajador", se manda todo menos el idTrabajador
-    // porque ese lo genera la BD solo con el UUID por default
+    // Esto es del formulario de "Registrar Trabajador", se manda todo menos el idTrabajador porque ese lo genera el backend 
     crearTrabajador(datos: Omit<Trabajador, 'idTrabajador'>):Observable<any>{
         return this.http.post(this.api, datos,
             {
@@ -43,9 +40,9 @@ export class TrabajadorService{
 
     // Este es el botón de Desactivar/Reactivar en la ficha del trabajador, no borra nada,
     // solo cambia el booleano de activo para que se deje de mostrar (o vuelva a mostrarse)
-    // en el listado principal, sin perder su historial de asistencias (RQF61)
+    // en el listado principal, sin perder su historial de asistenciaS
     cambiarActivoTrabajador(idTrabajador: string, activo: boolean):Observable<any>{
-        return this.http.patch(`${this.api}/${idTrabajador}/activo`, activo,
+        return this.http.patch(`${this.api}/${idTrabajador}/activo`, { activo },
             {
                 headers: {
                     Authorization: `Bearer ${this.authService.getToken()}`

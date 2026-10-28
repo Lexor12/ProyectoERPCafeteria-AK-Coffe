@@ -1,3 +1,5 @@
+/*la card es un flex en columna con gap y el height al 100% hace que todas las cards de una fila
+del grid midan lo mismo, los colores salen de las variables de styles.css para cambiarlos desde un solo lugar*/
 .producto {
     display: flex;
     flex-direction: column;
@@ -9,14 +11,14 @@
     max-width: 100%;
     height: 100%;
 }
-
+/*flex en fila con gap para dejar la imagen y los datos lado a lado, el flex 1 hace que ocupe el espacio libre y los botones queden siempre abajo*/
 .producto__contenido {
     flex: 1;
     display: flex;
     flex-direction: row;
     gap: 15px;
 }
-
+/*caja con tamaño máximo para que todas las cards se vean parejas aunque las fotos tengan medidas distintas*/
 .producto__imagen {
     width: 300px;
     height: 100%;
@@ -24,29 +26,29 @@
     max-width: 221px;
     border-radius: 8px;
 }
-
+/*la foto ocupa todo el alto de su caja y lleva las mismas esquinas redondeadas*/
 .producto__imagen img {
     height: 100%;
     border-radius: 8px;
 }
-
+/*flex en columna con un gap chico para apilar los datos del producto*/
 .producto__detalles {
     display: flex;
     flex-direction: column;
     gap: 8px;
 }
-
+/*cada par de etiqueta y valor reparte el espacio por igual dentro de la columna*/
 .producto__contenedor {
     flex:1 1; 
 }
-
+/*va en negritas con el color de título de las cards para distinguirla del valor que va a un lado*/
 .producto__etiqueta {
     font-size: 13px;
     font-weight: 700;
     color: var(--cards--title);
     margin-right: 4px;
 }
-
+/*el valor va con peso normal y el color de texto de las cards para que la etiqueta sea la que resalte*/
 .producto__valor {
     font-size: 13px;
     font-weight: 400;
@@ -87,7 +89,7 @@
     cursor: pointer;
     transition: transform 0.15s ease, opacity 0.15s ease;
 }
-
+/*es un modificador que solo cambia los colores del botón base, usa las variables secundarias con borde para que se vea como una acción menos importante*/
 .producto__boton--desactivar {
     background-color: var(--cards--button-secondary-bg);
     color: var(--cards--button-secondary-text);

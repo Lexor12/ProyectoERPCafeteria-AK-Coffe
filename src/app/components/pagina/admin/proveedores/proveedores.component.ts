@@ -65,7 +65,7 @@ export class ProveedoresComponent implements OnInit{
         this.proveedores.set(proveedoresRecibidos);
       },
       error: (error) => {
-        alert('No se pudieron cargar los proveedores');
+        alert(error.error?.mensaje ?? 'No se pudieron cargar los proveedores')
       }
     });
   }
@@ -75,7 +75,7 @@ export class ProveedoresComponent implements OnInit{
         this.productosInventario.set(productos)
       },
       error: (error)=>{
-        alert('Error al cargar los productos de los proveedores')
+        alert(error.error?.mensaje ?? 'Error al cargar los productos de los proveedores')
       }
     })
     this.productoProveedorService.obtenerProductosProveedor().subscribe({
@@ -83,15 +83,14 @@ export class ProveedoresComponent implements OnInit{
         this.productos.set(productos)
       },
       error: (error)=>{
-        alert('Error al cargar los productos de los proveedores')
+        alert(error.error?.mensaje ?? 'Error al cargar los productos de los proveedores')
       }
     })
   }
 
   actualizarProveedor(evento: Event): void {
-    const proveedor=this.proveedores().find(p=>p.idProveedor===(evento.target as HTMLSelectElement).value)
-    if(proveedor)
-    this.proveedorSeleccionado.set(proveedor);
+    const proveedor = this.proveedores().find(p => p.idProveedor === (evento.target as HTMLSelectElement).value)
+    this.proveedorSeleccionado.set(proveedor ?? null);
   }
 
   actualizarBuscador(evento: Event): void {
@@ -112,12 +111,13 @@ export class ProveedoresComponent implements OnInit{
   eliminarProductoProveedor(datos: { idProducto: string; idProveedor: string }): void {
     this.productoProveedorService.eliminarProductoProveedor(datos.idProveedor, datos.idProducto).subscribe({
       next: () => {
+        alert('Producto quitado del proveedor con éxito');
         this.productos.update(lista => 
           lista.filter(p => !(p.idProducto === datos.idProducto && p.idProveedor === datos.idProveedor))
         );
       },
       error: (error) => {
-        alert('No se pudo eliminar el producto del proveedor');
+        alert(error.error?.mensaje ?? 'No se pudo eliminar el producto del proveedor')
       }
     });
   }
@@ -144,21 +144,22 @@ export class ProveedoresComponent implements OnInit{
         if (datos.imagenBase64 && encontrado) {
           this.productoService.subirImagenProducto(encontrado.idProducto, datos.imagenBase64).subscribe({
             next: () => {
+              this.finalizarEdicion()
               alert('Se actualizo correctamente el producto del proveedor');
-              this.finalizarEdicion()}
+            }
               ,
-            error: () => {
-              alert('Se guardaron los datos, pero no se pudo subir la imagen');
+            error: (error) => {
+              alert('Se guardaron los datos, pero no se pudo subir la imagen: ' + (error.error?.mensaje ?? ''))
               this.finalizarEdicion();
             }
           });
         } else {
           this.finalizarEdicion();
+          alert('Producto del proveedor actualizado con éxito');
         }
       },
       error: (error) => {
-        if (error.status === 409) alert('Ya existe un producto con ese nombre');
-        else alert('Error al editar el producto del proveedor');
+        alert(error.error?.mensaje ?? 'Error al editar el producto del proveedor');
       }
     });
   }
@@ -169,10 +170,11 @@ export class ProveedoresComponent implements OnInit{
 
   // Ya no lee this.proveedorSeleccionado(), el idProveedor viene directo del modal,
   // que a su vez lo heredó de la card sobre la que se dio clic en "Surtir"
-  confirmarSurtido(datos: { idProducto: string; idProveedor: string; cantidad: number; costoUnitario: number }): void {
-      this.compraService.registrarCompraProductoExistente(datos.idProveedor, datos.idProducto, datos.cantidad, datos.costoUnitario).subscribe({
+  confirmarSurtido(datos: { idProducto: string; idProveedor: string; cantidad: number; }): void {
+      this.compraService.registrarCompraProductoExistente(datos.idProveedor, datos.idProducto, datos.cantidad).subscribe({
         next: (respuesta) => {
           if (respuesta.registrada) {
+            alert('Compra registrada, el stock fue actualizado');
             // Recargamos toda la lista de productos-proveedor, ya que ahora no dependemos
             // de un filtro específico seleccionado (podríamos estar en "Todos")
             this.cargarProductosProovedores();
@@ -182,7 +184,7 @@ export class ProveedoresComponent implements OnInit{
           this.productoASurtir.set(null);
         },
         error: (error) => {
-          alert('Error al registrar la compra');
+          alert(error.error?.mensaje ?? 'Error al registrar la compra')
           this.productoASurtir.set(null);
         }
       });
@@ -206,13 +208,14 @@ export class ProveedoresComponent implements OnInit{
       // Producto que ya existe: solo lo asociamos al catálogo del proveedor
       this.productoProveedorService.asociarProductoProveedor(datos.idProveedor, datos.idProductoExistente, datos.costoUnitario).subscribe({
         next: () => {
+          alert('Producto asociado al proveedor con éxito');
           this.mostrarModalAgregarProducto.set(false);
           this.cargarProveedores();
           this.cargarProductosProovedores();
-          this.actualizarProveedor({ target: { value: datos.idProveedor } } as any);
+          this.proveedorSeleccionado.set(null);
         },
         error: (error) => {
-          alert('No se pudo asociar el producto al proveedor');
+          alert(error.error?.mensaje ?? 'No se pudo asociar el producto al proveedor')
         }
       });
     } else {
@@ -225,23 +228,24 @@ export class ProveedoresComponent implements OnInit{
       this.compraService.registrarCompraProductoNuevo(datos.idProveedor, productoNuevo, datos.costoUnitario).subscribe({
         next: (respuesta) => {
           if (respuesta.registrada) {
+            alert('Producto nuevo registrado con éxito');
             // Si el usuario sí seleccionó una imagen, la subimos usando el idProducto
             // que acaba de regresar el backend al crear el producto
             if (datos.imagenBase64 && respuesta.idProducto) {
               this.productoService.subirImagenProducto(respuesta.idProducto, datos.imagenBase64).subscribe({
-                error: (error) => alert('No se pudo subir la imagen del producto nuevo')
+                error: (error) => alert(error.error?.mensaje ?? 'No se pudo subir la imagen del producto nuevo')
               });
             }
             this.mostrarModalAgregarProducto.set(false);
             this.cargarProveedores();
             this.cargarProductosProovedores();
-            this.actualizarProveedor({ target: { value: datos.idProveedor } } as any);
+            this.proveedorSeleccionado.set(null);
           } else {
             alert('No se pudo registrar el producto nuevo');
           }
         },
         error: (error) => {
-          alert('Error al registrar el producto nuevo');
+          alert(error.error?.mensaje ?? 'Error al registrar el producto nuevo')
         }
       });
     }
@@ -263,8 +267,8 @@ export class ProveedoresComponent implements OnInit{
         this.proveedorSeleccionado.set(null)
         alert("Proveedor desactivado con exito!")
       },
-      error:()=>{
-        alert("Error al desactivar el proveedor")
+      error:(error)=>{
+        alert(error.error?.mensaje ?? 'Error al desactivar el proveedor')
       }
     })
   }
@@ -279,14 +283,14 @@ export class ProveedoresComponent implements OnInit{
       if(valoresProveedor)
       this.proveedorService.editarProveedor(valoresProveedor.idProveedor,datos.nombre,datos.telefono).subscribe({
         next:()=>{
+          alert("Proveedor actualizado con exito!")
           this.cargarProveedores();
           this.cargarProductosProovedores();
           this.cerrarModalProveedor();
           this.proveedorSeleccionado.set(null)
-          alert("Proveedor actualizado con exito!")
         },
-        error:()=>{
-          alert("Error al actualizar el proveedor")
+        error:(error)=>{
+          alert(error.error?.mensaje ?? 'Error al actualizar el proveedor')
         }
       })
       this.editandoAProveedor.set(false);
@@ -294,11 +298,12 @@ export class ProveedoresComponent implements OnInit{
     }
     this.proveedorService.crearProveedor(datos.nombre, datos.telefono).subscribe({
       next: () => {
+        alert('Proveedor registrado con éxito');
         this.mostrarModalAgregarProveedor.set(false);
         this.cargarProveedores(); // recargamos para que aparezca en el <select>
       },
       error: (error) => {
-        alert('No se pudo registrar el proveedor');
+        alert(error.error?.mensaje ?? 'No se pudo registrar el proveedor')
       }
     });
   }

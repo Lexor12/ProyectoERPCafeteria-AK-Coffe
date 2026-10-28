@@ -22,12 +22,13 @@ export class ProductoCarritoService{
 
     // Esto se llama justo antes de mandar al cliente a pagar con PayPal, le mandamos
     // la lista de productos con la cantidad que quiere comprar, y el backend checa que
-    // ninguno se pase del stock real que hay en la BD (RQF28), esto evita que alguien
+    // ninguno se pase del stock real que hay en la BD, esto evita que alguien
     // compre más de lo que hay aunque haya manipulado el front
     validarCarrito(items: { idProducto: string; cantidad: number }[]):Observable<ResultadoValidacionCarrito>{
-        return this.http.post<ResultadoValidacionCarrito>(`${this.api}/validar`, {items} ,
+        return this.http.post<ResultadoValidacionCarrito>(`${this.api}/validar`, items ,
             {
                 headers: {
+                    'Content-Type': 'application/json',
                     Authorization: `Bearer ${this.authService.getToken()}`
                 }
             })

@@ -11,17 +11,16 @@ export class ProductoProveedorService{
     private api='http://localhost:3200/api/proveedores'
     constructor(private http:HttpClient,private authService:AuthService){}
     
-    // Trae los productos que ya están asociados a un proveedor específico, esto es lo
-    // que se ve en la página de detalle de un proveedor (RQF24), por eso pedimos idProveedor
+    //Trae los productos de todos los proveedores, el filtro por proveedor y por nombre se hace en el componente
     obtenerProductosProveedor():Observable<ProductoProveedor[]>{
         return this.http.get<ProductoProveedor[]>(`${this.api}/productos`,{headers:{
                 Authorization: `Bearer ${this.authService.getToken()}`
             }})
     }
 
-    // Se usa cuando el admin asocia un producto ya existente a un proveedor, capturando
-    // el precio de compra de ese proveedor en particular (cada proveedor puede vender
-    // el mismo producto a distinto precio, por eso el precio vive aquí y no en Producto)
+    //Se usa cuando el admin asocia un producto ya existente a un proveedor, capturando
+    //el precio de compra de ese proveedor en particular (cada proveedor puede vender
+    //el mismo producto a distinto precio, por eso el precio vive aquí y no en Producto)
     asociarProductoProveedor(idProveedor: string, idProducto: string, precioCompra: number):Observable<any>{
         return this.http.post(`${this.api}/${idProveedor}/productos`, { idProducto, precioCompra },
             {
@@ -30,9 +29,9 @@ export class ProductoProveedorService{
                 }
             })
     }
-
+    //Edita nombre y descripción del producto y el precio de compra de este proveedor
     editarProductoProveedor(idProductoProveedor: string,datos: { nombre: string; descripcion: string; precioUnitario: number }): Observable<any> {
-        return this.http.patch(`${this.api}/${idProductoProveedor}`, {datos},
+        return this.http.patch(`${this.api}/${idProductoProveedor}`, datos,
             {
                 headers: {
                     Authorization: `Bearer ${this.authService.getToken()}`
@@ -40,9 +39,9 @@ export class ProductoProveedorService{
             });
     }
 
-    // Este es el botón de "Quitar" en la lista de productos de un proveedor, borra nada más
-    // la relación (la fila de Catalogo_Proveedor), el producto en sí sigue existiendo
-    // porque puede seguir vendiéndose en la tienda o estar asociado a otros proveedores
+    //Este es el botón de "Quitar" en la lista de productos de un proveedor, borra nada más
+    //la relación (la fila de Catalogo_Proveedor), el producto en sí sigue existiendo
+    //porque puede seguir vendiéndose en la tienda o estar asociado a otros proveedores
     eliminarProductoProveedor(idProveedor: string, idProducto: string):Observable<any>{
         return this.http.delete(`${this.api}/${idProveedor}/productos/${idProducto}`,{headers:{
                 Authorization: `Bearer ${this.authService.getToken()}`

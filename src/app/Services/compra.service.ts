@@ -13,8 +13,8 @@ export class CompraService {
 
     // Esto se llama desde el modal de "Surtir", cuando el producto ya existe
     // y ya está asociado al proveedor, solo aumentamos su stock
-    registrarCompraProductoExistente(idProveedor: string, idProducto: string, cantidad: number, costoUnitario: number): Observable<RespuestaCompra> {
-        return this.http.post<RespuestaCompra>(`${this.api}/existente`,{ idProveedor, idProducto, cantidad, costoUnitario },
+    registrarCompraProductoExistente(idProveedor: string, idProducto: string, cantidad: number): Observable<RespuestaCompra> {
+        return this.http.post<RespuestaCompra>(`${this.api}/existente`,{ idProveedor, idProducto, cantidad },
             {
                 headers: {
                     Authorization: `Bearer ${this.authService.getToken()}`

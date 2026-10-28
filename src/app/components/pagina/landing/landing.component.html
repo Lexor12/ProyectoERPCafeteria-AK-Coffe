@@ -1,3 +1,4 @@
+<!--Esta es la parte de arriba de la página de inicio, del lado izquierdo va el texto con el botón para entrar y del derecho la imagen del café-->
 <section class="hero">
     <div class="hero__contenido">
         <div class="hero__titulo-contenedor">
@@ -7,13 +8,16 @@
             <p class="hero__descripcion">Encuentra tu rincón de paz con el mejor aroma.</p>
         </div>
         <div class="hero__boton-contenedor">
+            <!--Usamos routerLink en vez de un href normal para que Angular cambie de página sin recargar todo, y routerLinkActive le agrega la clase de activo cuando la ruta actual coincide-->
             <a class="hero__boton" [routerLink]="['/auth']" routerLinkActive="hero__boton--activo">Entrar Gratis</a>
         </div>
     </div>
     <div class="hero__imagen">
+        <!--El alt describe la foto para lectores de pantalla y es lo que se muestra si la imagen no llega a cargar-->
         <img src="images/cafe-taza.png" alt="Taza de café caliente humeante sobre una mesa de madera">
     </div>
 </section>
+<!--Aquí juntamos el mapa y los datos del negocio (domicilio, si estamos abiertos y el horario) en dos columnas-->
 <section class="ubicacion">
     <div class="ubicacion__mapa">
         <h3 class="ubicacion__mapa-titulo">Nuestra Ubicación</h3>
@@ -27,7 +31,7 @@
                 <p class="ubicacion__domicilio-direccion">Av. Patria 1234, Col. Altamira, C.P. 45116, Zapopan, Jalisco</p>
             </div>
             <div class="ubicacion__estado">
-                <!-- El horario "8:00 AM - 20:00 PM" esta fijo por ahora; a futuro deberia salir del mismo lugar donde se calcule "abierto" -->
+                <!--Mostramos si estamos abiertos o cerrados según la variable abierto del componente: si es verdadera sale Abierto con su horario y si no sale Cerrado. El horario por ahora está escrito directo en el HTML ya que es por siempre-->
                 @if (abierto) {
                     <span class="ubicacion__estado-texto">Abierto</span>
                     <span class="ubicacion__estado-hora">8:00 AM - 20:00 PM</span>
@@ -37,7 +41,7 @@
                 }
             </div>
         </div>
-
+        <!--Esta parte es solo informativa, cada fila separa el día y su horario en dos span para poder acomodarlos uno a cada lado con flex-->
         <div class="ubicacion__horario">
             <h3 class="ubicacion__horario-titulo">Horario de Atención</h3>
             <div class="ubicacion__horario-fila">

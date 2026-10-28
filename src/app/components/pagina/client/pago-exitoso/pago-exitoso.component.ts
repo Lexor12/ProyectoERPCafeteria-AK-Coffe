@@ -2,6 +2,11 @@ import { Component, inject, OnInit ,PLATFORM_ID, signal} from '@angular/core';
 import { VentaService } from '../../../../Services/venta.service';
 import { Router } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
+import { ItemCarrito } from '../../../../Models/itemCarrito'; // model nuevo, ver punto 4
+
+
+//Esta bandera vive fuera de la clase para que, si el componente se inicia dos veces seguidas, las dos instancias la compartan y solo una capture el pago
+let procesandoPago = false;
 
 @Component({
   selector: 'app-pago-exitoso.component',
@@ -26,15 +31,19 @@ export class PagoExitosoComponent implements OnInit{
       setTimeout(() => this.router.navigate(['/tienda']), 3000);
       return;
     }
-    const items=JSON.parse(itemsGuardados)
+    if (procesandoPago) return;
+    procesandoPago = true;
+    const items: ItemCarrito[] = JSON.parse(itemsGuardados)
+    
     const rfcCliente = rfcGuardado ?? '';
     this.ventaService.procesarPagoVenta(orderID,rfcCliente,items).subscribe({
       next:(res)=>{
-        if (res.registrada) {
-          // Limpiamos el sessionStorage temporal de PayPal
+        procesandoPago = false
+        // Limpiamos el sessionStorage temporal de PayPal
           sessionStorage.removeItem('paypal_order_id');
           sessionStorage.removeItem('paypal_items');
           sessionStorage.removeItem('paypal_rfc');
+        if (res.registrada) {
           // El carrito se vacía hasta aquí, cuando el pago ya fue confirmado
           localStorage.setItem('mi_carrito', JSON.stringify([]));
           this.titulo.set('La compra se ha registrado correctamente!')
@@ -47,15 +56,14 @@ export class PagoExitosoComponent implements OnInit{
       }
     },
     error:(error)=>{
-        if (error.registrada) {
-            // Limpiamos el sessionStorage temporal de PayPal
-            sessionStorage.removeItem('paypal_order_id');
-            sessionStorage.removeItem('paypal_items');
-            sessionStorage.removeItem('paypal_rfc');
-            setTimeout(() => this.router.navigate(['/pedidos']), 3000);
-        }else {
-          setTimeout(() => this.router.navigate(['/tienda']), 3000);
-        }
+      procesandoPago = false;
+      // Limpiamos el sessionStorage temporal de PayPal
+      sessionStorage.removeItem('paypal_order_id');
+      sessionStorage.removeItem('paypal_items');
+      sessionStorage.removeItem('paypal_rfc');
+      this.titulo.set('Error al procesar el pago!')
+      this.texto.set(error.error?.mensaje ?? 'No se pudo registrar la compra.')
+      setTimeout(() => this.router.navigate(['/tienda']), 3000);
       }
     }
     )

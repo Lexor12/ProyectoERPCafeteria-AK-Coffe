@@ -1,3 +1,5 @@
+/*el :host es el contenedor de todo el componente y aquí lo uso para que el modal sea una capa fija que cubre toda la pantalla 
+con el fondo oscuro de la variable, centramos su contenido con flex y le doy un z-index alto para que quede encima de todo lo demás*/
 :host {
     position: fixed;
     top: 0;
@@ -10,7 +12,8 @@
     background-color: var(--modal--overlay);
     z-index: 999;
 }
-
+/*es la caja visible del modal con su fondo, esquinas redondeadas y sombra para despegarla del fondo oscuro, 
+uso flex en columna con gap para apilar sus secciones y el margin auto con max-width la mantiene angosta y centrada*/
 .modal-editar-producto {
     background-color: var(--modal--bg);
     border-radius: 16px;
@@ -22,19 +25,20 @@
     flex-direction: column;
     gap: 18px;
 }
-
+/*flex con space-between para dejar el título a la izquierda y el botón de cerrar a la derecha, los dos centrados verticalmente*/
 .modal-editar-producto__encabezado {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
 }
-
+/*tamaño grande con el color de título de los modales para que sea lo primero que se lea*/
 .modal-editar-producto__titulo {
     font-size: 22px;
     color: var(--modal--title);
 }
-
+/*el flex-shrink en 0 evita que el botón se aplaste y el mismo ancho y alto lo hacen cuadrado, 
+con flex centramos la X y el font-family inherit es porque los botones no heredan la letra del sistema*/
 .modal-editar-producto__cerrar {
     flex-shrink: 0;
     width: 32px;
@@ -52,25 +56,26 @@
     cursor: pointer;
     transition: transform 0.15s ease, opacity 0.15s ease;
 }
-
+/*al pasar el mouse el botón crece un poco y baja su opacidad para que se note que se puede dar clic, 
+el transition hace que el cambio sea suave y no un salto brusco*/
 .modal-editar-producto__cerrar:hover {
     transform: scale(1.1);
     opacity: 0.92;
 }
-
+/*es una línea hecha con border-bottom y márgenes para separar las secciones del modal*/
 .modal-editar-producto__separador {
     border-bottom: 1px solid var(--cards--border);
     margin-top: 10px;
     margin-bottom: 10px;
 }
-
+/*flex en fila con gap para dejar la imagen a un lado y los datos al otro*/
 .modal-editar-producto__producto {
     display: flex;
     flex-direction: row;
     align-items: flex-start;
     gap: 15px;
 }
-
+/*flex en columna con align-items center para dejar la imagen y su etiqueta de nueva una debajo de la otra y centradas, el flex-shrink en 0 evita que se aplaste*/
 .modal-editar-producto__imagen-contenedor {
     flex-shrink: 0;
     display: flex;
@@ -78,20 +83,20 @@
     align-items: center;
     gap: 8px;
 }
-
+/*caja de tamaño fijo con overflow hidden para que la imagen se recorte a sus esquinas redondeadas y no se salga de su espacio*/
 .modal-editar-producto__imagen {
     width: 80px;
     height: 80px;
     border-radius: 8px;
     overflow: hidden;
 }
-
+/*la imagen llena toda su caja y con las mismas esquinas redondeadas no sobresale*/
 .modal-editar-producto__imagen img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
-
+/*es la etiqueta chica en forma de píldora, el border-radius grande la redondea y el cursor pointer es porque funciona como botón para elegir una imagen nueva*/
 .modal-editar-producto__badge {
     width: fit-content;
     background-color: var(--main--bg);
@@ -114,14 +119,14 @@
     flex-direction: column;
     gap: 12px;
 }
-
+/*flex en fila con align-items center para que la etiqueta y su input queden en el mismo renglón con un gap entre ellos*/
 .modal-editar-producto__campo {
     display: flex;
     flex-direction: row;
     align-items: center;
     gap: 10px;
 }
-
+/*va en negritas con el color de etiquetas de los modales y el min-width hace que todas midan parecido, así los inputs quedan alineados*/
 .modal-editar-producto__etiqueta {
     min-width: 110px;
     flex-shrink: 0;
@@ -129,7 +134,9 @@
     font-weight: 700;
     color: var(--modal--label);
 }
-
+/*Uso las variables de input para que los colores cambien desde un solo lugar, 
+el flex 1 lo hace ocupar el espacio que queda junto a la etiqueta y el font-family inherit 
+es porque los inputs no heredan la letra del sistema*/
 .modal-editar-producto__input {
     flex: 1;
     width: 100%;
@@ -141,22 +148,22 @@
     color: var(--input--text);
     font-family: inherit;
 }
-
+/*Aqui cambie el color del texto de ayuda con la variable de placeholder para que se vea más apagado que lo que escribe el usuario*/
 .modal-editar-producto__input::placeholder {
     color: var(--input--placeholder);
 }
-
+/*Quite el outline que pone el navegador y en su lugar cambie el border-color al de acento*/
 .modal-editar-producto__input:focus {
     outline: none;
     border-color: var(--main--accent);
 }
-
+/*flex en fila con gap para dejar los botones de cancelar y aceptar lado a lado*/
 .modal-editar-producto__acciones {
     display: flex;
     flex-direction: row;
     gap: 12px;
 }
-
+/*los dos botones comparten tamaño y forma por eso los juntamos, el flex 1 hace que midan lo mismo y el transition suaviza el hover*/
 .modal-editar-producto__boton-cancelar,
 .modal-editar-producto__boton-aceptar {
     flex: 1;
@@ -168,13 +175,13 @@
     cursor: pointer;
     transition: transform 0.15s ease, opacity 0.15s ease;
 }
-
+/*es el botón secundario por eso usa las variables de color secundario y lleva borde*/
 .modal-editar-producto__boton-cancelar {
     background-color: var(--modal--button-secondary-bg);
     color: var(--modal--button-secondary-text);
     border: 1px solid var(--modal--button-secondary-border);
 }
-
+/*es el botón principal por eso usa las variables de color primario y no lleva borde*/
 .modal-editar-producto__boton-aceptar {
     background-color: var(--modal--button-primary-bg);
     color: var(--modal--button-primary-text);

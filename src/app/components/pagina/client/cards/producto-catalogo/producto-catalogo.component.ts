@@ -18,14 +18,19 @@ export class ProductoCatalogoComponent {
   agregar=output<{idProducto:string,cantidad:number}>();
 
   actualizarCantidadSeleccionada(evento:Event):void{
-    const valorIngresado = Number((evento.target as HTMLInputElement).value)
-    if(valorIngresado>=1 && valorIngresado<=this.stockDisponible()){
-      this.cantidad.set(valorIngresado)//Como al usar input.required lo que tenemos es un objeto tipo signal, no un valor, debemos acceder como
-      //si fuera un objeto, mediante metodos, Getters and Setters, aqui usamos set para definir el valor
-      //Peroo, en el HTML, usamos () para tipo get
+    const input = evento.target as HTMLInputElement
+    const valorIngresado = Number(input.value)
+    if(Number.isInteger(valorIngresado) && valorIngresado>=1 && valorIngresado<=this.stockDisponible()){
+      this.cantidad.set(valorIngresado)
+    } else {
+      input.value = String(this.cantidad())
     }
   }
   clickAgregar():void{
+    if (this.stockDisponible() < 1) {
+      alert('No hay stock suficiente de este producto')
+      return;
+    }
     this.agregar.emit({idProducto:this.idProducto(),cantidad:this.cantidad()})
   }
 }

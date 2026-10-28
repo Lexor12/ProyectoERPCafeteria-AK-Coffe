@@ -1,12 +1,15 @@
 <!-- pedidos.component.html -->
 <section class="pedidos">
+    <!--los radios y el buscador no van dentro de un form 
+    porque cada uno le avisa al componente con (change) o (input) y la lista se vuelve a filtrar sola-->
     <div class="pedidos__toolbar">
         <div class="pedidos__filtros-titulo">
             <label>Filtros: </label>
         </div>
         <div class="pedidos__opciones">
-            <label class="pedidos__radio pedidos__border"></label>
+            <label class="pedidos__radio pedidos__border"></label><!--estos label vacíos no llevan texto y solo sirven de rayita vertical para separar los grupos de filtros-->
             <label class="pedidos__radio">
+                <!--los radios de un mismo grupo comparten el name para que solo se pueda marcar uno a la vez, y el checked deja uno marcado desde que carga la página-->
                 <input id="estadoActivo" type="radio" name="filtroCancelado" (change)="cambiarFiltroActivo(true)" checked="true">
                 Activo
             </label>
@@ -15,6 +18,7 @@
                 Inactivo
             </label>
             <label class="pedidos__radio pedidos__border"></label>
+            <!--este grupo filtra por entrega y es independiente del anterior porque usa otro name, así puede haber uno marcado en cada grupo al mismo tiempo-->
             <label class="pedidos__radio">
                 <input id="estadoEntregado" type="radio" name="filtroEntrega" (change)="cambiarFiltroEntregado(true)">
                 Entregados
@@ -25,6 +29,7 @@
             </label>
             <label class="pedidos__radio pedidos__border"></label>
         </div>
+        <!--el buscador filtra por nombre del cliente y manda lo escrito en cada tecla con (input)-->
         <input class="pedidos__buscador" type="text" placeholder="Buscador por Nombre de Cliente..." (input)="actualizarBuscador($event)">
     </div>
     <div class="pedidos__grid">

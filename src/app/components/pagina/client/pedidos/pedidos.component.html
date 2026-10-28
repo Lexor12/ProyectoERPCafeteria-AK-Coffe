@@ -1,11 +1,15 @@
 <section class="pedidos">
+    <!--Esta barra tiene los filtros del listado. 
+    Los radios no van dentro de un form porque cada uno le avisa al componente con (change) y la lista se vuelve a filtrar sola-->
     <div class="pedidos__toolbar">
         <div class="pedidos__filtros-titulo">
             <label>Filtros: </label>
         </div>
         <div class="pedidos__opciones">
+            <!--Estos label vacíos no llevan texto, solo sirven de rayita vertical para separar los grupos de filtros-->
             <label class="pedidos__radio pedidos__border"></label>
             <label class="pedidos__radio">
+                <!--Los radios de un mismo grupo comparten el name para que solo se pueda marcar uno a la vez, y el checked deja uno marcado desde que carga la página-->
                 <input id="estadoActivo" type="radio" name="filtroCancelado" (change)="cambiarFiltroActivo(true)" checked="true">
                 Activo
             </label>
@@ -15,6 +19,7 @@
             </label>
             <label class="pedidos__radio pedidos__border"></label>
             <label class="pedidos__radio">
+                <!--Este grupo filtra por entrega y es independiente del anterior porque usa otro name, así puede haber uno marcado en cada grupo al mismo tiempo-->
                 <input id="estadoEntregado" type="radio" name="filtroEntrega" (change)="cambiarFiltroEntregado(true)">
                 Entregados
             </label>
@@ -24,11 +29,12 @@
             </label>
             <label class="pedidos__radio pedidos__border"></label>
         </div>
-        <input class="pedidos__buscador" type="text" placeholder="Buscador..." (input)="actualizarBuscador($event)">
     </div>
     <div class="pedidos__grid">
         <!-- Hacemos el muestro según la lista filtrada, para que en cada momento de actualización de un filtro se muestre el resultado sin tener que refrescar la página-->
         @for (pedido of pedidosFiltrados(); track pedido.idVenta) {
+            <!--Con [propiedad] le mandamos a la card los datos de cada pedido, y con (evento) recibimos lo que ella emite,
+            verDetalle y descargarFactura nos regresan el id para que el padre busque el pedido y haga el trabajo-->
             <app-producto-pedido
                 [idVenta]="pedido.idVenta"
                 [fechaCompra]="pedido.fechaCompra"
@@ -40,13 +46,15 @@
                 (verDetalle)="verDetalle($event)"
                 (descargarFactura)="descargarFactura($event)">
             </app-producto-pedido>
-        } @empty {
+        } @empty {<!--Si los filtros no dejan ningún pedido avisamos con este mensaje en vez de dejar el grid vacío sin explicación-->
         <p class="pedidos__vacio">No hay pedidos para mostrar según los filtros ingresados.</p>
         }
     </div>
 </section>
 <!--Para mostrar los detalles hacemos simplemente si en el objeto que almacena el producto seleccionado cambia de null a un producto existente, este se mostrará-->
 @if (pedidoSeleccionado(); as pedido) {
+    <!--El "as pedido" guarda el pedido ya sin null dentro del bloque. Le mandamos sus datos al modal con [propiedad] 
+    y su evento cerrar nos avisa para volver a poner null y que desaparezca-->
     <app-detalles-pedido
         [productos]="pedido.productos"
         [entregado]="pedido.entregado"

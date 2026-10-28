@@ -1,6 +1,8 @@
+<!--Este código, describe como la card para registrar una cuenta-->
 <div class="card-registro">
     <div class="card-registro__promocion">
         <h2 class="card-registro__promocion-titulo">¿Ya tienes una cuenta?</h2>
+        <!--Este botón no manda datos, solo emite cambiarVista para que el componente padre cambie a la vista de login-->
         <button class="card-registro__boton-entrar" type="button" (click)="cambiarVista.emit()">Entrar</button>
         <p class="card-registro__promocion-texto">Inicia sesión para continuar disfrutando de tus cafés favoritos de siempre.</p>
     </div>
@@ -9,7 +11,12 @@
 
     <div class="card-registro__formulario">
         <h2 class="card-registro__titulo">Registrarse</h2>
+        <!--Este es el formulario de registro. Como la maestra dijo que no usemos ngForm, ngModel ni nada que lleve Ng 
+        (no es correcto mezclar standalone con módulos), usamos el form normal de HTML 
+        y su evento submit, que llama a registrarCliente-->
         <form (submit)="registrarCliente($event)">
+            <!--Cada input guarda lo que se escribe con (input). El maxlength limita cuántos caracteres se pueden escribir según las reglas del sistema, 
+            y el required obliga a llenarlo, se revisa hasta dar clic en Crear Cuenta porque está dentro del form-->
             <div class="card-registro__campo">
                 <label class="card-registro__etiqueta" for="nombre">Nombre:</label>
                 <input class="card-registro__input" type="text" id="nombre" (input)="actualizarNombre($event)" placeholder="John Doe" maxlength="50" required>
@@ -20,7 +27,8 @@
             </div>
             <div class="card-registro__campo">
                 <label class="card-registro__etiqueta" for="correo">Correo Electrónico:</label>
-                <input class="card-registro__input" type="email" id="correo" (input)="actualizarCorreo($event)" placeholder="correo@ejemplo.com" required>
+                <!--El type="email" hace que el navegador revise el formato del correo al enviar el form, junto con el required-->
+                <input class="card-registro__input" type="email" id="correo" (input)="actualizarCorreo($event)" placeholder="correo@ejemplo.com" maxlength="100"  required>
             </div>
             <div class="card-registro__campo">
                 <label class="card-registro__etiqueta" for="telefono">Teléfono:</label>
@@ -29,26 +37,29 @@
             </div>
             <div class="card-registro__campo">
                 <label class="card-registro__etiqueta" for="contrasena">Contraseña:</label>
-                <input class="card-registro__input" type="password" id="contrasena" (input)="actualizarContrasena($event)" maxlength="64" placeholder="contraseña" required>
+                <input class="card-registro__input" type="password" id="contrasena" (input)="actualizarContrasena($event)" maxlength="64" minlength="8" placeholder="contraseña" required>
 
             </div>
+            <!--La confirmación se guarda aparte de la contraseña con su propio método, para poder compararlas.-->
             <div class="card-registro__campo">
                 <label class="card-registro__etiqueta" for="confirmarContrasena">Confirmar Contraseña:</label>
-                <input class="card-registro__input" type="password" id="confirmarContrasena" (input)="actualizarContrasenaValidacion($event)" maxlength="64" placeholder="contraseña" required>
+                <input class="card-registro__input" type="password" id="confirmarContrasena" (input)="actualizarContrasenaValidacion($event)" maxlength="64" minlength="8" placeholder="contraseña" required>
             </div>
-            <!-- Campo de Términos y Condiciones -->
+            <!--Aquí el required sí frena el envío porque el checkbox está dentro del form, y los routerLink llevan a los textos legales sin recargar la página-->
             <div class="card-registro__campo-terminos">
                 <input type="checkbox" id="terminos" (change)="actualizarTerminos($event)" required>
                 <label for="terminos" style="font-size: 0.9rem;">
                     He leído y aceptado los <a [routerLink]="['/terminos-y-condiciones']" routerLinkActive="router-link-active">Términos y Condiciones</a> y el <a [routerLink]="['/aviso-de-privacidad']" routerLinkActive="router-link-active">Aviso de Privacidad</a>
                 </label>
             </div>
+            <!--El type="submit" es el que dispara el evento submit del form, que es el que llama a registrarCliente-->
             <button class="card-registro__boton-crear-cuenta" type="submit">Crear Cuenta</button>
+            <!--Estos dos @if muestran el mensaje de error o de éxito solo cuando el signal trae texto, si está vacío el párrafo ni se pinta-->
             @if (mensajeError()) {
                 <p class="card-registro__error">{{ mensajeError() }}</p>
             }
             @if (mensajeExito()) {
-                <p class="card-registro__error" style="color: green;">{{ mensajeError() }}</p>
+                <p class="card-registro__error" style="color: green;">{{ mensajeExito() }}</p>
             }
         </form>
     </div>

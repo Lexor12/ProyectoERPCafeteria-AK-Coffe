@@ -1,3 +1,4 @@
+<!--Este es el pie de página, del lado izquierdo van los datos del negocio y del derecho los enlaces a los textos legales-->
 <footer class="footer">
     <div class="footer__contenido">
         <div class="footer__marca">
@@ -6,10 +7,12 @@
             <p class="footer__detalle">Tel. 33 1234 5678</p>
             <p class="footer__detalle">Email. akcoffe.contacto@gmail.com</p>
         </div>
+        <!--Usamos routerLink en vez de un href normal para que Angular cambie de página sin recargar todo, y routerLinkActive le agrega la clase cuando la ruta actual coincide-->
         <nav class="footer__enlaces">
             <a [routerLink]="['/terminos-y-condiciones']" routerLinkActive="router-link-active">Términos y Condiciones</a>
             <a [routerLink]="['/aviso-de-privacidad']" routerLinkActive="router-link-active">Aviso de Privacidad</a>
         </nav>
     </div>
+    <!--El año sale de la variable anio del componente en lugar de escribirlo fijo aquí, y &copy; es la forma de escribir el símbolo © en HTML-->
     <p class="footer__copyright">&copy; {{ anio }} AK Coffee. Todos los derechos reservados.</p>
 </footer>

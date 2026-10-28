@@ -1,21 +1,34 @@
+<!--Este código, describe como la card para iniciar sesión-->
 <div class="card-login">
     <div class="card-login__formulario">
         <h2 class="card-login__titulo">Iniciar Sesión</h2>
+        <!--Este es el formulario del login. 
+        Como la maestra dijo que no usemos ngForm, ngModel ni nada que lleve Ng 
+        (no es correcto mezclar standalone con módulos), 
+        usamos el form normal de HTML y su evento submit, que llama a iniciarSesion-->
         <form (submit)="iniciarSesion($event)">
             <div class="card-login__campo">
+                <!--El type="email" hace que el navegador revise el formato del correo y el required obliga a 
+                llenarlo, los dos se revisan hasta que se da clic en Entrar porque el input está dentro del form-->
                 <label class="card-login__etiqueta" for="correo">Correo Electrónico:</label>
-                <input class="card-login__input" type="email" id="correo" (input)="actualizarCorreo($event)" placeholder="correo@ejemplo.com" required>
+                <input class="card-login__input" type="email" id="correo" (input)="actualizarCorreo($event)" placeholder="correo@ejemplo.com" maxlength="100"  required>
             </div>
+            
             <div class="card-login__campo">
+                <!--El type="password" oculta lo que se escribe. 
+                El maxlength limita cuántos caracteres se pueden escribir según las reglas del sistema, 
+                así ni siquiera dejamos que el usuario se pase-->
                 <label class="card-login__etiqueta" for="contrasena">Contraseña:</label>
-                <input class="card-login__input" type="password" id="contrasena" (input)="actualizarContrasena($event)" placeholder="contraseña" maxlength="64" required>
+                <input class="card-login__input" type="password" id="contrasena" (input)="actualizarContrasena($event)" placeholder="contraseña" maxlength="64" minlength="8" required>
             </div>
             <button class="card-login__boton-entrar" type="submit">Entrar</button>
+            <!--Estos dos @if muestran el mensaje de error o de éxito solo cuando el signal trae texto,
+            si está vacío el párrafo ni se pinta. El de éxito cambia el color con un style en línea-->
             @if (mensajeError()) {
                 <p class="card-login__error">{{ mensajeError() }}</p>
             }
             @if (mensajeExito()) {
-                <p class="card-registro__error" style="color: green;">{{ mensajeError() }}</p>
+                <p class="card-login__error" style="color: green;">{{ mensajeExito() }}</p>
             }
         </form>
     </div>
@@ -24,6 +37,7 @@
 
     <div class="card-login__promocion">
         <h2 class="card-login__promocion-titulo">¿No tienes una cuenta?</h2>
+        <!--Este botón no manda datos, solo emite cambiarVista para que el componente padre cambie a la vista de registro-->
         <button class="card-login__boton-crear" type="button" (click)="cambiarVista.emit()">Crear</button>
         <p class="card-login__promocion-texto">Crea de forma gratuita para empezar a comprar tus bebidas favoritas.</p>
     </div>

@@ -1,3 +1,5 @@
+<!--este modal sirve para agregar y para editar un proveedor, no lleva form porque se va guardando lo que se escribe en signals con (input) 
+y se manda al dar clic en Aceptar, por eso solo el maxlength limita lo que se escribe-->
 <article class="modal-agregar-proveedor">
     <div class="modal-agregar-proveedor__encabezado">
         <h2 class="modal-agregar-proveedor__titulo">Agregar / Editar Proveedor</h2>
@@ -6,12 +8,12 @@
     <div class="modal-agregar-proveedor__separador"></div>
     <div class="modal-agregar-proveedor__campo">
         <label class="modal-agregar-proveedor__etiqueta">Nombre:</label>
-        <input class="modal-agregar-proveedor__input" type="text" placeholder="Escriba el nombre..." (input)="actualizarNombre($event)" [value]="nombre()">
+        <input class="modal-agregar-proveedor__input" type="text" placeholder="Escriba el nombre..." maxlength="80" (input)="actualizarNombre($event)" [value]="nombre()">
     </div>
 
     <div class="modal-agregar-proveedor__campo">
         <label class="modal-agregar-proveedor__etiqueta">Teléfono:</label>
-        <input class="modal-agregar-proveedor__input" type="tel" placeholder="Escriba el teléfono..." (input)="actualizarTelefono($event)" [value]="telefono()">
+        <input class="modal-agregar-proveedor__input" type="tel" placeholder="Escriba el teléfono..." maxlength="10" (input)="actualizarTelefono($event)" [value]="telefono()">
     </div>
     <div class="modal-agregar-proveedor__separador"></div>
     <div class="modal-agregar-proveedor__acciones">

@@ -1,7 +1,8 @@
-.finanzas {
+.finanzas {/*es el contenedor de toda la página y el padding le da aire por los lados para que nada quede pegado a la orilla*/
     padding: 30px 25px;
 }
-
+/*Uso flex con wrap para que los filtros y el buscador queden en una fila y, si no caben, bajen
+a la siguiente en vez de salirse, el gap los separa y el margin-bottom los despega de lo que sigue*/
 .finanzas__toolbar {
     display: flex;
     flex-direction: row;
@@ -19,7 +20,7 @@
     align-items: center;
     gap: 15px;
 }
-
+/*va en negritas con el color de encabezado de las variables para que se distinga de los campos*/
 .finanzas__filtros-titulo {
     font-size: 14px;
     font-weight: 700;
@@ -34,14 +35,15 @@
     justify-content: center;
     gap: 3px;
 }
-
+/*el white-space nowrap evita que la etiqueta se parta en dos renglones cuando falta espacio*/
 .finanzas__etiqueta {
     font-size: 11px;
     color: var(--main--text);
     white-space: nowrap; 
     margin-right: 10px;
 }
-
+/*aspecto del input con las variables de input para que los colores cambien desde un solo lugar, 
+el font-family inherit es porque los inputs no heredan la letra del sistema*/
 .finanzas__input {
     min-width: 150px; 
     padding: 7px 10px;
@@ -57,7 +59,7 @@
     outline: none;
     border-color: var(--main--accent);
 }
-
+/*los dos botones comparten estilo por eso los juntamos, el align-self flex-end los baja al nivel de los campos y el transition suaviza el hover*/
 .finanzas__boton-aplicar,
 .finanzas__boton-borrar {
     align-self: flex-end;
@@ -72,19 +74,19 @@
     cursor: pointer;
     transition: transform 0.15s ease, opacity 0.15s ease;
 }
-
+/*al pasar el mouse el botón crece un poco y baja su opacidad para que se note que se puede dar clic, el transition hace que el cambio sea suave y no un salto brusco*/
 .finanzas__boton-aplicar:hover,
 .finanzas__boton-borrar:hover {
     transform: scale(1.05);
     opacity: 0.92;
 }
 
-.finanzas__periodo {
+.finanzas__periodo {/*flex en fila con gap para dejar los botones de día, mes y año juntos*/
     display: flex;
     flex-direction: row;
     gap: 8px;
 }
-
+/*los botones de periodo se ven apagados con las variables de las cards y el font-family inherit es porque los botones no heredan la letra del sistema*/
 .finanzas__periodo-boton {
     background-color: var(--cards--bg);
     color: var(--main--text);
@@ -108,14 +110,14 @@
     transform: scale(1.05);
     opacity: 0.92;
 }
-
+/*usamos grid con auto-fit y minmax para que las tres cards se repartan el ancho y se acomoden solas según la pantalla, si no caben bajan a otra fila*/
 .finanzas__resumen {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 20px;
     margin-bottom: 25px;
 }
-
+/*flex en columna con align-items center para dejar el título y la cantidad centrados dentro de la card, con las variables de color de las cards*/
 .finanzas__resumen-card {
     display: flex;
     flex-direction: column;
@@ -126,13 +128,13 @@
     border-radius: 12px;
     padding: 20px;
 }
-
+/*texto en negritas con el color de título de las cards para que se lea como encabezado de la cantidad*/
 .finanzas__resumen-titulo {
     font-size: 13px;
     font-weight: 700;
     color: var(--cards--title);
 }
-
+/*más grande y en negritas con el color de precio de las cards para que la cantidad sea lo que más se note*/
 .finanzas__resumen-valor {
     font-size: 20px;
     font-weight: 700;
@@ -156,12 +158,12 @@
     font-weight: 700;
     color: var(--cards--label);
 }
-
+/*flex con justify-content flex-end para mandar el botón de exportar hasta la derecha*/
 .finanzas__acciones {
     display: flex;
     justify-content: flex-end;
 }
-
+/*usa las variables de color primario y el font-family inherit porque los botones no heredan la letra, el transition suaviza el hover*/
 .finanzas__boton-exportar {
     background-color: var(--cards--button-primary-bg);
     color: var(--cards--button-primary-text);
@@ -179,6 +181,8 @@
     transform: scale(1.05);
     opacity: 0.92;
 }
+
+/*al imprimir ocultamos los botones que no sirven en papel y con break-inside avoid evitamos que la gráfica se parta entre dos hojas*/
 @media print {
     .finanzas__boton-aplicar{
         display: none

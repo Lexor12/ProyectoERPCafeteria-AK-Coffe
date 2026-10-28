@@ -2,13 +2,14 @@
 :host {
     display: block;
 }
-
+/*Le damos el fondo y el color de texto con las variables de styles.css (var) para poder cambiarlos desde un solo lugar. El padding le da aire por todos lados*/
 .footer {
     background-color: var(--footer--bg);    
     color: var(--footer--text);                
     padding: 2rem 1.5rem 1rem;
 }
-
+/*El max-width con margin auto centra el contenido y evita que se estire en pantallas grandes. 
+Usamos flex con wrap y space-between para dejar los datos a un lado y los enlaces al otro, y si no caben los enlaces bajan solos*/
 .footer__contenido {
     max-width: 1100px;
     margin: 0 auto;
@@ -18,19 +19,19 @@
     flex-wrap: wrap;
     gap: 1.5rem;
 }
-
+/*Tamaño grande y en negritas para que el nombre del negocio sea lo primero que se vea, con un poco de letter-spacing para separar las letras*/
 .footer__nombre {
     font-size: 1.4rem;
     font-weight: 700;
     letter-spacing: 0.04em;
 }
-
+/*Letra más chica que el nombre y un margen corto arriba y abajo para que los datos de contacto queden juntos pero legibles*/
 .footer__detalle {
     margin: 0.35rem 0;
     font-size: 0.85rem;
     color: var(--footer--text);               
 }
-
+/*Flex en columna con gap para que los enlaces queden uno debajo del otro con espacio entre ellos*/
 .footer__enlaces {
     display: flex;
     flex-direction: column;
@@ -44,7 +45,8 @@
     border-bottom: 1px solid transparent;
     transition: color 0.2s, border-color 0.2s;
 }
-
+/*Usa el mismo max-width y margin auto que el contenido para quedar alineado con él. 
+El border-top con un color semitransparente hace una línea suave que lo separa del resto y el texto va centrado*/
 .footer__copyright {
     max-width: 1100px;
     margin: 1.5rem auto 0;
@@ -55,7 +57,7 @@
     color: var(--footer--text-light);
 }
 
-/* El reporte de Finanzas se exporta con la impresión del navegador (RQF39), el footer no debe salir impreso */
+/* El reporte de Finanzas se exporta con la impresión del navegador, el footer no debe salir impreso */
 @media print {
     .footer {
         display: none;

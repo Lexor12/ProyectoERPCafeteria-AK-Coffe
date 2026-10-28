@@ -49,10 +49,14 @@ export class EditarProductoProveedorComponent {
     const input = evento.target as HTMLInputElement;
     const archivo = input.files?.[0];
     if (!archivo) return;
-
+    //A pesar de que el Backend valida, aqui en Frontend también lo hice para evitar mandar consultas y estar esperando mucho
+    if (!['image/jpeg','image/png','image/webp'].includes(archivo.type) || archivo.size > 2 * 1024 * 1024) {//Comprobamos el tamaño que no sea mayor a 2MB y que los tipos sean jpeg,png y webp (tal cual como el backend acepta)
+      alert('La imagen debe ser JPG, PNG o WEBP de máximo 2 MB');
+      input.value = '';
+      return;
+    }
     // FileReader lee el contenido del archivo, aquí lo pedimos como "data URL"
     // que es justo el formato base64 con el encabezado "data:image/png;base64,..." que recibe el backend que acabo de configurar
-    //
     const lector = new FileReader();
     lector.onload = () => {
         const base64 = lector.result as string;

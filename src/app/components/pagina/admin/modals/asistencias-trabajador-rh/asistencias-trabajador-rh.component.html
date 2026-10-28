@@ -1,3 +1,5 @@
+<!--este es el modal de asistencias del trabajador, arriba van sus datos, luego el historial, 
+el registro de una asistencia nueva y al final el cálculo de la nómina por rango de fechas-->
 <article class="modal-asistencias">
     <div class="modal-asistencias__encabezado">
         <h2 class="modal-asistencias__titulo">Asistencias de Trabajador</h2>
@@ -35,6 +37,9 @@
         }
     </div>
     <div class="modal-asistencias__separador"></div>
+    <!--esta parte no va dentro de un form porque el componente guarda cada valor con (change) 
+    y todo se manda hasta que se da clic en Aceptar, por eso los campos de fecha y 
+    hora solo ayudan a elegir el valor y no revisan nada, usamos [value] con (change) en vez de ngModel-->
     <div class="modal-asistencias__nueva">
         <div class="modal-asistencias__inputs">
             <div class="modal-asistencias__campo">
@@ -42,8 +47,7 @@
                 <input class="modal-asistencias__input-fecha" type="date" [value]="fechaAsistencia()" (change)="actualizarAsistencia($event)">
             </div>
             <div class="modal-asistencias__campo">
-                <!-- Estos dos de aqui abajo estan en readonly, pq a futuro deberian llenarse solos
-                cuando el trabajador realmente checa entrada/salida, no capturarse a mano -->
+                <!--por ahora las horas se capturan a mano con type time, que abre el selector de hora del navegador-->
                 <label class="modal-asistencias__etiqueta-campo">Hora de Entrada:</label>
                 <input class="modal-asistencias__input" type="time" [value]="nuevaHoraEntrada()" (change)="actualizarNuevaHoraEntrada($event)">
             </div>
@@ -58,7 +62,7 @@
         </div>
     </div>
     <div class="modal-asistencias__separador"></div>
-    <div class="modal-asistencias__fechas">
+    <div class="modal-asistencias__fechas"><!--estas dos fechas definen el rango con el que se calcula la nómina y cada una se guarda con (change)-->
         <div class="modal-asistencias__campo-fecha">
             <label class="modal-asistencias__etiqueta-campo">Fecha Inicio:</label>
             <input class="modal-asistencias__input-fecha" type="date" [value]="fechaInicio()" (change)="actualizarFechaInicio($event)">
@@ -69,7 +73,7 @@
         </div>
     </div>
 
-    <div class="modal-asistencias__resumen">
+    <div class="modal-asistencias__resumen"><!--el resumen muestra los días trabajados, el salario diario y el total que calcula el componente, y el botón de abajo llama a clickCalcularNomina para hacer el cálculo-->
         <div class="modal-asistencias__resumen-item">
             <span class="modal-asistencias__resumen-etiqueta">Días Trabajados</span>
             <span class="modal-asistencias__resumen-valor">{{ diasTrabajados() }}</span>

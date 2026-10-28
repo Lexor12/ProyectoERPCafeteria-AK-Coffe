@@ -14,3 +14,4 @@ export class LandingComponent {
   // definido, basicamente una serie de condicionales (if)
   abierto: boolean = true;
 }
+//Este componente es meramente para lecturas y es "estático" asi que no incluye procesos, pero se usa para mostrar en el HTML de lo que es la página de inicio

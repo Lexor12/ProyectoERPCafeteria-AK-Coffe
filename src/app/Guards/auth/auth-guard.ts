@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
 import { AuthService } from '../../Services/auth.service';
 
+//Como tal, solo deja pasar si hay un token válido y no expirado, si no manda a /auth
 export const authGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService)  //Aqui obtenemos el servicio de autenticacion
   const router = inject(Router)  //Obtenemos el servicio para la navegacion

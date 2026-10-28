@@ -6,6 +6,8 @@ import { ProductoDeVenta } from '../../../../../Models/productoDeVenta';
   templateUrl: './detalles-pedido-admin.component.html',
   styleUrl: './detalles-pedido-admin.component.css',
 })
+
+//Este modal se encarga de mostrar el detalle de un pedido para el administrador, solo muestra datos que manda el padre
 export class DetallesPedidoAdminComponent {
   productos = input.required<ProductoDeVenta[]>();
 
@@ -17,6 +19,7 @@ export class DetallesPedidoAdminComponent {
   fechaCompra = input.required<string>();
   cerrar = output<void>();
 
+  //El subtotal, el IVA (16%) y total se calculan a partir de los productos del pedido
   subtotal = computed(() => this.productos().reduce((suma, p) => suma + p.subtotal, 0));
   iva = computed(() => this.subtotal() * 0.16);
   precioTotal = computed(() => this.subtotal() + this.iva());

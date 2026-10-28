@@ -1,6 +1,9 @@
+<!--Este es el modal con el detalle del pedido: todo lo que muestra llega del padre por inputs y aquí solo se lee, no se edita nada-->
 <article class="detalle-pedido">
     <div class="detalle-pedido__encabezado">
         <h2 class="detalle-pedido__titulo">Detalles de Pedido</h2>
+        <!--El clic llama a clickCerrar, que solo emite el evento cerrar al padre, y es el padre quien quita el modal. 
+        Lleva type="button" para que no se comporte como botón de enviar-->
         <button class="detalle-pedido__cerrar" type="button" (click)="clickCerrar()">X</button>
     </div>
     <div class="detalle-pedido__separador"></div>
@@ -9,7 +12,9 @@
         Aqui se cargan en formato de lista todos los productos que se seleccionarión
         -->
         <p class="detalle-pedido__pedidos-titulo">Productos del pedido</p>
+        
         <div class="detalle-pedido__pedidos">
+            <!--Pintamos una cajita por cada producto del pedido, el track con el nombre le dice a Angular cuál es cuál para no recrearlas todas cuando algo cambia-->
             @for (producto of productos(); track producto.nombre) {
                 <div class="detalle-pedido__datos">
                     <div class="detalle-pedido__datos-izquierda">
@@ -24,6 +29,8 @@
             }
         </div>
         <div class="detalle-pedido__separador"></div>
+        <!--El subtotal, el IVA y el total ya vienen calculados por el componente con computed, y el proceso y el estado son 
+        el booleano convertido a texto, así que aquí solo los pintamos-->
         <div class="detalle-pedido__detalles">
             <p class="detalle-pedido__etiqueta">IVA (16%): <span class="detalle-pedido__dato">$ {{ iva().toFixed(2) }}</span></p>
                     <p class="detalle-pedido__etiqueta">Precio Total: <span class="detalle-pedido__dato">$ {{ precioTotal().toFixed(2) }}</span></p>
@@ -37,6 +44,7 @@
     <div class="detalle-pedido__seccion">
         <p class="detalle-pedido__etiqueta">Nombre: <span class="detalle-pedido__dato">{{ nombreCliente() }}</span> </p>
         <p class="detalle-pedido__etiqueta">Apellido: <span class="detalle-pedido__dato">{{ apellidoCliente() }}</span> </p>
+        <!--Si el cliente no capturó RFC el valor llega vacío, que cuenta como falso, y entonces esa línea ni se pinta-->
         @if (rfcCliente()) {<!--El de cliente es opcional, pero el de Trabajador es obligatorio-->
             <p class="detalle-pedido__etiqueta">RFC: <span class="detalle-pedido__dato">{{ rfcCliente() }}</span> </p>
         }

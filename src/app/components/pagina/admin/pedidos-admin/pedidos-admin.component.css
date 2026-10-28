@@ -1,7 +1,8 @@
-.pedidos {
+.pedidos {/*es el contenedor de toda la página y el padding le da aire por los lados para que nada quede pegado a la orilla*/
     padding: 30px 25px;
 }
-
+/*Uso flex con wrap para que los filtros y el buscador queden en una fila y, si no caben, bajen
+a la siguiente en vez de salirse, el gap los separa y el margin-bottom los despega de lo que sigue*/
 .pedidos__toolbar {
     display: flex;
     flex-direction: row;
@@ -10,11 +11,13 @@
     gap: 20px;
     margin-bottom: 25px;
 }
+/*como el label no tiene contenido le damos ancho y alto fijos y el color de borde de los inputs para que se vea como una rayita vertical que separa los grupos*/
 .pedidos__border{
     background-color: var(--input--border);
     width: 2px;
     height: 20px;
 }
+/*va en negritas con el color de encabezado de las variables para que se distinga de los campos*/
 .pedidos__toolbar-titulo p {
     font-size: 14px;
     font-weight: 700;
@@ -25,6 +28,7 @@
     font-weight: 700;
     color: var(--main--heading);
 }
+/*flex con wrap y gap para que las opciones queden en fila y bajen de renglón cuando la pantalla es angosta*/
 .pedidos__opciones {
     display: flex;
     flex-direction: row;
@@ -32,7 +36,7 @@
     align-items: center;
     gap: 20px;
 }
-
+/*flex con align-items center para que el circulito y su texto queden alineados, el cursor pointer es porque se puede dar clic en todo el label*/
 .pedidos__radio {
     display: flex;
     flex-direction: row;
@@ -42,7 +46,8 @@
     color: var(--main--text);
     cursor: pointer;
 }
-
+/*con appearance none quitamos el círculo que dibuja el navegador para hacer el borde 
+y border-radius al 50%, así combina con los colores del sistema, el position relative es para acomodar el puntito de adentro*/
 .pedidos__radio input[type="radio"] {
     appearance: none;
     -webkit-appearance: none;
@@ -69,7 +74,8 @@
     border-radius: 50%;
     background-color: var(--main--accent);
 }
-
+/*con flex 1 el buscador crece y ocupa el espacio que sobra y el min-width 
+evita que se haga demasiado chico, el margin-left auto lo manda hasta la derecha cuando lo trae*/
 .pedidos__buscador {
     flex: 1;
     min-width: 200px;
@@ -91,7 +97,7 @@
     outline: none;
     border-color: var(--main--accent);
 }
-
+/*usamos grid con auto-fill y minmax para que las cards se acomoden solas, caben las que alcancen por fila según el ancho y las demás bajan sin necesitar media queries*/
 .pedidos__grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));

@@ -1,38 +1,42 @@
 <section class="finanzas">
+    <!--los filtros de fecha y los botones de periodo no van dentro de un form 
+    porque cada uno le avisa al componente con (change) o (click), y Aplicar y Borrar llaman a su propio método-->
     <div class="finanzas__toolbar">
         <div class="finanzas__filtros">
             <p class="finanzas__filtros-titulo">Filtros:</p>
             <div class="finanzas__campo">
                 <label class="finanzas__etiqueta">Fecha Inicio:</label>
-                <input class="finanzas__input" type="date" (change)="actualizarFechaInicio($event)">
+                <!--el type date abre el calendario del navegador y entrega la fecha como texto, 
+                el componente la guarda con (change) y no se revisa nada hasta que se da clic en Aplicar-->
+                <input class="finanzas__input" type="date" (change)="actualizarFechaInicio($event)" [value]="fechaInicio()">
             </div>
             <div class="finanzas__campo">
                 <label class="finanzas__etiqueta">Fecha Fin:</label>
-                <input class="finanzas__input" type="date" (change)="actualizarFechaFin($event)">
+                <input class="finanzas__input" type="date" (change)="actualizarFechaFin($event)" [value]="fechaFin()">
             </div>
             <button class="finanzas__boton-aplicar" type="button" (click)="clickAplicar()">Aplicar</button>
             <button class="finanzas__boton-borrar" type="button" (click)="clickBorrar()">Borrar</button>
         </div>
-
+        <!--con [class.nombre] prendemos la clase de activo solo en el botón del periodo elegido, así se ve cuál está seleccionado-->
         <div class="finanzas__periodo">
             <button class="finanzas__periodo-boton" [class.finanzas__periodo-boton--activo]="periodo() === 'dia'" type="button" (click)="seleccionarPeriodoDia()">Día</button>
             <button class="finanzas__periodo-boton" [class.finanzas__periodo-boton--activo]="periodo() === 'mes'" type="button" (click)="seleccionarPeriodoMes()">Mes</button>
             <button class="finanzas__periodo-boton" [class.finanzas__periodo-boton--activo]="periodo() === 'anio'" type="button" (click)="seleccionarPeriodoAnio()">Año</button>
         </div>
     </div>
-
+    <!--las tres cards muestran ingresos, egresos y balance que calcula el componente-->
     <div class="finanzas__resumen">
         <div class="finanzas__resumen-card">
             <p class="finanzas__resumen-titulo">Ingresos por Ventas</p>
-            <p class="finanzas__resumen-valor">$ {{ ingresos() | number }}</p>
+            <p class="finanzas__resumen-valor">$ {{ ingresos() | number:'1.2-2' }}</p>
         </div>
         <div class="finanzas__resumen-card">
             <p class="finanzas__resumen-titulo">Egresos por Compras y Nóminas</p>
-            <p class="finanzas__resumen-valor">$ {{ egresos() | number }}</p>
+            <p class="finanzas__resumen-valor">$ {{ egresos() | number:'1.2-2' }}</p>
         </div>
         <div class="finanzas__resumen-card">
             <p class="finanzas__resumen-titulo">Balance</p>
-            <p class="finanzas__resumen-valor">$ {{ balance() | number }}</p>
+            <p class="finanzas__resumen-valor">$ {{ balance() | number:'1.2-2' }}</p>
         </div>
     </div>
     <!--Solo tendremos un div que muestra eso, ya que el uso de canvas para mostrar las gráficas

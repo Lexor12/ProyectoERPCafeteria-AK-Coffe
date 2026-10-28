@@ -20,7 +20,7 @@ export class ProveedorService {
             }})
     }
 
-    // Se usa en el modal de "Nuevo proveedor"
+    //Se usa en el modal de "Nuevo proveedor"
     crearProveedor(nombre: string, telefono: string): Observable<any> {
         return this.http.post(this.api, { nombre, telefono },
             {
@@ -29,8 +29,7 @@ export class ProveedorService {
                 }
             })
     }
-
-    // Se usa en el modal de "Nuevo proveedor"
+    //Se usa en el modal de edición, con el proveedor seleccionado en el filtro
     editarProveedor(idProveedor:string,nombre: string, telefono: string): Observable<any> {
         return this.http.put(`${this.api}/${idProveedor}`, { nombre, telefono },
             {
@@ -39,8 +38,7 @@ export class ProveedorService {
                 }
             })
     }
-
-    // Se usa en el modal de "Nuevo proveedor"
+    //Botón "Desactivar proveedor": no se borra, el backend lo marca inactivo y elimina sus asociaciones con productos
     desactivarProveedor(idProveedor:string): Observable<any> {
         return this.http.delete(`${this.api}/${idProveedor}`,{headers:{
                 Authorization: `Bearer ${this.authService.getToken()}`

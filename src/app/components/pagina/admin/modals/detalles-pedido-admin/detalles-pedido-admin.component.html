@@ -1,11 +1,13 @@
-<article class="detalle-pedido">
+<article class="detalle-pedido"><!--este es el modal con el detalle del pedido para el administrador, todo llega del padre por inputs y aquí solo se lee-->
     <div class="detalle-pedido__encabezado">
         <h2 class="detalle-pedido__titulo">Detalles de Pedido</h2>
         <button class="detalle-pedido__cerrar" type="button" (click)="clickCerrar()">X</button>
+        <!--el clic llama a clickCerrar, que solo emite el evento cerrar al padre y es el padre quien quita el modal-->
     </div>
     <div class="detalle-pedido__separador"></div>
     <div class="detalle-pedido__producto">
         <div class="detalle-pedido__pedidos">
+            <!--pintamos una cajita por cada producto del pedido -->
             @for (producto of productos(); track producto.nombre) {
                 <div class="detalle-pedido__datos">
                     <div class="detalle-pedido__datos-izquierda">

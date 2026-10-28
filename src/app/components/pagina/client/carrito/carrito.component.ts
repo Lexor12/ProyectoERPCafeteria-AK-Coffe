@@ -1,21 +1,23 @@
 import { Component, OnInit, signal,computed, inject, PLATFORM_ID } from '@angular/core';
 import { ProductoCarritoComponent } from '../cards/producto-carrito/producto-carrito.component';
-import { isPlatformBrowser,CommonModule } from '@angular/common';
+import { isPlatformBrowser } from '@angular/common';
 import { ProductoCarrito } from '../../../../Models/productoCarrito';
 import { ProductoCarritoService } from '../../../../Services/productoCarrito.service';
 import { VentaService } from '../../../../Services/venta.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../../Services/auth.service';
+import { RouterLink,RouterLinkActive } from '@angular/router';
+import { ItemCarrito } from '../../../../Models/itemCarrito';
 
 @Component({
   selector: 'app-carrito.component',
-  imports: [ProductoCarritoComponent],
+  imports: [ProductoCarritoComponent,RouterLink,RouterLinkActive],
   templateUrl: './carrito.component.html',
   styleUrl: './carrito.component.css',
 })
 export class CarritoComponent implements OnInit{
   authService=inject(AuthService)
-
+  confirmacionTerminos=signal<boolean>(false);
   platformId=inject(PLATFORM_ID)
   constructor(private productoCarritoService: ProductoCarritoService,private ventaService:VentaService,private router:Router) {}
 
@@ -34,6 +36,9 @@ export class CarritoComponent implements OnInit{
   iva = computed(() => this.subtotal() * 0.16); // Aqui si o si debemos aplicar el IVA al total de los productos
   total = computed(() => this.subtotal() + this.iva());
 
+  actualizarTerminos(evento:Event){
+    this.confirmacionTerminos.set((evento.target as HTMLInputElement).checked)
+  }
   eliminarItem(idProducto: string): void {
     this.items.update(lista => lista.filter(item => item.idProducto !== idProducto));
     this.eliminarDelCarrito(idProducto);
@@ -42,52 +47,63 @@ export class CarritoComponent implements OnInit{
   actualizarRfc(evento: Event): void {
     this.rfc.set((evento.target as HTMLInputElement).value);
   }
-
-  pagar(): void {
+  isProcessing: boolean = false;//Usamos esta variable para evitar 2 clics
+  pagar():  void {
     if (this.items().length === 0) {
+      alert('Tu carrito está vacío');
       return;
     }
-    if(!this.authService.estaAutenticado())return
-
+    if(!this.authService.estaAutenticado()){
+      alert('Ocurrio un error al verificar tu identidad, porfavor vuelve a acceder');
+      return;
+    }
+    if(!this.confirmacionTerminos()){
+      alert('No has aceptado los Términos y Condiciones y el Aviso de Privacidad');
+      return;
+    }
     // Antes de mandarlo a PayPal, armo un arreglo simple solo con lo que el backend necesita
     // saber: qué producto y cuánta cantidad, no hace falta mandarle todo el objeto completo
     const itemsParaValidar = this.items().map(item => ({
       idProducto: item.idProducto,
       cantidad: item.cantidad
     }));
-
+    // Si ya se está procesando, evitamos cualquier doble ejecución
+    if (this.isProcessing) return;
+    // Bloqueamos el botón inmediatamente
+    this.isProcessing = true;
     this.productoCarritoService.validarCarrito(itemsParaValidar).subscribe({
       next: (resultado) => {
         if (resultado.valido) {
           // aqui se redirige a PayPal en un futurito
-          this.ventaService.registrarVenta(this.rfc(), itemsParaValidar).subscribe({
+          this.ventaService.registrarVenta(this.rfc(),this.confirmacionTerminos(), itemsParaValidar).subscribe({
             next: (respuestaVenta) => {
               if (respuestaVenta.iniciado && respuestaVenta.enlacePago) {
                 if (!isPlatformBrowser(this.platformId)) return;
-                // Guardamos temporalmente el orderID y los datos por si los necesitamos al regresar
-                const sesion=respuestaVenta.orderID;
-                if(sesion)
-                sessionStorage.setItem('paypal_order_id', sesion);
+                sessionStorage.setItem('paypal_order_id', respuestaVenta.orderID);
                 sessionStorage.setItem('paypal_items', JSON.stringify(itemsParaValidar));
                 sessionStorage.setItem('paypal_rfc', this.rfc());
                 // Vaciamos el carrito local
-                localStorage.setItem('mi_carrito', JSON.stringify([]));
+                //localStorage.setItem('mi_carrito', JSON.stringify([]));
                 // REDIRIGIMOS A PAYPAL
+                alert('Estamos redirigiendote....Espera un momento!')
                 window.location.href = respuestaVenta.enlacePago;
-              }
+              }else this.isProcessing = false;
             },
             error: (error) => {
-              alert('Error al registrar la venta');
+              this.isProcessing = false;
+              alert(error.error?.mensaje ?? 'Error al registrar la venta')
             }
           });
         } else {
+          this.isProcessing = false;
           alert('Hay productos que ya no tienen suficiente stock');
           if(!isPlatformBrowser(this.platformId))return
           localStorage.setItem('mi_carrito', JSON.stringify([]));
         }
       },
       error: (error) => {
-        alert('No se pudo validar el carrito');
+        this.isProcessing = false;
+        alert(error.error?.mensaje ?? 'No se pudo validar el carrito')
         if(!isPlatformBrowser(this.platformId))return
         localStorage.setItem('mi_carrito', JSON.stringify([]));
       }
@@ -109,7 +125,7 @@ export class CarritoComponent implements OnInit{
         this.cargarCarrito();
       },
       error: (error) => {
-        alert('No se pudo cargar el catálogo del carrito');
+        alert(error.error?.mensaje ?? 'No se pudo cargar el catálogo del carrito')
         localStorage.setItem('mi_carrito', JSON.stringify([]));
       }
     });
@@ -175,8 +191,8 @@ export class CarritoComponent implements OnInit{
   }
   eliminarDelCarrito(idProducto:string): void {//Para eliminar un producto del carrito lo que se hace es obtener los elementos del localstorage
     if(!isPlatformBrowser(this.platformId))return
-    const carritoActual = JSON.parse(localStorage.getItem('mi_carrito') || '[]');//y después filtrar para eliminar el id del producto a borrar
-    const carritoActualizado = carritoActual.filter((item: any) => item.idProducto !== idProducto);
+    const carritoActual: ItemCarrito[] = JSON.parse(localStorage.getItem('mi_carrito') || '[]');//y después filtrar para eliminar el id del producto a borrar
+    const carritoActualizado = carritoActual.filter((item) => item.idProducto !== idProducto);
     localStorage.setItem('mi_carrito', JSON.stringify(carritoActualizado));//y al final volvemos a guardar en localStorage para actualizarlo (ya sea en caso de reiniciar la página o volver al catálogo)
   }
 }

@@ -1,10 +1,6 @@
-// Esta interfaz es para la respuesta de registrar una venta,
-// no representa una entidad de la BD, es "resultado de una acción"
+// Esta interfaz es para la respuesta de registrar una venta, guarda la respuesta de capturar el pago y registrar la venta
 export interface RespuestaVenta {
-    registrada?: boolean;
-    iniciado?: boolean;
-    enlacePago?: string;
-    orderID?: string;
+    registrada: boolean;
     idVenta?: string;
     mensaje?: string;
 }

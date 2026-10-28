@@ -102,7 +102,7 @@ export class FinanzasContabilidadComponent implements AfterViewInit {
         this.dibujarGrafica(reporte);
       },
       error: (error) => {
-        alert('No se pudo generar el reporte');
+        alert(error.error?.mensaje ?? 'No se pudo generar el reporte')
       }
     });
   }

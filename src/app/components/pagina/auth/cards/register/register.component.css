@@ -1,4 +1,5 @@
- 
+/*Hacemos la card con flex en fila, max-width y margin auto para que quede centrada, con borde, esquinas redondeadas y sombra suave. 
+El align-items stretch hace que ambos lados midan lo mismo de alto*/
 .card-registro {
     display: flex;
     flex-direction: row;
@@ -11,7 +12,7 @@
     padding: 50px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
 }
- 
+/*Flex en columna con todo centrado para el lado de la invitación, y el padding-right lo separa del divisor*/
 .card-registro__promocion {
     flex: 1;
     display: flex;
@@ -21,13 +22,13 @@
     text-align: center;
     padding-right: 40px;
 }
- 
+
 .card-registro__promocion-titulo {
     font-size: 22px;
     color: var(--main--heading);
     margin-bottom: 18px;
 }
- 
+/*Usa los colores del botón del navbar y es más pequeño que el de crear cuenta, porque es la acción secundaria. El transition suaviza el hover*/
 .card-registro__boton-entrar {
     background-color: var(--navbar--button-bg);
     color: var(--navbar--button-text);
@@ -41,41 +42,41 @@
     margin-bottom: 15px;
     transition: transform 0.15s ease, opacity 0.15s ease;
 }
- 
+
 .card-registro__boton-entrar:hover {
     transform: scale(1.05);
     opacity: 0.92;
 }
- 
+
 .card-registro__promocion-texto {
     font-size: 13px;
     color: var(--main--text);
     max-width: 220px;
 }
- 
+
 .card-registro__divisor {
     width: 1px;
     align-self: stretch;
     background-color: var(--cards--border);
     margin: 0 40px;
 }
- 
+/*El flex: 1.4 hace que el formulario sea más ancho que el lado de la invitación*/
 .card-registro__formulario {
     flex: 1.4;
 }
- 
+
 .card-registro__titulo {
     font-size: 24px;
     color: var(--main--heading);
     margin-bottom: 25px;
 }
- 
+
 .card-registro__campo {
     display: flex;
     flex-direction: column;
     margin-bottom: 18px;
 }
- 
+
 .card-registro__etiqueta {
     font-size: 14px;
     font-weight: 700;
@@ -92,16 +93,17 @@
     color: var(--input--text);
     font-family: inherit;
 }
- 
+
 .card-registro__input::placeholder {
     color: var(--input--placeholder);
 }
- 
+
 .card-registro__input:focus {
     outline: none;
     border-color: var(--main--accent);
 }
- 
+/*El width al 100% lo estira a todo el ancho del formulario. 
+El font-family inherit es porque los botones no heredan la letra del sistema, y el transition suaviza el hover*/
 .card-registro__boton-crear-cuenta {
     width: 100%;
     background-color: var(--modal--button-primary-bg);
@@ -116,13 +118,13 @@
     margin-top: 10px;
     transition: transform 0.15s ease, opacity 0.15s ease;
 }
- 
+
 .card-registro__boton-crear-cuenta:hover {
     transform: scale(1.05);
     opacity: 0.92;
 }
 
-
+/*En pantallas chicas la card pasa de fila a columna y el divisor se vuelve una línea horizontal. Solo los selectores de card-registro aplican aquí*/
 @media (max-width: 700px) {
     .card-login,
     .card-registro {
@@ -130,12 +132,12 @@
         padding: 30px;
         margin: 30px 20px;
     }
- 
+
     .card-login__formulario,
     .card-registro__promocion {
         padding-right: 0;
     }
- 
+
     .card-login__divisor,
     .card-registro__divisor {
         width: 100%;
@@ -144,13 +146,14 @@
         margin: 30px 0;
     }
 }
-
+/*Mensaje chico y centrado con flex, en color de peligro de las variables. También lo usamos para el de éxito, que cambia el color desde el HTML*/
 .card-registro__error{
     display: flex;
     justify-content: center;
     font-size: smaller;
     color: var(--status--danger);
 }
+/*Flex con align-items center para que el checkbox y su texto queden alineados, con un gap entre ellos*/
 .card-registro__campo-terminos{
     display: flex; 
     align-items: center; 

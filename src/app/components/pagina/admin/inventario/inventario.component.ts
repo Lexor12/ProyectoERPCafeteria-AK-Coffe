@@ -42,7 +42,7 @@ export class InventarioComponent implements OnInit{
         this.productos.set(productos)
       },
       error: (error)=>{
-        alert('No se pudo cargar el inventario');
+        alert(error.error?.mensaje ?? 'No se pudo cargar el inventario')
       }
     })
   }
@@ -63,15 +63,16 @@ export class InventarioComponent implements OnInit{
   // Hasta aca, son puras funciones de los signals, nada que modificar en Frontend en base al Backend
 
   desactivarProducto(idProducto: string): void { // Aqui no se debe eliminar el producto de plano, solo se marca activo en false,
-    // pq el RQNF15 dice que un producto con ventas/compras asociadas no debe borrarse fisicamente
+    // pq el dice que un producto con ventas/compras asociadas no debe borrarse fisicamente
     this.productoService.desactivarProducto(idProducto).subscribe({
       next: ()=>{
+        alert('Producto desactivado con éxito');
         this.productos.update(lista =>//En caso de que la BD se haya actualizado, no vale la pena hacer 2 consultas, mejor editamos en local
           lista.filter(p => p.idProducto !== idProducto)
         );
       },
       error: (error)=>{
-        alert('No se pudo desactivar el producto');
+        alert(error.error?.mensaje ?? 'No se pudo desactivar el producto')
       }
     }) 
   }
@@ -96,27 +97,28 @@ export class InventarioComponent implements OnInit{
     if(this.agregarNuevoProducto()){
         this.productoService.registrarProductoNuevo({nombre: datos.nombre,descripcion:datos.descripcion,costoUnitario:datos.precioUnitario}).subscribe({
           next: (resultado)=>{
-            if(datos.imagenBase64){
-              this.productoService.subirImagenProducto(resultado.idProducto,datos.imagenBase64).subscribe({
-                next: () => {
-                  this.cargarProductos()
-                },
-                error: ()=>{
-                  alert('No se pudo subir la imagen del producto');
-                }
+            this.cerrarModal()
+            alert('Producto agregado con éxito');
+            if (datos.imagenBase64 && resultado.idProducto) {
+              this.productoService.subirImagenProducto(resultado.idProducto, datos.imagenBase64).subscribe({
+                next: () => this.cargarProductos(),
+                error: (error) => alert(error.error?.mensaje ?? 'No se pudo subir la imagen del producto')
               })
+            } else {
+              this.cargarProductos()
             }
           },
-          error: ()=>{
-            alert('No se pudo guardar el producto');
+          error: (error)=>{
+            alert(error.error?.mensaje ?? 'No se pudo guardar el producto')
           }
         })
-        this.cerrarModal()
+        
       return;
     }
 
     this.productoService.editarProducto(datos.idProducto, { nombre: datos.nombre, descripcion: datos.descripcion, precio: datos.precioUnitario }).subscribe({
       next: () => {
+        alert('Producto actualizado con éxito');
         this.productos.update(lista =>
           lista.map(p => p.idProducto === datos.idProducto
             ? { ...p, nombre: datos.nombre, descripcion: datos.descripcion, precio: datos.precioUnitario }
@@ -130,15 +132,15 @@ export class InventarioComponent implements OnInit{
             next: () => {
               this.cargarProductos()
             },
-            error: (error) => {
-              alert('No se pudo subir la imagen');
+            error: () => {
+              alert('El producto se actualizo pero no se pudo subir la imagen');
             }
           });
         }
         this.productoSeleccionado.set(null);
       },
       error: (error) => {
-        alert('No se pudo guardar la edición');
+        alert(error.error?.mensaje ?? 'No se pudo guardar la edición')
       }
     });
   }

@@ -1,3 +1,5 @@
+<!--aquí van el selector de proveedor, los botones para administrarlos y el buscador, 
+no lleva form porque cada control le avisa al componente con (change) o (input) y la lista se filtra sola-->
 <section class="proveedores">
     <div class="proveedores__toolbar">
         <div class="proveedores__campo">
@@ -5,12 +7,15 @@
             <!--Este select filtra los productos por proveedor, el value vacío del "Todos"
             hace que productosFiltrados no aplique ningún filtro de proveedor-->
             <select class="proveedores__select" (change)="actualizarProveedor($event)">
-                <option value="">Todos</option>
+                <!--el [selected] deja marcada la opción que corresponde al proveedor elegido, 
+                así el select no pierde su valor cuando el componente se vuelve a pintar-->
+                <option value="" [selected]="proveedorSeleccionado() === null">Todos</option>
                 @for (proveedor of proveedores(); track proveedor.idProveedor) {
-                    <option [value]="proveedor.idProveedor">{{ proveedor.nombre }}</option>
+                    <option [value]="proveedor.idProveedor" [selected]="proveedor.idProveedor === proveedorSeleccionado()?.idProveedor">{{ proveedor.nombre }}</option>
                 }
             </select>
             @if (proveedorSeleccionado()!==null) {
+                <!--los botones de editar y desactivar solo salen cuando hay un proveedor elegido, porque sin uno no hay nada que editar-->
                 <button class="proveedores__boton-nuevo-proveedor" type="button" (click)="clickEditarProveedor()">Editar proveedor</button>
                 <button class="proveedores__boton-nuevo-proveedor" type="button" (click)="clickDesactivarProveedor()">Desactivar proveedor</button>
             }
@@ -22,6 +27,7 @@
 
     <div class="proveedores__grid">
         @for (producto of productosFiltrados(); track producto.idProducto + '_' + producto.idProveedor) {
+            <!--con [propiedad] le mandamos a la card los datos del producto y sus tres eventos surtir, eliminar y editar nos regresan lo que hace falta para abrir el modal o hacer la acción-->
             <app-producto-proveedor
                 [idProducto]="producto.idProducto"
                 [idProveedor]="producto.idProveedor"
@@ -66,6 +72,8 @@ para que el usuario pueda elegir asociar el producto nuevo a un proveedor, o ele
         (aceptar)="guardarProducto($event)">
     </app-agregar-producto-proveedor>
 }
+<!--este modal se abre al editar un producto de un proveedor y le mandamos sus datos iniciales con [propiedad], 
+su evento cerrar nos avisa para volver a ocultarlo-->
 @if(editandoProductoProveedor(); as productoProveedor){
     <app-editar-producto-proveedor
         [idProductoProveedor]="productoProveedor.idProductoProveedor"

@@ -1,3 +1,5 @@
+/*el :host es el contenedor de todo el componente y aquí lo uso para que el modal sea una capa fija que cubre toda la pantalla 
+con el fondo oscuro de la variable, centramos su contenido con flex y le doy un z-index alto para que quede encima de todo lo demás*/
 :host {
     position: fixed;
     top: 0;
@@ -10,7 +12,8 @@
     background-color: var(--modal--overlay);
     z-index: 999;
 }
-
+/*es la caja visible del modal y además el max-height con overflow-y auto hace que, si el contenido no cabe, 
+salga scroll dentro del modal en vez de salirse de la pantalla, el min-width evita que se vea demasiado angosto*/
 .modal-asistencias {
     background-color: var(--modal--bg);
     border-radius: 16px;
@@ -26,18 +29,20 @@
     gap: 18px;
 }
 
+/*flex con space-between para dejar el título a la izquierda y el botón de cerrar a la derecha, los dos centrados verticalmente*/
 .modal-asistencias__encabezado {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
 }
-
+/*tamaño grande con el color de título de los modales para que sea lo primero que se lea*/
 .modal-asistencias__titulo {
     font-size: 22px;
     color: var(--modal--title);
 }
-
+/*el flex-shrink en 0 evita que el botón se aplaste y el mismo ancho y alto lo hacen cuadrado, 
+con flex centramos la X y el font-family inherit es porque los botones no heredan la letra del sistema*/
 .modal-asistencias__cerrar {
     flex-shrink: 0;
     width: 32px;
@@ -55,12 +60,13 @@
     cursor: pointer;
     transition: transform 0.15s ease, opacity 0.15s ease;
 }
-
+/*al pasar el mouse el botón crece un poco y baja su opacidad para que se note que se puede dar clic, 
+el transition hace que el cambio sea suave y no un salto brusco*/
 .modal-asistencias__cerrar:hover {
     transform: scale(1.1);
     opacity: 0.92;
 }
-
+/*flex en fila con gap para dejar la imagen a un lado y los datos del trabajador al otro, con una línea abajo que lo separa del historial*/
 .modal-asistencias__trabajador {
     display: flex;
     flex-direction: row;
@@ -68,7 +74,7 @@
     padding-bottom: 18px;
     border-bottom: 1px solid var(--cards--border);
 }
-
+/*flex en columna con align-items center para dejar la imagen y su etiqueta de nueva una debajo de la otra y centradas, el flex-shrink en 0 evita que se aplaste*/
 .modal-asistencias__imagen {
     flex-shrink: 0;
     width: 70px;
@@ -76,7 +82,6 @@
     border-radius: 8px;
     overflow: hidden;
 }
-
 .modal-asistencias__imagen img {
     width: 100%;
     height: 100%;
@@ -88,13 +93,13 @@
     flex-direction: column;
     gap: 6px;
 }
-
+/*va en negritas con el color de etiquetas de los modales y el min-width hace que todas midan parecido, así los inputs quedan alineados*/
 .modal-asistencias__etiqueta {
     font-size: 13.5px;
     font-weight: 700;
     color: var(--modal--label);
 }
-
+/*el dato va con peso normal y el color de texto de las cards para que la etiqueta sea la que resalte*/
 .modal-asistencias__dato {
     font-weight: 400;
     color: var(--cards--text);
@@ -111,12 +116,13 @@
     font-size: 15px;
     color: var(--modal--title);
 }
-
+/*texto chico con el color de etiquetas porque solo es un dato de apoyo*/
 .modal-asistencias__seccion-nota {
     font-size: 11.5px;
     color: var(--cards--label);
 }
-
+/*el max-height con overflow-y auto le da scroll propio a la lista para que un trabajador con muchos registros 
+no estire el modal, y el borde con esquinas redondeadas la enmarca*/
 .modal-asistencias__lista {
     max-height: 130px;
     overflow-y: auto;
@@ -140,13 +146,13 @@
 .modal-asistencias__fila:last-child {
     border-bottom: none;
 }
-
+/*flex en columna con gap para apilar los campos de la asistencia nueva y sus botones*/
 .modal-asistencias__nueva {
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
-
+/*flex en fila con align-items center para que la etiqueta y su input queden en el mismo renglón con un gap entre ellos*/
 .modal-asistencias__campo {
     display: flex;
     flex-direction: row;
@@ -160,7 +166,9 @@
     font-weight: 700;
     color: var(--modal--label);
 }
-
+/*Uso las variables de input para que los colores cambien desde un solo lugar, 
+el flex 1 lo hace ocupar el espacio que queda junto a la etiqueta y el font-family inherit 
+es porque los inputs no heredan la letra del sistema*/
 .modal-asistencias__input {
     flex: 1;
     background-color: var(--input--bg);
@@ -171,11 +179,11 @@
     color: var(--input--text);
     font-family: inherit;
 }
-
+/*Aqui cambie el color del texto de ayuda con la variable de placeholder para que se vea más apagado que lo que escribe el usuario*/
 .modal-asistencias__input::placeholder {
     color: var(--input--placeholder);
 }
-
+/*Quite el outline que pone el navegador y en su lugar cambie el border-color al de acento*/
 .modal-asistencias__input:focus {
     outline: none;
     border-color: var(--main--accent);
@@ -237,13 +245,13 @@
     outline: none;
     border-color: var(--main--accent);
 }
-
+/*flex en fila con gap para dejar las tres cajitas del resumen lado a lado*/
 .modal-asistencias__resumen {
     display: flex;
     flex-direction: row;
     gap: 12px;
 }
-
+/*cada cajita es una columna centrada con el flex 1 para que las tres midan lo mismo, con fondo y borde para que se vean como tarjetas chicas*/
 .modal-asistencias__resumen-item {
     flex: 1;
     display: flex;
@@ -255,20 +263,20 @@
     border-radius: 8px;
     padding: 10px;
 }
-
+/*texto chico, en negritas y centrado con el color de etiquetas de las cards, para que quede como título de cada cantidad*/
 .modal-asistencias__resumen-etiqueta {
     font-size: 10.5px;
     font-weight: 700;
     color: var(--cards--label);
     text-align: center;
 }
-
+/*un poco más grande y en negritas con el color de precio de las cards para que la cantidad se note*/
 .modal-asistencias__resumen-valor {
     font-size: 15px;
     font-weight: 700;
     color: var(--cards--price);
 }
-
+/*usa las variables de color primario del modal y el font-family inherit porque los botones no heredan la letra, el transition suaviza el hover*/
 .modal-asistencias__boton-calcular {
     background-color: var(--modal--button-primary-bg);
     color: var(--modal--button-primary-text);
@@ -286,11 +294,13 @@
     transform: scale(1.05);
     opacity: 0.92;
 }
+/*flex en fila con gap para dejar los botones de cancelar y aceptar lado a lado*/
 .modal-asistencias__acciones {
     display: flex;
     flex-direction: row;
     gap: 10px;
 }
+/*los dos botones comparten tamaño y forma por eso los juntamos, el flex 1 hace que midan lo mismo y el transition suaviza el hover*/
 .modal-asistencias__boton-aceptar,
 .modal-asistencias__boton-cancelar {
     flex: 1;
@@ -303,13 +313,13 @@
     transition: transform 0.15s ease, opacity 0.15s ease;
     margin-right: 10px;
 }
-
+/*es el botón principal por eso usa las variables de color primario y no lleva borde*/
 .modal-asistencias__boton-aceptar {
     background-color: var(--modal--button-primary-bg);
     color: var(--modal--button-primary-text);
     border: none;
 }
-
+/*es el botón secundario por eso usa las variables de color secundario y lleva borde*/
 .modal-asistencias__boton-cancelar {
     background-color: var(--modal--button-secondary-bg);
     color: var(--modal--button-secondary-text);
@@ -321,11 +331,13 @@
     transform: scale(1.05);
     opacity: 0.92;
 }
+/*flex en columna con gap para apilar los campos de la asistencia con espacio entre ellos*/
 .modal-asistencias__inputs {
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
+/*es una línea hecha con border-bottom y márgenes para separar las secciones del modal*/
 .modal-asistencias__separador {
     border-bottom: 1px solid var(--cards--border);
     margin-top: 10px;

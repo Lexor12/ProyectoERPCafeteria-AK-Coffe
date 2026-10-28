@@ -1,3 +1,5 @@
+/*el :host es el contenedor de todo el componente y aquí lo uso para que el modal sea una capa fija que cubre toda la pantalla 
+con el fondo oscuro de la variable, centramos su contenido con flex y le doy un z-index alto para que quede encima de todo lo demás*/
 :host {
     position: fixed;
     top: 0;
@@ -10,7 +12,8 @@
     background-color: var(--modal--overlay);
     z-index: 999;
 }
-
+/*es la caja visible del modal con su fondo, esquinas redondeadas y sombra para despegarla del fondo oscuro, 
+uso flex en columna con gap para apilar sus secciones y el margin auto con max-width la mantiene angosta y centrada*/
 .modal-surtir-producto {
     background-color: var(--modal--bg);
     border-radius: 16px;
@@ -22,19 +25,20 @@
     flex-direction: column;
     gap: 18px;
 }
-
+/*flex con space-between para dejar el título a la izquierda y el botón de cerrar a la derecha, los dos centrados verticalmente*/
 .modal-surtir-producto__encabezado {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
 }
-
+/*tamaño grande con el color de título de los modales para que sea lo primero que se lea*/
 .modal-surtir-producto__titulo {
     font-size: 22px;
     color: var(--modal--title);
 }
-
+/*el flex-shrink en 0 evita que el botón se aplaste y el mismo ancho y alto lo hacen cuadrado, 
+con flex centramos la X y el font-family inherit es porque los botones no heredan la letra del sistema*/
 .modal-surtir-producto__cerrar {
     flex-shrink: 0;
     width: 32px;
@@ -52,12 +56,13 @@
     cursor: pointer;
     transition: transform 0.15s ease, opacity 0.15s ease;
 }
-
+/*al pasar el mouse el botón crece un poco y baja su opacidad para que se note que se puede dar clic, 
+el transition hace que el cambio sea suave y no un salto brusco*/
 .modal-surtir-producto__cerrar:hover {
     transform: scale(1.1);
     opacity: 0.92;
 }
-
+/*flex en fila con gap para dejar la imagen a un lado y los datos al otro*/
 .modal-surtir-producto__producto {
     display: flex;
     flex-direction: row;
@@ -66,7 +71,7 @@
     border-bottom: 1px solid var(--cards--border);
 }
 
-
+/*flex en columna con align-items center para dejar la imagen y su etiqueta de nueva una debajo de la otra y centradas, el flex-shrink en 0 evita que se aplaste*/
 .modal-surtir-producto__imagen {
     flex-shrink: 0;
     width: 90px;
@@ -74,12 +79,13 @@
     border-radius: 8px;
     overflow: hidden;
 }
-
+/*caja de tamaño fijo con overflow hidden para que la imagen se recorte a sus esquinas redondeadas y no se salga de su espacio*/
 .modal-surtir-producto__imagen img {
     width: 100%;
     height: 100%;
     border-radius: 8px;
 }
+/*es una línea hecha con border-bottom y márgenes para separar las secciones del modal*/
 .modal-surtir-producto__separador {
     border-bottom: 1px solid var(--cards--border);
     margin-top: 10px;
@@ -91,7 +97,7 @@
     flex-direction: column;
     gap: 10px;
 }
-
+/*flex en fila con align-items center para que la etiqueta y su input queden en el mismo renglón con un gap entre ellos*/
 .modal-surtir-producto__campo {
     display: flex;
     flex-direction: row;
@@ -102,14 +108,16 @@
 .modal-surtir-producto__campo--total {
     justify-content: space-between;
 }
-
+/*va en negritas con el color de etiquetas de los modales y el min-width hace que todas midan parecido, así los inputs quedan alineados*/
 .modal-surtir-producto__etiqueta {
     min-width: 110px;
     font-size: 13px;
     font-weight: 700;
     color: var(--modal--label);
 }
-
+/*Uso las variables de input para que los colores cambien desde un solo lugar, 
+el flex 1 lo hace ocupar el espacio que queda junto a la etiqueta y el font-family inherit 
+es porque los inputs no heredan la letra del sistema*/
 .modal-surtir-producto__input {
     flex: 1;
     background-color: var(--input--bg);
@@ -120,7 +128,7 @@
     color: var(--input--text);
     font-family: inherit;
 }
-
+/*Quite el outline que pone el navegador y en su lugar cambie el border-color al de acento*/
 .modal-surtir-producto__input:focus {
     outline: none;
     border-color: var(--main--accent);
@@ -131,13 +139,13 @@
     font-weight: 700;
     color: var(--cards--price);
 }
-
+/*flex en fila con gap para dejar los botones de cancelar y aceptar lado a lado*/
 .modal-surtir-producto__acciones {
     display: flex;
     flex-direction: row;
     gap: 12px;
 }
-
+/*los dos botones comparten tamaño y forma por eso los juntamos, el flex 1 hace que midan lo mismo y el transition suaviza el hover*/
 .modal-surtir-producto__boton-cancelar,
 .modal-surtir-producto__boton-aceptar {
     flex: 1;
@@ -149,13 +157,13 @@
     cursor: pointer;
     transition: transform 0.15s ease, opacity 0.15s ease;
 }
-
+/*es el botón secundario por eso usa las variables de color secundario y lleva borde*/
 .modal-surtir-producto__boton-cancelar {
     background-color: var(--modal--button-secondary-bg);
     color: var(--modal--button-secondary-text);
     border: 1px solid var(--modal--button-secondary-border);
 }
-
+/*es el botón principal por eso usa las variables de color primario y no lleva borde*/
 .modal-surtir-producto__boton-aceptar {
     background-color: var(--modal--button-primary-bg);
     color: var(--modal--button-primary-text);

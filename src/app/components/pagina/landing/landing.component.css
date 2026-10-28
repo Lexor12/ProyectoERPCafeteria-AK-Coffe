@@ -1,3 +1,6 @@
+/*Usamos flex con wrap para que el texto y la imagen queden lado a lado y, 
+cuando ya no caben, la imagen baje sola sin necesitar media query. El max-width con margin auto 
+centra el bloque y evita que se estire en pantallas grandes*/
 .hero {
     display: flex;
     flex-direction: row;
@@ -8,24 +11,28 @@
     margin: 0 auto;
     padding: 60px 25px;
 }
-
+/*
+El flex con un ancho base deja que el texto crezca o se encoja según el espacio libre, 
+y cuando ya no alcanza ese ancho base el wrap lo manda a otra fila*/
 .hero__contenido {
     flex: 1 1 320px;
 }
-
+/*Tamaño grande para que sea lo primero que se lea, con el color de encabezado
+que viene de las variables de styles.css (var) para poder cambiarlo desde un solo lugar*/
 .hero__titulo {
     font-size: 3.5rem;
     color: var(--main--heading);
     margin-bottom: 25px;
 }
-
+/*El max-width evita que el texto se estire y las líneas queden larguísimas e incómodas de leer*/
 .hero__descripcion {
     font-size: 1rem;
     color: var(--main--text);
     margin-bottom: 25px;
     max-width: 400px;
 }
-
+/*Le damos forma de botón al enlace con padding, esquinas redondeadas y los mismos colores
+que el botón del navbar mediante var(). El cursor pointer avisa que se puede dar clic*/
 .hero__boton {
     background-color: var(--navbar--button-bg);
     color: var(--navbar--button-text);
@@ -36,21 +43,24 @@
     cursor: pointer;
     transition: transform 0.15s ease, opacity 0.15s ease;
 }
-
+/*Al pasar el mouse el botón crece un poco y baja su opacidad para que se note que se puede dar clic. 
+El transition hace que el cambio sea suave y no un salto brusco*/
 .hero__boton:hover {
     transform: scale(1.05);
     opacity: 0.92;
 }
-
+/*Igual que el contenido, usa flex con ancho base para acomodarse
+junto al texto o debajo de él, y el max-width evita que la foto crezca de más*/
 .hero__imagen {
     flex: 1 1 320px;
     max-width: 500px;
 }
-
+/*Solo redondeamos las esquinas de la foto para que combine con el resto de la página*/
 .hero__imagen img {
     border-radius: 16px;
 }
-
+/*Flex con wrap y gap: el mapa y la información van lado a lado y, si no caben, la información baja debajo del mapa.
+El fondo usa la variable de las cards para cambiar junto con el resto de los colores*/
 .ubicacion {
     display: flex;
     flex-direction: row;
@@ -59,12 +69,12 @@
     background-color: var(--cards--bg);
     padding: 50px 25px;
 }
-
+/*Las dos columnas comparten el mismo flex con ancho base, así se reparten el espacio por igualy se apilan cuando la pantalla es angosta*/
 .ubicacion__mapa,
 .ubicacion__info {
     flex: 1 1 350px;
 }
-
+/*Estos tres títulos llevan el mismo estilo, por eso los juntamos en un solo bloque en vez de repetir las propiedades tres veces*/
 .ubicacion__mapa-titulo,
 .ubicacion__domicilio-titulo,
 .ubicacion__horario-titulo {
@@ -72,27 +82,27 @@
     color: var(--main--heading);
     margin-bottom: 20px;
 }
-
+/*El iframe ocupa todo el ancho de su columna con una altura fija, y le quitamos el borde que trae por defecto para que solo se vean las esquinas redondeadas*/
 .ubicacion__mapa-frame {
     width: 100%;
     height: 300px;
     border: 0;
     border-radius: 12px;
 }
-
+/*Usamos flex en columna con gap para apilar domicilio y horario con espacio entre ellos sin ponerle márgenes a cada uno*/
 .ubicacion__info {
     display: flex;
     flex-direction: column;
     gap: 35px;
 }
-
+/*El border-bottom con el color de borde de las cards dibuja una línea que separa la dirección del estado de abierto o cerrado*/
 .ubicacion__domicilio-direccion {
     font-size: 15px;
     color: var(--main--text);
     padding-bottom: 10px;
     border-bottom: 1px solid var(--cards--border);
 }
-
+/*El flex con space-between manda el texto de Abierto o Cerrado a un lado y el horario al otro, centrados verticalmente*/
 .ubicacion__estado {
     padding-top: 10px;
     display: flex;
@@ -100,18 +110,18 @@
     justify-content: space-between;
     gap: 12px;
 }
-
+/*Va en negritas para que sea lo primero que se note al ver si estamos abiertos*/
 .ubicacion__estado-texto {
     font-size: 15px;
     font-weight: 700;
     padding-top: 10px;
 }
-
+/*Más chico y con el color de texto normal para que quede como dato secundario*/
 .ubicacion__estado-hora {
     font-size: 14px;
     color: var(--main--text);
 }
-
+/*Cada fila usa flex con space-between para dejar el día a la izquierda y la hora a la derecha, con una línea abajo que las separa*/
 .ubicacion__horario-fila {
     display: flex;
     flex-direction: row;
@@ -119,23 +129,24 @@
     padding: 10px 0;
     border-bottom: 1px solid var(--cards--border);
 }
-
+/*Quitamos la línea de la última fila porque ya no hay otra fila abajo que separar*/
 .ubicacion__horario-fila:last-child {
     border-bottom: none;
 }
-
+/*El día va en negritas con el color de título de las cards para distinguirlo de la hora*/
 .ubicacion__horario-dia {
     font-size: 14px;
     font-weight: 700;
     color: var(--cards--title);
 }
-
+/*La hora va con peso normal y el color de texto común, así el día es el que destaca*/
 .ubicacion__horario-hora {
     font-size: 14px;
     color: var(--main--text);
 }
 
-
+/*En pantallas chicas centramos el texto del hero y le quitamos el límite de ancho a la descripción para que use todo el espacio. 
+También bajamos los paddings para no desperdiciar pantalla*/
 @media (max-width: 768px) {
     .hero {
         text-align: center;

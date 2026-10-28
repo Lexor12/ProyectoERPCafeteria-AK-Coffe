@@ -1,8 +1,11 @@
+/*Le damos el fondo con la variable del navbar y un border-bottom con el color de borde de las cards para que se note dónde termina la barra*/
 .navbar {
     background-color: var(--navbar--bg);
     border-bottom: 1px solid var(--cards--border);
 }
-    
+/*Usamos flex con wrap y space-between para dejar la marca a la izquierda 
+y las rutas a la derecha, y si no caben bajan de renglón en vez de salirse. 
+*/
 .navbar__contenedor {
     display: flex;
     flex-direction: row;
@@ -12,13 +15,13 @@
     gap: 30px;
     padding: 20px 25px;
 }
-    
+/*Flex con align-items center para que el logo y el nombre queden en la misma línea y alineados al centro*/
 .navbar__marca {
     display: flex;
     align-items: center;
     gap: 20px;
 }
-    
+/*Es la cajita detrás del logo, con padding, fondo de la variable y esquinas redondeadas. El flex con center deja el logo justo en medio*/
 .navbar__logo {
     display: flex;
     align-items: center;
@@ -27,18 +30,18 @@
     background-color: var(--navbar--logo);
     border-radius: 10px;
 }
-    
+/*Solo le fijamos el alto y el ancho se ajusta solo, así el logo no se deforma*/
 .navbar__logo img {
     height: 30px;
 }
-    
+/*Va en negritas con el color de la variable del logo. El white-space nowrap evita que el nombre se parta en dos renglones cuando falta espacio*/
 .navbar__titulo {
     font-size: 1.15rem;
     font-weight: 800;
     color: var(--navbar--logo);
     white-space: nowrap;
 }
-    
+/*Flex con wrap y justify center para que los enlaces queden en fila y centrados, y bajen de renglón si la pantalla es angosta. El gap los separa sin márgenes sueltos*/
 .navbar__rutas {
     display: flex;
     flex-direction: row;
@@ -46,19 +49,19 @@
     align-items: center;
     justify-content: center;
     gap: 30px;
-    list-style: none;
 }
-    
+/*El color sale de la variable de las rutas, y el inline-block hace que el enlace respete su propio tamaño y espacio*/
 .navbar__enlace {
     display: inline-block;
     font-size: 0.9rem;
     color: var(--navbar--route);
 }
+/*Al pasar el mouse cambiamos el color al de ruta activa para que se note que se puede dar clic*/
 .navbar__enlace:hover{
     color: var(--navbar--route-active);
     font-weight:800px;
 }
-    
+/*El flex-shrink en 0 evita que el botón se aplaste cuando falta espacio. El font-family inherit es porque los botones no heredan la letra del sistema, y el transition suaviza el hover*/
 .navbar__boton {
     flex-shrink: 0;
     font-size: 0.9rem;
@@ -72,11 +75,12 @@
     cursor: pointer;
     transition: transform 0.15s ease, opacity 0.15s ease;
 }
-    
+/*Al pasar el mouse el botón crece un poco y baja su opacidad para que se note que se puede dar clic. El transition hace que el cambio sea suave y no un salto brusco*/   
 .navbar__boton:hover {
     transform: scale(1.05);
     opacity: 0.92;
 }
+/*En pantallas chicas centramos todo y con order mandamos las rutas al final con el ancho completo, así quedan en su propia fila debajo de la marca y el botón sin cambiar el HTML*/
 @media (max-width: 48rem) {
     .navbar__contenedor {
         justify-content: center;
@@ -90,7 +94,8 @@
         order: 2;
     }
 }
-
+/*Al imprimir ocultamos la barra porque en papel no sirve para nada y así solo sale el 
+contenido de la página, esto es super importante ya que durante el imprimir de finanzas esto no debería de verse*/
 @media print{
     .navbar{
         display: none;

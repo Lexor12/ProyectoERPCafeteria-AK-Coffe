@@ -53,7 +53,7 @@ export class AsistenciasTrabajadorRhComponent implements OnInit{
         this.asistencias.set(asistenciasRecibidas);
       },
       error: (error) => {
-        alert('No se pudieron cargar las asistencias');
+        alert(error.error?.mensaje ?? 'No se pudieron cargar las asistencias')
       }
     });
   }
@@ -91,15 +91,16 @@ export class AsistenciasTrabajadorRhComponent implements OnInit{
       this.nuevaHoraSalida()
     ).subscribe({
       next: (resultado) => {
-        if (!resultado.registrada) {
+        if (!resultado) {
           alert('Error al registrar asistencia')
           return;
         }
         this.cargarAsistencias();
         this.clickCancelarAsistencia();
+        alert('Asistencia registrada con éxito');
       },
       error: (error) => {
-        alert('No se pudo registrar la asistencia');
+        alert(error.error?.mensaje ?? 'No se pudo registrar la asistencia')
       }
     });
   }
@@ -117,13 +118,13 @@ export class AsistenciasTrabajadorRhComponent implements OnInit{
     }
 
     this.nominaService.calcularNomina(this.idTrabajador(), this.fechaInicio(), this.fechaFin()).subscribe({
-      next: (nomina: any) => {
+      next: (nomina) => {
         this.diasTrabajados.set(nomina.diasTrabajados);
         this.salarioDiario.set(nomina.salarioDiario);
         this.totalAPagar.set(nomina.totalAPagar);
       },
       error: (error) => {
-        alert('No se pudo calcular la nomina');
+        alert(error.error?.mensaje ?? 'No se pudo calcular la nomina')
       }
     });
   }

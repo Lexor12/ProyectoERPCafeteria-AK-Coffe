@@ -1,7 +1,8 @@
+/*Contenedor de toda la página, el padding le da aire por los lados para que nada quede pegado a la orilla*/
 .catalogo {
     padding: 30px 25px;
 }
-
+/*Flex con wrap para que filtros y buscador vayan en una fila y bajen de renglón si no caben. El gap los separa y el margin-bottom los despega del grid*/
 .catalogo__toolbar {
     display: flex;
     flex-direction: row;
@@ -10,26 +11,28 @@
     gap: 20px;
     margin-bottom: 25px;
 }
-
+/*Texto de Filtros en negritas y con el color de encabezado de las variables, para distinguirlo de los campos*/
 .catalogo__titulo-texto {
     font-size: 14px;
     font-weight: 700;
     color: var(--main--heading);
 }
-
+/*Flex en fila con align-items center para que la etiqueta y su input queden alineados en el mismo renglón*/
 .catalogo__campo {
     display: flex;
     flex-direction: row;
     align-items: center;
     gap: 10px;
 }
-
+/*El white-space nowrap evita que la etiqueta se parta en dos renglones cuando falta espacio*/
 .catalogo__etiqueta {
     font-size: 13px;
     color: var(--main--text);
     white-space: nowrap;
 }
-
+/*Es angosto porque solo caben números de precio. 
+El font-family inherit es porque los inputs no heredan la letra del sistema por defecto, 
+y los colores salen de las variables de input*/
 .catalogo__input {
     width: 90px;
     padding: 8px 10px;
@@ -40,12 +43,15 @@
     color: var(--input--text);
     font-family: inherit;
 }
-
+/*Quitamos el outline que pone el navegador y en su lugar cambiamos el border-color 
+al color de acento, así se nota qué campo está activo con el estilo del sistema*/
 .catalogo__input:focus {
     outline: none;
     border-color: var(--main--accent);
 }
-
+/*El flex: 1 hace que el buscador crezca y ocupe el espacio que sobra, 
+con un min-width para que no se haga demasiado chico. 
+El margin-left auto lo manda hasta la derecha de la barra*/
 .catalogo__buscador {
     flex: 1;
     min-width: 200px;
@@ -58,16 +64,18 @@
     color: var(--input--text);
     font-family: inherit;
 }
-
+/*Cambiamos el color del texto de ayuda con la variable de
+placeholder para que se vea más apagado que lo que escribe el usuario*/
 .catalogo__buscador::placeholder {
     color: var(--input--placeholder);
 }
-
+/*Igual que en los demás campos, quitamos el outline y marcamos el campo activo con el border-color de acento*/
 .catalogo__buscador:focus {
     outline: none;
     border-color: var(--main--accent);
 }
-
+/*Usamos grid con auto-fill y minmax para que las cards se acomoden solas,
+caben las que alcancen por fila según el ancho y las demás bajan*/
 .catalogo__grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));

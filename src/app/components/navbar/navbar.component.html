@@ -1,7 +1,9 @@
+<!--Esta es la barra de arriba: del lado izquierdo el logo con el nombre y del derecho las rutas y el botón de sesión-->
 <section class="navbar">
     <nav class="navbar__contenedor">
         <div class="navbar__marca"> 
             <div class="navbar__logo"> 
+                <!--El logo es un enlace al inicio con routerLink, así al darle clic volvemos a la página principal sin recargar-->
                 <a [routerLink]="['/']" routerLinkActive="router-link-active">
                     <img src="ak-logo.ico" class="navbar__logo-imagen">
                 </a>
@@ -16,12 +18,15 @@
                 <a class="navbar__boton navbar__enlace--cta" [routerLink]="['/auth']" routerLinkActive="router-link-active">Entrar</a>
             }
             @else if (authService.rolActual() === 'cliente'){ 
+                <!--Pintamos un enlace por cada ruta de la lista, con [routerLink] tomamos el path de cada una y mostramos su label. 
+                El track con el path le dice a Angular cuál enlace es cuál para no recrearlos todos-->
                 @for (r of rutasCliente; track r.path){
                     <a class="navbar__enlace navbar__enlace--cta" [routerLink]="[r.path]" routerLinkActive="router-link-active">{{r.label}}</a>
                 }
                 <!-- Mostramos todas las rutas del rol cliente por defecto, las cuales definimos en el .ts -->
             }
             @else if (authService.rolActual() === 'administrador'){
+                <!--Es lo mismo que con el cliente pero con la lista de rutas del administrador-->
                 @for (r of rutasAdmin; track r.path){
                     <a class="navbar__enlace navbar__enlace--cta" [routerLink]="[r.path]" routerLinkActive="router-link-active">{{r.label}}</a>
                 }
@@ -29,6 +34,7 @@
             }
             @if (authService.sesionActiva()){
                 <div>
+                    <!--El clic llama a cerrarSesion del componente, que es el que termina la sesión-->
                     <button class="navbar__boton " (click)="cerrarSesion()">Cerrar sesión</button>
                 </div>
                 <!-- El botón de cerrar sesión solo debería ser visible si existe una sesión activa -->

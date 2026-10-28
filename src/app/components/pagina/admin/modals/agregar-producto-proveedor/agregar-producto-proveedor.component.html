@@ -1,3 +1,7 @@
+<!--este es el modal para agregar un producto a un proveedor, 
+ya sea uno existente o uno nuevo, no lleva form porque se va guardando lo que se escribe 
+en signals y se manda junto al dar clic en Aceptar, por eso solo el maxlength limita lo
+que se escribe y el min solo mueve las flechitas del campo-->
 <article class="modal-agregar-producto">
     <div class="modal-agregar-producto__encabezado">
         <h2 class="modal-agregar-producto__titulo">Agregar Producto</h2>
@@ -19,6 +23,8 @@
         <span class="modal-agregar-producto__etiqueta">¿Producto Existente?:</span>
         <div class="modal-agregar-producto__radio-group">
             <label class="modal-agregar-producto__radio">
+                <!--los dos radios comparten el name para que solo se pueda marcar uno, el checked los deja sincronizados con la señal 
+                y cada (change) le avisa al componente para cambiar de sección-->
                 <input type="radio" name="productoExistente" [checked]="productoExistente()" (change)="cambiarProductoExistente(true)">
                 Si
             </label>
@@ -49,23 +55,23 @@
         <div class="modal-agregar-producto__producto">
             <div class="modal-agregar-producto__imagen-contenedor">
                 <div class="modal-agregar-producto__imagen">
-                    <img [src]="imagenPreview()">
+                    <img [src]="imagenPreview()"><!--usamos [src] entre corchetes para que se muestre la vista previa de la imagen que se eligió-->
                 </div>
                 <label class="modal-agregar-producto__badge" for="inputImagenAgregar">Nueva</label>
-                <input id="inputImagenAgregar" type="file" accept="image/*" (change)="actualizarImagen($event)" hidden>
+                <input id="inputImagenAgregar" type="file" accept="image/jpeg,image/png,image/webp" (change)="actualizarImagen($event)" hidden>
             </div>
             <div class="modal-agregar-producto__datos">
                 <div class="modal-agregar-producto__campo">
                     <label class="modal-agregar-producto__etiqueta">Nombre:</label>
-                    <input class="modal-agregar-producto__input" type="text" placeholder="Escriba el nombre..." (input)="actualizarNombre($event)" max="100">
+                    <input class="modal-agregar-producto__input" type="text" placeholder="Escriba el nombre..." (input)="actualizarNombre($event)" maxlength="80">
                 </div>
                 <div class="modal-agregar-producto__campo">
                     <label class="modal-agregar-producto__etiqueta">Descripción:</label>
-                    <input class="modal-agregar-producto__input" type="text" placeholder="Descripción..." (input)="actualizarDescripcion($event)" max="300">
+                    <input class="modal-agregar-producto__input" type="text" placeholder="Descripción..." (input)="actualizarDescripcion($event)" maxlength="300">
                 </div>
                 <div class="modal-agregar-producto__campo">
                     <label class="modal-agregar-producto__etiqueta">Precio Unitario:</label>
-                    <input class="modal-agregar-producto__input" type="number" min="0" placeholder="$100" (input)="actualizarPrecioUnitario($event)">
+                    <input class="modal-agregar-producto__input" type="number" min="0.01" step="0.01" placeholder="$100" (input)="actualizarPrecioUnitario($event)">
                 </div>
             </div>
         </div>

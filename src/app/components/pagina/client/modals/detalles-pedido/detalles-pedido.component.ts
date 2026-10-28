@@ -29,10 +29,10 @@ export class DetallesPedidoComponent {
   regimenFiscalTienda = input.required<string>();
 
   cerrar = output<void>();
-
-  subtotal = computed(() => this.productos().reduce((suma, p) => suma + p.subtotal, 0));
-  iva = computed(() => this.subtotal() * 0.16);
-  precioTotal = computed(() => this.subtotal() + this.iva());
+  //Rendondeo los computed para que nunca haya una diferencia de centavos o precio como tal con respecto de la factura
+  subtotal = computed(() => Math.round(this.productos().reduce((suma, p) => suma + p.subtotal, 0) * 100) / 100);
+  iva = computed(() => Math.round(this.subtotal() * 0.16 * 100) / 100);
+  precioTotal = computed(() => Math.round((this.subtotal() + this.iva()) * 100) / 100);
 
   //Convertimos el booleano a texto legible para que el HTML no tenga que hacer ese ternario directo en el template
   proceso = computed(() => this.entregado() ? 'ENTREGADO' : 'PENDIENTE');

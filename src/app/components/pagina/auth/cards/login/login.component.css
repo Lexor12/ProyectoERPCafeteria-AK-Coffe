@@ -1,3 +1,5 @@
+/*Hacemos la card con flex en fila, max-width y margin auto para que quede centrada en la página, 
+con borde, esquinas redondeadas y una sombra suave.*/
 .card-login {
     display: flex;
     flex-direction: row;
@@ -9,31 +11,31 @@
     padding: 50px;
     box-shadow: 0 20px 30px rgba(0, 0, 0, 0.06);
 }
-
+/*El flex: 1.4 hace que el formulario sea más ancho que el lado de la invitación, y el padding-right lo separa del divisor*/
 .card-login__formulario {
     flex: 1.4;
     padding-right: 40px;
 }
-
+/*Título grande con el color de encabezado de las variables y un margen que lo separa de los campos*/
 .card-login__titulo {
     font-size: 24px;
     color: var(--main--heading);
     margin-bottom: 25px;
 }
-
+/*Flex en columna para que la etiqueta quede arriba del input, con un margin-bottom que separa un campo de otro*/
 .card-login__campo {
     display: flex;
     flex-direction: column;
     margin-bottom: 18px;
 }
-
+/*La etiqueta va en negritas con el color de etiquetas de los modales (var) y un margen que la despega del input*/
 .card-login__etiqueta {
     font-size: 14px;
     font-weight: 700;
     color: var(--modal--label);
     margin-bottom: 6px;
 }
-
+/*Aspecto del input con las variables de input, así si cambiamos los colores en styles.css se actualizan todos los campos a la vez*/
 .card-login__input {
     background-color: var(--input--bg);
     border: 1px solid var(--input--border);
@@ -42,16 +44,17 @@
     font-size: 14px;
     color: var(--input--text);
 }
-
+/*Cambiamos el color del texto de ayuda con la variable de placeholder para que se vea más apagado que lo escrito*/
 .card-login__input::placeholder {
     color: var(--input--placeholder);
 }
-
+/*Quitamos el outline que pone el navegador y en su lugar cambiamos el border-color al de acento, así se nota qué campo está activo con el estilo del sistema*/
 .card-login__input:focus {
     outline: none;
     border-color: var(--main--accent);
 }
-
+/*El width al 100% lo estira a todo el ancho del formulario. 
+El font-family inherit es porque los botones no heredan la letra del sistema, y el transition suaviza el hover*/
 .card-login__boton-entrar {
     width: 100%;
     background-color: var(--modal--button-primary-bg);
@@ -66,19 +69,19 @@
     margin-top: 10px;
     transition: transform 0.15s ease, opacity 0.15s ease;
 }
-
+/*Al pasar el mouse el botón crece un poco y baja su opacidad para que se note que se puede dar clic. El transition hace que el cambio sea suave y no un salto brusco*/
 .card-login__boton-entrar:hover {
     transform: scale(1.05);
     opacity: 0.92;
 }
-
+/*Es una línea vertical de 1px: con align-self stretch se estira a todo el alto de la card y el margin la separa de ambos lados*/
 .card-login__divisor {
     width: 1px;
     align-self: stretch;
     background-color: var(--cards--border);
     margin: 0 40px;
 }
-
+/*Flex en columna con align-items y justify-content center para dejar el título, el botón y el texto centrados en el espacio de ese lado*/
 .card-login__promocion {
     flex: 1;
     display: flex;
@@ -87,13 +90,13 @@
     justify-content: center;
     text-align: center;
 }
-
+/*Título un poco más chico que el del formulario, con el color de encabezado y un margen que lo separa del botón*/
 .card-login__promocion-titulo {
     font-size: 22px;
     color: var(--main--heading);
     margin-bottom: 18px;
 }
-
+/*Usa los colores del botón del navbar y es más pequeño que el de entrar, porque es una acción secundaria. El transition suaviza el hover*/
 .card-login__boton-crear {
     background-color: var(--navbar--button-bg);
     color: var(--navbar--button-text);
@@ -107,19 +110,20 @@
     margin-bottom: 15px;
     transition: transform 0.15s ease, opacity 0.15s ease;
 }
-
+/*Al pasar el mouse el botón crece un poco y baja su opacidad para que se note que se puede dar clic. El transition hace que el cambio sea suave y no un salto brusco*/
 .card-login__boton-crear:hover {
     transform: scale(1.05);
     opacity: 0.92;
 }
-
+/*El max-width evita que el texto se estire y quede en un párrafo corto y centrado bajo el botón*/
 .card-login__promocion-texto {
     font-size: 13px;
     color: var(--main--text);
     max-width: 220px;
 }
 
-
+/*En pantallas chicas la card pasa de fila a columna, el divisor se vuelve una línea horizontal 
+y quitamos el padding-right que ya no hace falta. Solo los selectores de card-login aplican aquí*/
 @media (max-width: 700px) {
     .card-login,
     .card-registro {
@@ -141,8 +145,6 @@
         margin: 30px 0;
     }
 }
-
-
 .card-login__error{
     margin-top: 10px;
     display: flex;

@@ -16,12 +16,14 @@ export interface ReporteFinanza {
 RAZÓN DE ESTO:
 
 Bueno, la sección de finanzas solo hace 4 cosas:
-* Mostrar el total ganado
-* Mostrar el total gastado
-* Mostrar el balance (relación entre ganado y gastado)
-* Grafica con respecto al tiempo, en cuanto a ganado y gastado
+- Mostrar el total ganado
+- Mostrar el total gastado
+- Mostrar el balance (relación entre ganado y gastado)
+- Grafica con respecto al tiempo, en cuanto a ganado y gastado
 
-! TODO ESTO EN BASE A UN RANGO DE FECHAS
+ACLARACION: TODO ESTO EN BASE A UN RANGO DE FECHAS
+
+atte: Lexor, NO IA (es que se que la IA suele estructuras comentarios)
 
 Así que tenemos 2 opciones: 
 1. Solicitar en un objeto que haga referencia a cada venta y otro a cada compra y manualmente aqui hacer los calculos

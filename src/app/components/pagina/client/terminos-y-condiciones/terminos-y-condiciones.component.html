@@ -1,6 +1,7 @@
+<!--Este componente es solo lectura: es texto fijo, así que aquí no hay inputs ni datos del componente-->
 <main class="terminos">
     <h1 class="terminos__titulo">Términos y Condiciones</h1>
-    <p class="terminos__fecha">Última actualización: 18 de octubre de 2026</p>
+    <p class="terminos__fecha">Última actualización: 22 de octubre de 2026</p>
 
     <p>
         Los presentes Términos y Condiciones regulan el acceso y el uso del sistema web de AK Coffee (en adelante, "el sitio")
@@ -31,7 +32,7 @@
         <li>Interferir con el funcionamiento del sitio ni utilizar medios automatizados para extraer información o realizar compras.</li>
         <li>Utilizar el sitio para fines ilícitos o que perjudiquen a AK Coffee o a otros usuarios.</li>
     </ul>
-    <p>AK Coffee podrá suspender o cancelar las cuentas que incumplan estas condiciones.</p>
+    <p>El incumplimiento de estas condiciones podrá dar lugar a las acciones legales que correspondan.</p>
 
     <h2>3. Registro de usuarios</h2>
     <p>
@@ -51,7 +52,7 @@
     </p>
     <p>
         AK Coffee no solicita documentos de identidad para verificar la edad. Si una persona menor de edad se registra declarando
-        ser mayor, la responsabilidad recae en ella y en quien ejerza la patria potestad o la tutela, y AK Coffee podrá cancelar la cuenta.
+        ser mayor, la responsabilidad recae en ella y en quien ejerza la patria potestad o la tutela.
     </p>
 
     <h2>4. Productos y servicios</h2>
@@ -74,7 +75,7 @@
     <p>
         El monto cobrado es el total calculado por el sistema con los precios vigentes al momento del pago. AK Coffee puede modificar
         sus precios en cualquier momento, sin que esto afecte a los pedidos ya pagados. En caso de un error evidente en un precio publicado,
-        AK Coffee podrá corregirlo y cancelar los pedidos afectados, reembolsando al usuario el monto pagado.
+        AK Coffee podrá corregirlo y cancelar los pedidos afectados, reembolsando al usuario el monto pagado, para lo cual el usuario deberá acudir de manera presencial al establecimiento conforme a la sección 8.
     </p>
 
     <h2>6. Métodos de pago</h2>
@@ -87,7 +88,7 @@
         AK Coffee no es responsable por fallas, demoras, rechazos, comisiones o cargos aplicados por PayPal o por la institución
         financiera del usuario. Si el pago es rechazado o cancelado, no se registra ningún pedido. Si el usuario detecta un cobro en
         PayPal y su pedido no aparece registrado en el sitio, debe comunicarlo a AK Coffee por los medios de contacto para su aclaración y,
-        en su caso, el reembolso.
+        en su caso, el reembolso, que se tramita de manera presencial conforme a la sección 8.
     </p>
     <p>
         Una vez confirmado el pago, AK Coffee envía al correo electrónico con el que el usuario se registró un comprobante de compra en
@@ -102,15 +103,17 @@
         o entregado. AK Coffee no garantiza un tiempo exacto de preparación, que puede variar según la demanda.
     </p>
 
-    <h2>8. Cancelaciones</h2>
+    <h2>8. Cancelaciones y reembolsos</h2>
     <p>
-        El usuario no puede cancelar pedidos directamente desde el sitio. Para solicitar la cancelación de un pedido que aún no ha sido entregado,
-        debe comunicarse con AK Coffee por los medios de contacto. Un pedido ya entregado no puede cancelarse.
+        Las cancelaciones y los reembolsos no se gestionan a través del sitio. Para solicitar la cancelación de un pedido que aún no ha sido entregado,
+        o un reembolso, el usuario debe acudir de manera presencial al establecimiento de AK Coffee, ubicado en Av. Siempre Viva 123, Zapopan, Jalisco,
+        con los datos de su pedido. Un pedido ya entregado no puede cancelarse.
     </p>
     <p>
-        AK Coffee puede cancelar un pedido por falta de disponibilidad, error en el precio, sospecha de uso indebido de la cuenta o imposibilidad
-        de prepararlo. Cuando un pedido pagado se cancela, el importe se reembolsa a la misma cuenta de PayPal con la que se realizó el pago,
-        en un plazo que depende de PayPal. El estado cancelado del pedido es visible para el usuario en la sección de pedidos.
+        Los pedidos solo se cancelan en el establecimiento: el personal autorizado de AK Coffee registra la cancelación en el sistema únicamente después de atender
+        la solicitud del usuario de manera presencial. AK Coffee también puede cancelar un pedido por falta de disponibilidad, error en el precio o imposibilidad
+        de prepararlo, en cuyo caso el usuario podrá acudir al establecimiento para tramitar el reembolso de su importe. El estado cancelado del pedido es visible
+        para el usuario en la sección de pedidos.
     </p>
 
     <h2>9. Devoluciones</h2>
@@ -147,7 +150,7 @@
         Queda prohibido reproducir, copiar, distribuir, modificar o utilizar este contenido sin autorización previa y por escrito de AK Coffee.
         El usuario solo tiene derecho a usar el sitio de forma personal para los fines descritos en estos Términos y Condiciones.
     </p>
-
+    <!--El enlace usa routerLink para llevar al aviso de privacidad sin recargar la página, ya que el aviso forma parte de lo que se acepta junto con estos términos--> 
     <h2>13. Privacidad</h2>
     <p>
         El tratamiento de los datos personales del usuario se rige por el <a [routerLink]="['/aviso-de-privacidad']" routerLinkActive="router-link-active">Aviso de Privacidad</a> de AK Coffee, que forma parte de estos Términos y Condiciones.
@@ -174,7 +177,7 @@
 
     <h2>15. Contacto</h2>
     <p>
-        Para dudas, aclaraciones, solicitudes de cancelación, reclamaciones, correcciones de datos o el ejercicio de los derechos ARCO,
+        Para dudas, aclaraciones, reclamaciones, correcciones de datos o el ejercicio de los derechos ARCO,
         el usuario puede comunicarse al teléfono 33 1234 5678, al email de akcoffe.contacto@gmail.com o acudir a Av. Siempre Viva 123, Zapopan, Jalisco.
     </p>
 

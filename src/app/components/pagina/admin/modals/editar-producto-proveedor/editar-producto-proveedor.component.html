@@ -1,3 +1,7 @@
+<!--este modal sirve para editar el producto de un proveedor, 
+los valores iniciales llegan del padre y [value] los muestra en cada campo, 
+no lleva form porque se va guardando lo que se escribe en signals y se manda al dar clic en Aceptar, 
+por eso solo el maxlength limita lo que se escribe y el min con el step solo mueven las flechitas del campo-->
 <article class="modal-editar-producto-proveedor">
     <div class="modal-editar-producto-proveedor__encabezado">
         <h2 class="modal-editar-producto-proveedor__titulo">Agregar / Editar Producto</h2>
@@ -9,23 +13,25 @@
     <div class="modal-editar-producto-proveedor__producto">
         <div class="modal-editar-producto-proveedor__imagen-contenedor">
             <div class="modal-editar-producto-proveedor__imagen">
-                <img [src]="imagenPreview()">
+                <img [src]="imagenPreview()"><!--usamos [src] entre corchetes para que se muestre la vista previa de la imagen que se eligió-->
             </div>
+            <!--el input de archivo va oculto con hidden y el label Nueva hace de botón porque está ligado con el for, 
+            el accept limita los tipos de imagen que deja elegir el explorador y con (change) el componente recibe la imagen-->
             <label class="modal-editar-producto-proveedor__badge" for="inputImagenEditar">Nueva</label>
-            <input id="inputImagenEditar" type="file" accept="image/*" (change)="actualizarImagen($event)" hidden>
+            <input id="inputImagenEditar" type="file" accept="image/jpeg,image/png,image/webp" (change)="actualizarImagen($event)" hidden>
         </div>
         <div class="modal-editar-producto-proveedor__datos">
             <div class="modal-editar-producto-proveedor__campo">
                 <label class="modal-editar-producto-proveedor__etiqueta">Nombre:</label>
-                <input class="modal-editar-producto-proveedor__input" type="text" [value]="nombre()" placeholder="Escriba el nombre..." (input)="actualizarNombre($event)">
+                <input class="modal-editar-producto-proveedor__input" type="text" [value]="nombre()" placeholder="Escriba el nombre..." maxlength="80" (input)="actualizarNombre($event)">
             </div>
             <div class="modal-editar-producto-proveedor__campo">
                 <label class="modal-editar-producto-proveedor__etiqueta">Descripción:</label>
-                <input class="modal-editar-producto-proveedor__input" type="text" [value]="descripcion()" placeholder="Descripción..." (input)="actualizarDescripcion($event)">
+                <input class="modal-editar-producto-proveedor__input" type="text" [value]="descripcion()" placeholder="Descripción..." maxlength="300" (input)="actualizarDescripcion($event)">
             </div>
             <div class="modal-editar-producto-proveedor__campo">
                 <label class="modal-editar-producto-proveedor__etiqueta">Precio Unitario:</label>
-                <input class="modal-editar-producto-proveedor__input" type="number" [value]="precioUnitario()" placeholder="$100" (input)="actualizarPrecioUnitario($event)">
+                <input class="modal-editar-producto-proveedor__input" type="number" [value]="precioUnitario()" placeholder="$100" min="0.01" step="0.01" (input)="actualizarPrecioUnitario($event)">
             </div>
         </div>
     </div>

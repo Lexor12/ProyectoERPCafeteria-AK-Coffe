@@ -1,7 +1,10 @@
+<!--Esta es la card de un producto del catálogo,
+la imagen y los datos solo se leen y llegan del padre por inputs, y los controles de
+abajo sirven para escoger la cantidad y agregar-->
 <article class="producto">
     <div class="producto__contenido">
         <div class="producto__imagen">
-            <img [src]="imagenUrl()"><!--NOTA: No lleva clase, ya que en el styles.css ya configure todos los img, que se adapten segun su contenedor padre, ents por esto-->
+            <img [src]="imagenUrl()"><!--NOTA: No lleva clase, ya que en el styles.css que ya configure todos los img, que se adapten segun su contenedor padre, ents por esto-->
         </div>
         <div class="producto__detalles">
             <div class="producto__contenedor">
@@ -24,10 +27,13 @@
     </div>
     <div class="producto__acciones">
         <div class="producto__contenedor-agregar">
+            <!--El botón le avisa al padre con el evento agregar, mandando el id del producto y la cantidad escogida. 
+            El padre es quien revisa el stock y lo guarda en el carrito. Lleva type="button" porque no hay form-->
             <button class="producto__boton" type="button" (click)="clickAgregar()">Agregar</button>
             <div class="producto__grupo-cantidad">
                 <label class="producto__label" for="cantidad-input">Cantidad: </label>
-                <input class="producto__cantidad" id="cantidad-input" type="number" [value]="cantidad()" (input)="actualizarCantidadSeleccionada($event)" min="1" [max]="stockDisponible()">
+                <!--Usamos [value] con (change) en lugar de ngModel para guardar la cantidad cuando se termina de editar-->
+                <input class="producto__cantidad" id="cantidad-input" type="number" [value]="cantidad()" (change)="actualizarCantidadSeleccionada($event)" min="1" [max]="stockDisponible()">
             </div >            
         </div>
     </div>

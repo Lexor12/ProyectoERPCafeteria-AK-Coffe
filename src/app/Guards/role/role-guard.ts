@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
 import { AuthService } from '../../Services/auth.service';
 
-
+//Este se encarga después de autenticar, y revisa que el ro1l del usuario esté en los roles permitidos de la ruta (data.roles) definidos en el app.routes.ts
 export const roleGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService)
   const router=inject(Router)

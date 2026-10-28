@@ -1,3 +1,5 @@
+/*Hacemos la card con flex, max-width y margin auto para que quede centrada en la página, con borde, esquinas redondeadas y una sombra suave que la despega del fondo.
+Los colores salen de las variables de styles.css*/
 .pago-rechazado {
     display: flex;
     flex-direction: row;
@@ -9,7 +11,7 @@
     padding: 50px;
     box-shadow: 0 20px 30px rgba(0, 0, 0, 0.06);
 }
-
+/*El flex interno con align-items center acomoda el título y el texto a la misma altura, con un gap entre ellos*/
 .pago-rechazado__description {
     flex: 1.4;
     display: flex;
@@ -17,10 +19,11 @@
     gap: 20px;
     justify-content: space-between;
 }
+/*El margin-left auto empuja el texto hacia la derecha y deja el título a la izquierda*/
 .pago-rechazado__text{
     margin-left: auto;
 }
-
+/*Tamaño grande con el color de encabezado de las variables para que el mensaje principal se vea primero*/
 .pago-rechazado__title {
     font-size: 24px;
     color: var(--main--heading);
@@ -59,7 +62,7 @@
     transform: scale(1.05);
     opacity: 0.92;
 }
-
+/*En pantallas chicas la card pasa de fila a columna y reducimos el padding y los márgenes para que no se coma la pantalla*/
 @media (max-width: 700px) {
     .pago-rechazado {
         flex-direction: column;

@@ -1,24 +1,28 @@
+/*Limitamos el ancho con max-width y lo centramos con margin auto para que las líneas del texto legal no queden larguísimas. 
+El line-height da más espacio entre renglones y facilita la lectura*/
 .terminos {
     max-width: 800px;
     margin: 0 auto;
     padding: 2rem 1rem;
     line-height: 1.6;
 }
-
+/*Un margin-bottom chico para que el título quede pegado a la fecha de actualización que va justo abajo*/
 .terminos__titulo {
     margin-bottom: 0.25rem;
 }
-
+/*Letra más pequeña que el texto normal porque es un dato secundario, 
+con un margen abajo que la separa del primer párrafo*/
 .terminos__fecha {
     margin-bottom: 1.5rem;
     font-size: 0.9rem;
 }
-
+/*Los h2 se estilizan desde el contenedor en vez de ponerles clase uno por uno, porque el texto legal tiene muchos apartados y así no repetimos 
+la misma clase en cada uno*/
 .terminos h2 {
     margin-top: 1.75rem;
     font-size: 1.15rem;
 }
-
+/*El padding-left da espacio a la izquierda para que las viñetas no queden pegadas al borde y se vean bien dentro del contenedor*/
 .terminos ul {
     padding-left: 1.5rem;
 }

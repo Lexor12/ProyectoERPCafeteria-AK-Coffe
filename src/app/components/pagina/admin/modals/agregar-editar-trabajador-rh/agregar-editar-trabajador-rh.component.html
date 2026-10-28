@@ -1,3 +1,7 @@
+<!--este modal sirve para agregar y para editar un trabajador, 
+no lleva form porque se va guardando lo que se escribe en signals con (input) 
+y se manda al dar clic en Aceptar, por eso solo el maxlength limita lo que se escribe y el min con el step 
+solo mueven las flechitas del salario-->
 <article class="modal-trabajador">
     <div class="modal-trabajador__encabezado">
         <h2 class="modal-trabajador__titulo">Agregar / Editar Trabajador</h2>
@@ -8,21 +12,22 @@
 
     <div class="modal-trabajador__producto">
         <div class="modal-trabajador__imagen">
-            <img src="images/trabajador.png">
+            <img src="images/trabajador.png"><!--los trabajadores no tienen foto propia, así que usamos la misma imagen genérica para todos-->
         </div>
         <div class="modal-trabajador__datos">
             <div class="modal-trabajador__campo">
                 <label class="modal-trabajador__etiqueta">Nombre:</label>
-                <input class="modal-trabajador__input" type="text" [value]="nombre()" placeholder="Escriba el nombre..." (input)="actualizarNombre($event)">
+                <input class="modal-trabajador__input" type="text" [value]="nombre()" placeholder="Escriba el nombre..." maxlength="50" (input)="actualizarNombre($event)">
             </div>
             <div class="modal-trabajador__campo">
                 <label class="modal-trabajador__etiqueta">Apellido:</label>
-                <input class="modal-trabajador__input" type="text" [value]="apellido()" placeholder="Escriba el apellido..." (input)="actualizarApellido($event)">
+                <input class="modal-trabajador__input" type="text" [value]="apellido()" placeholder="Escriba el apellido..." maxlength="50" (input)="actualizarApellido($event)">
             </div>
             <div class="modal-trabajador__campo">
                 <label class="modal-trabajador__etiqueta">Área:</label>
-                <input class="modal-trabajador__input" type="text" [value]="area()" placeholder="Escriba el área..." (input)="actualizarArea($event)">
+                <input class="modal-trabajador__input" type="text" [value]="area()" placeholder="Escriba el área..." maxlength="100" (input)="actualizarArea($event)">
             </div>
+            <!--la fecha de ingreso solo se pide cuando vamos a agregar un trabajador, si estamos editando ya se tiene idy por ende esa fecha ya no se cambia-->
             @if(!idTrabajador()){
                 <div class="modal-trabajador__campo">
                     <label class="modal-trabajador__etiqueta">Fecha Ingreso:</label>
@@ -31,15 +36,16 @@
             }
             <div class="modal-trabajador__campo">
                 <label class="modal-trabajador__etiqueta">Salario:</label>
-                <input class="modal-trabajador__input" type="number" [value]="salario()" placeholder="$0" (input)="actualizarSalario($event)">
+                <input class="modal-trabajador__input" type="number" [value]="salario()" min="0.01" step="0.01" placeholder="$0" (input)="actualizarSalario($event)">
             </div>
             <div class="modal-trabajador__campo">
                 <label class="modal-trabajador__etiqueta">RFC:</label>
-                <input class="modal-trabajador__input" type="text" [value]="rfc()" placeholder="Escriba el RFC..." (input)="actualizarRfc($event)">
+                <input class="modal-trabajador__input" type="text" [value]="rfc()" placeholder="Escriba el RFC..." maxlength="13" (input)="actualizarRfc($event)">
             </div>
         </div>
     </div>
     <div class="modal-trabajador__separador"></div>
+    <!--los campos de hora usan type time, que abre el selector de hora del navegador, y el modificador horario deja la etiqueta y la hora en lados opuestos-->
     <div class="modal-trabajador__campo modal-trabajador__campo--horario">
         <label class="modal-trabajador__etiqueta">Hora de Entrada:</label>
         <input class="modal-trabajador__input" type="time" [value]="horaEntrada()" (input)="actualizarHoraEntrada($event)">

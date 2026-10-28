@@ -30,9 +30,7 @@ export class AuthService{
         return this.http.post<RespuestaLogin>(`${this.api}/login`, solicitud)
     }
 
-    // Esto es del formulario de Registro, siempre crea usuarios con rol cliente,
-    // si el correo ya existe el backend regresa creado:false con un mensaje específico
-    // que el componente puede mostrar directo sin tener que armar el texto manualmente
+    // siempre crea usuarios con rol cliente. Si el correo ya existe el backend responde con error y su mensaje se muestra en el componente
     registro(datos: solicitudRegistro):Observable<RespuestaRegistro>{
         return this.http.post<RespuestaRegistro>(`${this.api}/registro`, datos)
     }
@@ -50,7 +48,7 @@ export class AuthService{
         this.sesionActiva.set(true);
         this.rolActual.set(respuestaLogin.rol);
     }
-    //Los siguientes tres leen lo guardado; devuelven null si no hay nada o si corre en el servidor
+    //Los siguientes tres leen lo guardado devuelven null si no hay nada guardado en localstorage, o si el servidor esta renderizando esto (ya que el servidor no tiene localstorage y da error)
     getToken(){
         if(!isPlatformBrowser(this.platformId))return null;
         return localStorage.getItem('token')
@@ -76,14 +74,9 @@ export class AuthService{
         if (!this.estaAutenticado()) return false;
         const rol = this.rolActual();
         return rol !== null && roles.includes(rol);
-        /*if(!isPlatformBrowser(this.platformId))return false;
-        const rol=  this.getRol()
-        return rol!==null && roles.includes(rol)*/
     }
-    //Hay sesión si existe un token guardado (no revisa si ya expiró)
+    //Hay sesión si existe un token guardado y todavía no expiró, si ya expiró o está mal armado cerramos la sesión y regresamos false
     estaAutenticado():boolean{
-        /*if(!isPlatformBrowser(this.platformId))return false;
-        return this.getRol()!==null*/
         if (!isPlatformBrowser(this.platformId)) return false;
             const token = this.getToken();
             if (!token) return false;

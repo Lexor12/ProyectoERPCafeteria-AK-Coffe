@@ -69,7 +69,12 @@ export class AgregarProductoProveedorComponent {
     const input = evento.target as HTMLInputElement;
     const archivo = input.files?.[0];
     if (!archivo) return;
-
+    //A pesar de que el Backend valida, aqui en Frontend también lo hice para evitar mandar consultas y estar esperando mucho
+    if (!['image/jpeg','image/png','image/webp'].includes(archivo.type) || archivo.size > 2 * 1024 * 1024) {//Comprobamos el tamaño que no sea mayor a 2MB y que los tipos sean jpeg,png y webp (tal cual como el backend acepta)
+      alert('La imagen debe ser JPG, PNG o WEBP de máximo 2 MB');
+      input.value = '';
+      return;
+    }
     const lector = new FileReader();
     lector.onload = () => {
         const base64 = lector.result as string;

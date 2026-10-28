@@ -1,3 +1,4 @@
+/*La card usa flex en fila con space-between para dejar los datos a la izquierda y la imagen a la derecha, alineados arriba. Los colores salen de las variables de styles.css*/
 .producto {
     display: flex;
     flex-direction: row;
@@ -10,40 +11,40 @@
     padding: 20px;
     max-width: 100%;
 }
-
+/*Flex en columna con gap para apilar los datos del producto y, abajo, el botón de eliminar*/
 .producto__contenido {
     display: flex;
     flex-direction: column;
     gap: 8px;
 }
-
+/*Flex en columna con un gap chico entre cada dato del producto*/
 .producto__detalles {
     display: flex;
     flex-direction: column;
     gap: 6px;
 }
-
+/*El nombre va un poco más grande y en negritas con el color de título de las cards, porque es lo principal de la card*/
 .producto-carrito__nombre {
     font-size: 15px;
     font-weight: 700;
     color: var(--cards--title);
 }
-
+/*Las etiquetas de los demás datos van en negritas, y el valor de cada una va en un span que cambia a peso normal*/
 .producto-carrito__dato {
     font-size: 14px;
     font-weight: 700;
     color: var(--cards--title);
 }
-
+/*El peso normal y el color de texto de las cards hacen que el valor se distinga de su etiqueta*/
 .producto-carrito__valor {
     font-weight: 400;
     color: var(--cards--text);
 }
-
+/*El margin-top separa el botón de los datos que tiene arriba*/
 .producto__acciones {
     margin-top: 10px;
 }
-
+/*Aspecto del botón con las variables de colores de las cards. El font-family inherit es porque los botones no heredan la letra del sistema, y el transition suaviza el hover*/
 .producto__eliminar {
     background-color: var(--cards--button-primary-bg);
     color: var(--cards--button-primary-text);
@@ -56,12 +57,12 @@
     cursor: pointer;
     transition: transform 0.15s ease, opacity 0.15s ease;
 }
-
+/*Al pasar el mouse el botón crece un poco y baja su opacidad para que se note que se puede dar clic. El transition hace que el cambio sea suave y no un salto brusco*/
 .producto__eliminar:hover {
     transform: scale(1.05);
     opacity: 0.92;
 }
-
+/*El flex-shrink en 0 evita que la imagen se aplaste cuando los datos ocupan mucho espacio, y el overflow hidden recorta la foto a sus esquinas redondeadas*/
 .producto__imagen {
     flex-shrink: 0;
     width: 140px;
@@ -69,7 +70,7 @@
     border-radius: 8px;
     overflow: hidden;
 }
-
+/*La foto llena toda su caja y lleva las mismas esquinas redondeadas*/
 .producto__imagen img {
     width: 100%;
     height: 100%;

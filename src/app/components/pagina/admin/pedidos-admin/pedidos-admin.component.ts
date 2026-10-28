@@ -36,7 +36,7 @@ export class PedidosAdminComponent implements OnInit{
         this.pedidos.set(pedidosAdmin)
       },
       error: (error)=>{
-        alert('No se pudieron cargar los pedidos')
+        alert(error.error?.mensaje ?? 'No se pudieron cargar los pedidos')
       }
     })
   }
@@ -58,10 +58,11 @@ export class PedidosAdminComponent implements OnInit{
     const pedido=this.pedidos().filter(p=>p.idVenta===idVenta)[0]
     this.pedidoAdminService.marcarCancelado(idVenta,!pedido.cancelado).subscribe({
       next: ()=>{
+        alert(pedido.cancelado ? 'Pedido reactivado con éxito' : 'Pedido cancelado con éxito');
         this.cargarPedidos()
       },
       error: (error)=>{
-        alert('No se pudo cancelar el pedido')
+        alert(error.error?.mensaje ?? 'No se pudo cancelar el pedido')
       }
     })
   }
@@ -70,10 +71,11 @@ export class PedidosAdminComponent implements OnInit{
     const pedido=this.pedidos().filter(p=>p.idVenta===idVenta)[0]
     this.pedidoAdminService.marcarEntregado(idVenta, !pedido.entregado).subscribe({
       next: () => {
+        alert(pedido.entregado ? 'Pedido marcado como pendiente' : 'Pedido marcado como entregado');
         this.cargarPedidos()
       },
       error: (error) => {
-        alert('No se pudo marcar como entregado');
+        alert(error.error?.mensaje ?? 'No se pudo marcar como entregado')
       }
     });
   }

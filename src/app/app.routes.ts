@@ -1,6 +1,4 @@
 import { Routes } from '@angular/router';
-import { NavbarComponent } from './components/navbar/navbar.component';
-
 
 //GENERAL
 import { LandingComponent } from './components/pagina/landing/landing.component';
@@ -22,6 +20,7 @@ import { PagoRechazadoComponent } from './components/pagina/client/pago-rechazad
 import { TerminosYCondicionesComponent } from './components/pagina/client/terminos-y-condiciones/terminos-y-condiciones.component';
 import { AvisoDePrivacidadComponent } from './components/pagina/client/aviso-de-privacidad/aviso-de-privacidad.component';
 
+//Este arreglo de rutas, es el que utilizamos para permitir el enrutamiento en nuestra SPA
 export const routes: Routes = [
     //Ruta Pública: si entran a la raíz, van directo al landing page
     {

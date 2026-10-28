@@ -6,10 +6,12 @@ import { Component, effect, input, output, signal  } from '@angular/core';
   templateUrl: './agregar-proveedor.component.html',
   styleUrl: './agregar-proveedor.component.css',
 })
+
+//Este modal  agregar o editar un proveedor, si recibe valores iniciales funciona como edición
 export class AgregarProveedorComponent {
+  // Valores con los que se rellena el formulario al editar, los cuales al contrario se encuentran vacíos al agregar (ya que es algo nuevo totalmente)
   nombre = signal<string>('');
   telefono = signal<string>('');
-
   nombreInicial=input<string>('');
   telefonoInicial=input<string>('');
 

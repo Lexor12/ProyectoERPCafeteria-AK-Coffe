@@ -20,8 +20,8 @@ export class AsistenciaService {
     }
 
     // Se llama desde el botón de "Registrar asistencia" del modal
-    registrarAsistencia(idTrabajador: string, fecha: string, horaEntrada: string, horaSalida: string): Observable<any> {
-        return this.http.post(this.api, 
+    registrarAsistencia(idTrabajador: string, fecha: string, horaEntrada: string, horaSalida: string): Observable<boolean> {
+        return this.http.post<boolean>(this.api, 
             {
                 idTrabajador,
                 fecha,

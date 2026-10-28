@@ -1,3 +1,4 @@
+<!--Esta es la card de un producto dentro del carrito: muestra lo que llega por inputs y el botón de eliminar le avisa al padre-->
 <article class="producto">
     <div class="producto__contenido">
         <div class="producto__detalles">
@@ -8,10 +9,12 @@
             <p class="producto-carrito__dato">Subtotal: <span class="producto-carrito__valor">$ {{ subtotal().toFixed(2) }}</span></p>
         </div>
         <div class="producto__acciones">
+            <!--El botón llama a clickEliminarProducto, que le avisa al padre con el evento eliminar mandando el id, y el padre lo quita de la lista y del localStorage-->
             <button class="producto__eliminar" type="button" (click)="clickEliminarProducto()">Eliminar</button>
         </div>
     </div>
     <div class="producto__imagen">
+        <!--Usamos [src] entre corchetes para que la imagen cambie según el dato que manda el padre, con src normal quedaría el texto literal-->
         <img [src]="imagenUrl()" >
     </div>
 </article>

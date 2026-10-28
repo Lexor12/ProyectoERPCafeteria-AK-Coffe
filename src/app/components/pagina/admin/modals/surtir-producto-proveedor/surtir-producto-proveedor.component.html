@@ -1,4 +1,4 @@
-<article class="modal-surtir-producto">
+<article class="modal-surtir-producto"><!--este modal sirve para surtir un producto de un proveedor, los datos del producto llegan del padre y solo se leen, lo único que se escribe es la cantidad-->
     <div class="modal-surtir-producto__encabezado">
         <h2 class="modal-surtir-producto__titulo">Surtir de Producto</h2>
         <button class="modal-surtir-producto__cerrar" type="button" (click)="clickCerrar()">X</button>
@@ -8,7 +8,7 @@
         <div class="modal-surtir-producto__imagen">
             <img [src]="imagenUrl()">
         </div>
-        <div class="modal-surtir-producto__datos">
+        <div class="modal-surtir-producto__datos"><!--estos campos llevan readonly para mostrar los datos del producto sin dejar que se cambien-->
             <div class="modal-surtir-producto__campo">
                 <label class="modal-surtir-producto__etiqueta">Nombre:</label>
                 <input class="modal-surtir-producto__input" type="text" [value]="nombre()" readonly>
@@ -26,7 +26,7 @@
 
     <div class="modal-surtir-producto__campo modal-surtir-producto__campo--total">
         <label class="modal-surtir-producto__etiqueta">Cantidad a Surtir:</label>
-        <input class="modal-surtir-producto__input" type="number" [value]="cantidad()" (input)="actualizarCantidad($event)" min="1">
+        <input class="modal-surtir-producto__input" type="number" [value]="cantidad()" (input)="actualizarCantidad($event)" min="1" step="1">
     </div>
 
     <div class="modal-surtir-producto__campo modal-surtir-producto__campo--total">

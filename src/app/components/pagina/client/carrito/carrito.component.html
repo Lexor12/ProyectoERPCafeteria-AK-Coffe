@@ -1,9 +1,12 @@
+<!--La página va en dos columnas, del lado izquierdo la lista de productos del carrito y del derecho el resumen con el total y el botón de pago-->
 <section class="carrito">
     <div class="carrito__lista">
         <h2 class="carrito__lista-titulo">Recuento de elementos</h2>
         <!--Mostramos cada producto del carrito como su propia card, cualquier cambio en items()
         (agregar/eliminar) hace que esto se vuelva a pintar solo-->
         @for (item of items(); track item.idProducto) {
+        <!--Con [propiedad] le mandamos a cada card los datos del producto y con 
+        (eliminar) recibimos el id que ella emite al dar clic en Eliminar, para quitarlo de la lista y del localStorage-->
         <app-producto-carrito
             [idProducto]="item.idProducto"
             [nombre]="item.nombre"
@@ -14,30 +17,36 @@
             (eliminar)="eliminarItem($event)">
         </app-producto-carrito>
         } @empty {
+            <!--Si ya no queda ningún producto mostramos este aviso para no dejar la lista en blanco sin explicación-->
         <p class="carrito__vacio">Tu carrito está vacío.</p>
         }
     </div>
 
-    <div class="carrito__resumen">
+    <form class="carrito__resumen" (submit)="$event.preventDefault(); pagar()">
         <h2 class="carrito__resumen-titulo">Resumen del pedido</h2>
-
+        <!--El subtotal, el IVA y el total los calcula el componente con computed a partir de los productos, aquí solo los mostramos con dos decimales para que se lean como dinero-->
         <div class="carrito__resumen-fila">
-        <span>Subtotal:</span>
-        <span>$ {{ subtotal().toFixed(2) }}</span>
+            <span>Subtotal:</span>
+            <span>$ {{ subtotal().toFixed(2) }}</span>
         </div>
         <div class="carrito__resumen-fila">
-        <span>IVA (16%):</span>
-        <span>$ {{ iva().toFixed(2) }}</span>
+            <span>IVA (16%):</span>
+            <span>$ {{ iva().toFixed(2) }}</span>
         </div>
         <div class="carrito__resumen-fila carrito__resumen-fila--total">
-        <span>Total:</span>
-        <span>$ {{ total().toFixed(2) }}</span>
+            <span>Total:</span>
+            <span>$ {{ total().toFixed(2) }}</span>
         </div>
-        <!--El RFC es opcional, por eso no lleva required ni validación aquí, solo se manda si el cliente lo escribió-->
-        <label class="carrito__etiqueta-rfc">RFC (Opcional):</label>
-        <input class="carrito__campo-rfc" type="text" placeholder="Escribe RFC..." (input)="actualizarRfc($event)">
-
-        <!--Este botón por ahora no hace nada real, en la Práctica 2 debe redirigir a la pasarela de PayPal (ver pagar() en el .ts)-->
-        <button class="carrito__boton-pagar" type="button" (click)="pagar()">Pagar con PayPal</button>
-    </div>
+        <!--El RFC es opcional, por eso no lleva required y solo se manda si el cliente lo escribió-->
+        <label class="carrito__etiqueta-rfc" for="rfc">RFC (Opcional):</label>
+        <input class="carrito__campo-rfc" type="text" id="rfc" placeholder="Escribe RFC..." (input)="actualizarRfc($event)" maxlength="13" minlength="12">
+        <!--El checkbox guarda con (change) si está marcado.-->
+            <div class="carrito__campo-terminos">
+                <input type="checkbox" id="terminos" (change)="actualizarTerminos($event)" required>
+                <label for="terminos" style="font-size: 0.9rem;">
+                    He leído y aceptado los <a [routerLink]="['/terminos-y-condiciones']" routerLinkActive="router-link-active">Términos y Condiciones</a> y el <a [routerLink]="['/aviso-de-privacidad']" routerLinkActive="router-link-active">Aviso de Privacidad</a>
+                </label>
+            </div>
+        <button class="carrito__boton-pagar" type="submit">Pagar con PayPal</button>
+    </form>
 </section>

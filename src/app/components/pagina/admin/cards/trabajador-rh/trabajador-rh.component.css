@@ -1,3 +1,4 @@
+/*la card es un flex en columna con gap y el height al 100% hace que todas las cards de una fila midan lo mismo, los colores salen de las variables de styles.css*/
 .trabajador-rh {
     display: flex;
     flex-direction: column;
@@ -9,62 +10,62 @@
     max-width: 100%;
     height: 100%;
 }
-
+/*flex en fila con gap para dejar la imagen y los datos lado a lado, el flex 1 deja el horario y los botones siempre abajo*/
 .trabajador-rh__contenido {
     display: flex;
     flex-direction: row;
     gap: 15px;
     flex:1;
 }
-
+/*el ancho en porcentaje hace que la imagen se adapte al tamaño de la card y el fondo suave se nota detrás de la imagen genérica del trabajador*/
 .trabajador-rh__imagen {
     background-color: rgba(250, 235, 215, 0.527);
     width: 30%;
     height: 100%;
     border-radius: 8px;
 }
-
+/*la imagen ocupa todo el alto de su caja y lleva las mismas esquinas redondeadas*/
 .trabajador-rh__imagen img {
     height: 100%;
     border-radius: 8px;
 }
-
+/*flex en columna con un gap chico para apilar los datos del trabajador*/
 .trabajador-rh__detalles {
     display: flex;
     flex-direction: column;
     gap: 8px;
 }
-
+/*cada par de etiqueta y valor reparte el espacio por igual dentro de la columna*/
 .trabajador-rh__contenedor {
     flex: 1 1;
 }
-
+/*va en negritas con el color de título de las cards para distinguirla del valor*/
 .trabajador-rh__etiqueta {
     font-size: 13px;
     font-weight: 700;
     color: var(--cards--title);
     margin-right: 4px;
 }
-
+/*el valor va con peso normal y el color de texto de las cards para que la etiqueta sea la que resalte*/
 .trabajador-rh__valor {
     font-size: 13px;
     font-weight: 400;
     color: var(--cards--text);
 }
-
+/*flex en fila con gap para dejar la hora de entrada y la de salida lado a lado*/
 .trabajador-rh__horario {
     display: flex;
     flex-direction: row;
     gap: 10px;
 }
-
+/*cada hora es una columna con su etiqueta arriba y el flex 1 hace que las dos midan lo mismo*/
 .trabajador-rh__horario-campo {
     flex: 1;
     display: flex;
     flex-direction: column;
     gap: 5px;
 }
-
+/*imita el aspecto de un input con las variables de input pero con el texto centrado y apagado, porque solo muestra la hora y no se edita aquí*/
 .trabajador-rh__horario-caja {
     background-color: var(--input--bg);
     border: 1px solid var(--input--border);
@@ -74,13 +75,13 @@
     color: var(--input--placeholder);
     text-align: center;
 }
-
+/*flex en fila con gap para dejar los tres botones juntos en todo el ancho de la card*/
 .trabajador-rh__acciones {
     display: flex;
     flex-direction: row;
     gap: 8px;
 }
-
+/*el flex 1 hace que los tres botones midan lo mismo, el font-family inherit es porque los botones no heredan la letra del sistema y el transition suaviza el hover*/
 .trabajador-rh__boton {
     flex: 1;
     border-radius: 6px;
@@ -91,20 +92,20 @@
     cursor: pointer;
     transition: transform 0.15s ease, opacity 0.15s ease;
 }
-
+/*es un modificador que solo cambia los colores del botón base, usa las variables secundarias con borde para que se vea como una acción menos importante*/
 .trabajador-rh__boton--desactivar {
     background-color: var(--cards--button-secondary-bg);
     color: var(--cards--button-secondary-text);
     border: 1px solid var(--cards--button-secondary-border);
 }
-
+/*estos dos modificadores comparten los colores primarios del botón y por eso los juntamos en un solo bloque*/
 .trabajador-rh__boton--editar,
 .trabajador-rh__boton--asistencias {
     background-color: var(--cards--button-primary-bg);
     color: var(--cards--button-primary-text);
     border: none;
 }
-
+/*al pasar el mouse el botón crece un poco y baja su opacidad para que se note que se puede dar clic, el transition hace que el cambio sea suave*/
 .trabajador-rh__boton:hover {
     transform: scale(1.05);
     opacity: 0.92;

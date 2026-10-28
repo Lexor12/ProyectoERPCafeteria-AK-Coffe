@@ -1,8 +1,12 @@
 <section class="catalogo">
+    <!--Los filtros no van dentro de un form porque cada input manda su valor al componente con (input) y este lo guarda en un signal, 
+    así la lista se filtra mientras se escribe sin tener que enviar nada-->
     <div class="catalogo__toolbar">
         <div class="catalogo__titulo">
             <p class="catalogo__titulo-texto">Filtros: </p>
         </div>
+        <!--Usamos type="number" para que el campo sea para números y muestre las flechitas. 
+        Si se deja vacío el componente lo toma como que no hay filtro de precio, por eso no lleva required-->
         <div class="catalogo__campo">
             <label class="catalogo__etiqueta">Precio Min.</label>
             <input class="catalogo__input" type="number" (input)="actualizarPrecioMin($event)">
@@ -11,11 +15,17 @@
             <label class="catalogo__etiqueta">Precio Máx.</label>
             <input class="catalogo__input" type="number" (input)="actualizarPrecioMax($event)">
         </div>
+        <!--El placeholder es el texto gris de ayuda que desaparece al escribir, y con (input) 
+        mandamos lo escrito en cada tecla para que el catálogo se vaya filtrando por nombre-->
         <input class="catalogo__buscador" type="text" placeholder="Buscador..." (input)="actualizarBuscador($event)">
     </div>
 
     <div class="catalogo__grid">
+        <!--Pintamos una card por cada producto de la lista ya filtrada y cuando cambia un filtro se repinta sola. 
+        El track con el idProducto le dice a Angular qué card es cuál para no recrearlas todas cada vez-->
         @for (producto of productosFiltrados(); track producto.idProducto) {
+            <!--Con [propiedad] le mandamos a la card los datos del producto, y el (agregar) recibe lo que ella emite al dar clic 
+            en Agregar, que es el id y la cantidad, para que agregarAlCarrito lo guarde-->
             <app-producto-catalogo
                 [idProducto]="producto.idProducto"
                 [nombre]="producto.nombre"
